@@ -1,6 +1,21 @@
-version: '3.8'
-
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - timescaledb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://timescaledb:5432/timescaledb?autoReconnect=true
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    networks:
+      - smart-energy-network
+
   timescaledb:
     image: timescale/timescaledb:latest-pg17
     container_name: timescaledb
@@ -11,3 +26,11 @@ services:
     environment:
       - PGDATA=/pgdata
       - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=user
+      - POSTGRES_DB=timescaledb
+    networks:
+      - smart-energy-network
+
+networks:
+  smart-energy-network:
+    driver: bridge

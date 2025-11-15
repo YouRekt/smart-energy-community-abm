@@ -13,6 +13,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - "8080:8080"
+      - "7778:7778"
     networks:
       - smart-energy-network
 

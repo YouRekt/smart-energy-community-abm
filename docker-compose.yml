@@ -11,6 +11,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+      - TERM=xterm-color
     ports:
       - "8080:8080"
       - "7778:7778"

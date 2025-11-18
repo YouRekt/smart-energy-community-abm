@@ -25,7 +25,7 @@ services:
     volumes:
       - pgdata:/var/lib/pgdata
     environment:
-      - PGDATA=/pgdata
+      - PGDATA=/var/lib/pgdata
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=user
       - POSTGRES_DB=timescaledb
@@ -35,3 +35,6 @@ services:
 networks:
   smart-energy-network:
     driver: bridge
+
+volumes:
+  pgdata:

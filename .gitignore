@@ -34,3 +34,8 @@ build/
 
 ### PostgreSQL ###
 pgdata/
+
+### Jade ###
+jade/
+APDescription.txt
+MTPs-Main-Container.txt

@@ -21,6 +21,9 @@ import java.util.concurrent.Executors;
 @Service
 public class JadeService {
     private static final String TOPIC_SERVICE_PATH = "jade.core.messaging.TopicManagementService";
+    private static final String MOBILITY_SERVICE_PATH = "jade.core.mobility.AgentMobilityService";
+    private static final String NOTIFICATION_SERVICE_PATH = "jade.core.event.NotificationService";
+
     private static final ExecutorService jadeExecutor = Executors.newCachedThreadPool();
     private static final Logger logger = LoggerFactory.getLogger(JadeService.class);
 
@@ -36,19 +39,30 @@ public class JadeService {
         }
     }
 
+    private static ArrayList getDefaultServices() {
+        final Specifier topicSpecifier = new Specifier();
+        final Specifier mobilitySpecifier = new Specifier();
+        final Specifier notificationSpecifier = new Specifier();
+        topicSpecifier.setClassName(TOPIC_SERVICE_PATH);
+        topicSpecifier.setArgs(new Object[]{"true"});
+        mobilitySpecifier.setClassName(MOBILITY_SERVICE_PATH);
+        mobilitySpecifier.setArgs(new Object[]{"true"});
+        notificationSpecifier.setClassName(NOTIFICATION_SERVICE_PATH);
+        notificationSpecifier.setArgs(new Object[]{"true"});
+
+        ArrayList services = new ArrayList();
+        services.add(topicSpecifier);
+        services.add(mobilitySpecifier);
+        services.add(notificationSpecifier);
+        return services;
+    }
+
     public synchronized void startContainer() throws RuntimeException {
         if (mainContainer == null) {
             final Runtime runtime = Runtime.instance();
             final Profile mainProfile = new ProfileImpl();
 
-            final Specifier topicSpecifier = new Specifier();
-            topicSpecifier.setClassName(TOPIC_SERVICE_PATH);
-            topicSpecifier.setArgs(new Object[]{"true"});
-
-            ArrayList services = new ArrayList();
-            services.add(topicSpecifier);
-
-            mainProfile.setSpecifiers(Profile.SERVICES, services);
+            mainProfile.setSpecifiers(Profile.SERVICES, getDefaultServices());
 
             mainContainer = createContainer(runtime, mainProfile);
         }

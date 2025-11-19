@@ -16,6 +16,7 @@ services:
     ports:
       - "8080:8080"
       - "7778:7778"
+      - "1099:1099"
     networks:
       - smart-energy-network
 

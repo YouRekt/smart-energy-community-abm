@@ -11,6 +11,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+      - TERM=xterm-color
     ports:
       - "8080:8080"
       - "7778:7778"
@@ -23,9 +25,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./pgdata:/pgdata
+      - pgdata:/var/lib/pgdata
     environment:
-      - PGDATA=/pgdata
+      - PGDATA=/var/lib/pgdata
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=user
       - POSTGRES_DB=timescaledb
@@ -35,3 +37,6 @@ services:
 networks:
   smart-energy-network:
     driver: bridge
+
+volumes:
+  pgdata:

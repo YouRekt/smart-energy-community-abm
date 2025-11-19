@@ -14,7 +14,6 @@ public class SimulationController {
     @PostMapping("/start")
     public ResponseEntity<String> startSimulation() {
         jadeService.startContainer();
-
         return ResponseEntity.ok("Simulation started");
     }
 

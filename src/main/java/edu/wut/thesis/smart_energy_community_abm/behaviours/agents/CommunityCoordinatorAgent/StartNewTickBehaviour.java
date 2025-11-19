@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class StartNewTickBehaviour extends OneShotBehaviour {
     public final static String TICK_REPLY_BY = "tick-reply-by";
-    private static final int REPLY_BY_DELAY = 1000;
+    private static final int REPLY_BY_DELAY = 100;
     private final AID topic;
     private final CommunityCoordinatorAgent agent;
 
@@ -29,6 +29,7 @@ public class StartNewTickBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
+        agent.healthyAgents.clear();
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         msg.addReceiver(topic);
         msg.setContent(Long.toString(agent.tick));
@@ -37,5 +38,6 @@ public class StartNewTickBehaviour extends OneShotBehaviour {
         agent.send(msg);
         getDataStore().put(TICK_REPLY_BY, replyBy);
         agent.log(String.format("Tick %d", agent.tick), LogSeverity.INFO);
+        agent.tick++;
     }
 }

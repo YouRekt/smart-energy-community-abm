@@ -14,7 +14,12 @@ public class ProcessHealthResponses extends MessageHandlerBehaviour {
 
     @Override
     protected void handleConfirm(ACLMessage msg) {
-        agent.healthyAgents.add(msg.getSender());
+        Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
+
+        if (replyBy.after(new Date())) {
+            agent.healthyAgents.add(msg.getSender());
+        }
+        block(replyBy.getTime() - System.currentTimeMillis());
     }
 
     @Override

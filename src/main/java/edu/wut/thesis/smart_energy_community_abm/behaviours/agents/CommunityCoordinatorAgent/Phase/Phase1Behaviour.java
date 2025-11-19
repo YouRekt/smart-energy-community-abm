@@ -2,7 +2,6 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.StartNewTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SequentialBehaviour;
 
@@ -16,12 +15,5 @@ public class Phase1Behaviour extends SequentialBehaviour {
         Behaviour b2 = new ProcessHealthResponses(agent);
         b2.setDataStore(getDataStore());
         addSubBehaviour(b2);
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-
-        ((CommunityCoordinatorAgent) myAgent).log("RESET", LogSeverity.ERROR);
     }
 }

@@ -4,7 +4,10 @@ import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 
 public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
+    protected ApplianceAgent agent;
+
     public MessageHandlerBehaviour(ApplianceAgent agent) {
         super(agent);
+        this.agent = agent;
     }
 }

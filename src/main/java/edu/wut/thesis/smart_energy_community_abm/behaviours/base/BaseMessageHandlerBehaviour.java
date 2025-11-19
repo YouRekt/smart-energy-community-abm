@@ -2,15 +2,30 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.base;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import jade.core.AID;
+import jade.core.ServiceException;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public abstract class BaseMessageHandlerBehaviour extends CyclicBehaviour {
+public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     protected final BaseAgent agent;
+    private AID topic;
 
     public BaseMessageHandlerBehaviour(BaseAgent agent) {
         this.agent = agent;
         super(agent);
+    }
+
+    public BaseMessageHandlerBehaviour(BaseAgent agent, AID topic) {
+        this(agent);
+
+        try {
+            topic = TopicHelper.getTopic(agent,"TICK");
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -22,6 +37,11 @@ public abstract class BaseMessageHandlerBehaviour extends CyclicBehaviour {
         } else {
             block();
         }
+    }
+
+    @Override
+    public boolean done() {
+        return false;
     }
 
     private void processMsg(ACLMessage msg) {

@@ -21,6 +21,7 @@ public abstract class BaseAgent extends Agent {
             throw new RuntimeException("Application Context is null");
         }
     }
+
     public void log(String message, LogSeverity severity) {
         switch (severity) {
             case WARNING:

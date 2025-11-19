@@ -1,8 +1,12 @@
 package edu.wut.thesis.smart_energy_community_abm.application;
 
+import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import jade.core.Specifier;
+import jade.util.leap.ArrayList;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
@@ -10,54 +14,75 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.String.format;
-
 @Service
 public class JadeService {
-    private static final String agentPackagePath = "edu.wut.thesis.smart_energy_community_abm.agents";
+    private static final String TOPIC_SERVICE_PATH = "jade.core.messaging.TopicManagementService";
     private static final ExecutorService jadeExecutor = Executors.newCachedThreadPool();
     private static final Logger logger = LoggerFactory.getLogger(JadeService.class);
 
-    private ContainerController container;
+    private ContainerController mainContainer;
+    private ContainerController agentContainer;
+
+    private static ContainerController createContainer(final Runtime runtime, final Profile profile, final boolean mainContainer) {
+        try {
+            logger.info("{} container created", mainContainer ? "Main" : "Agent");
+            return jadeExecutor.submit(() -> mainContainer ? runtime.createMainContainer(profile) : runtime.createAgentContainer(profile)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Error starting the {} container", mainContainer ? "main" : "agent", e);
+            throw new RuntimeException(e);
+        }
+    }
 
     public synchronized void startContainer() throws RuntimeException {
         final Runtime runtime = Runtime.instance();
-        final Profile profile = new ProfileImpl();
 
-        if (container == null) {
-            try {
-                container = jadeExecutor.submit(() -> runtime.createMainContainer(profile)).get();
-                logger.info("Container created");
-            } catch (final InterruptedException | ExecutionException e) {
-                logger.error("Error starting the container", e);
-                throw new RuntimeException(e);
-            }
+        if (mainContainer == null) {
+            final Profile mainProfile = new ProfileImpl();
+            mainProfile.setParameter(Profile.MAIN, "true");
+            mainContainer = createContainer(runtime, mainProfile, true);
         }
 
-        runAgent(agentPackagePath, "ApplianceAgent", null);
+        final Profile agentProfile = new ProfileImpl(false);
+
+        Specifier topicSpecifier = new Specifier();
+        topicSpecifier.setClassName(TOPIC_SERVICE_PATH);
+        topicSpecifier.setArgs(new Object[]{"true"});
+
+        ArrayList services = new ArrayList();
+        services.add(topicSpecifier);
+
+        agentProfile.setSpecifiers(Profile.SERVICES, services);
+
+        agentContainer = createContainer(runtime, agentProfile, false);
+
+        runAgent(ApplianceAgent.class, null);
+        runAgent(CommunityCoordinatorAgent.class, null);
     }
 
     public synchronized void stopContainer() throws RuntimeException {
-        if (container != null) {
+        if (agentContainer != null) {
             try {
-                container.kill();
-                container = null;
-                logger.info("Container successfully killed.");
-            } catch (Exception e) {
-                logger.error("Error stopping the container", e);
-                throw new RuntimeException("Error stopping the container", e);
+                agentContainer.kill();
+                agentContainer = null;
+                logger.info("Agent container successfully killed.");
+            } catch (final Exception e) {
+                logger.error("Error stopping the agent container", e);
+                throw new RuntimeException("Error stopping agent the container", e);
             }
+        } else {
+            logger.warn("Agent container not found. Nothing to stop.");
         }
     }
 
-    public synchronized void runAgent(final String agentPackagePath, final String agentName, final Object[] args) {
+    public synchronized <T> void runAgent(Class<T> agentClass, final Object[] args) {
+        final String agentName = agentClass.getSimpleName() + "[" + UUID.randomUUID() + "]";
         try {
-            final String path = format("%s.%s", agentPackagePath, agentName);
-            final AgentController agent = container.createNewAgent(agentName, path, args);
+            final AgentController agent = agentContainer.createNewAgent(agentName, agentClass.getName(), args);
             agent.start();
         } catch (final StaleProxyException e) {
             throw new RuntimeException("Error running agent [" + agentName + "]", e);

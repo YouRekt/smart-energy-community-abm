@@ -2,7 +2,8 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase.Phase1Behaviour;
-import edu.wut.thesis.smart_energy_community_abm.util.LogSeverity;
+
+import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -30,10 +31,10 @@ public class SimulationTickBehaviour extends FSMBehaviour {
         registerState(new OneShotBehaviour() {
             @Override
             public void action() {
-                ((CommunityCoordinatorAgent)myAgent).log("Dummy", LogSeverity.INFO);
+                ((CommunityCoordinatorAgent) myAgent).log("Dummy", LogSeverity.INFO);
             }
         }, "Dummy");
-        registerDefaultTransition(PHASE_1,"Dummy");
-        registerDefaultTransition("Dummy", PHASE_1, new String[] {"Dummy", PHASE_1});
+        registerDefaultTransition(PHASE_1, "Dummy");
+        registerDefaultTransition("Dummy", PHASE_1, new String[]{"Dummy", PHASE_1});
     }
 }

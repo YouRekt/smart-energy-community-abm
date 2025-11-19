@@ -1,7 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.base;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
-import edu.wut.thesis.smart_energy_community_abm.util.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 

@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.util;
+package edu.wut.thesis.smart_energy_community_abm.domain;
 
 public enum LogSeverity {
     INFO,

@@ -26,49 +26,43 @@ public class JadeService {
     private static final Logger logger = LoggerFactory.getLogger(JadeService.class);
 
     private ContainerController mainContainer;
-    private ContainerController agentContainer;
 
-    private static ContainerController createContainer(final Runtime runtime, final Profile profile, final boolean mainContainer) {
+    private static ContainerController createContainer(final Runtime runtime, final Profile profile) {
         try {
-            logger.info("{} container created", mainContainer ? "Main" : "Agent");
-            return jadeExecutor.submit(() -> mainContainer ? runtime.createMainContainer(profile) : runtime.createAgentContainer(profile)).get();
+            logger.info("Main container created");
+            return jadeExecutor.submit(() -> runtime.createMainContainer(profile)).get();
         } catch (InterruptedException | ExecutionException e) {
-            logger.error("Error starting the {} container", mainContainer ? "main" : "agent", e);
+            logger.error("Error starting the main container", e);
             throw new RuntimeException(e);
         }
     }
 
     public synchronized void startContainer() throws RuntimeException {
-        final Runtime runtime = Runtime.instance();
-
         if (mainContainer == null) {
+            final Runtime runtime = Runtime.instance();
             final Profile mainProfile = new ProfileImpl();
-            mainProfile.setParameter(Profile.MAIN, "true");
-            mainContainer = createContainer(runtime, mainProfile, true);
+
+            final Specifier topicSpecifier = new Specifier();
+            topicSpecifier.setClassName(TOPIC_SERVICE_PATH);
+            topicSpecifier.setArgs(new Object[]{"true"});
+
+            ArrayList services = new ArrayList();
+            services.add(topicSpecifier);
+
+            mainProfile.setSpecifiers(Profile.SERVICES, services);
+
+            mainContainer = createContainer(runtime, mainProfile);
         }
-
-        final Profile agentProfile = new ProfileImpl(false);
-
-        Specifier topicSpecifier = new Specifier();
-        topicSpecifier.setClassName(TOPIC_SERVICE_PATH);
-        topicSpecifier.setArgs(new Object[]{"true"});
-
-        ArrayList services = new ArrayList();
-        services.add(topicSpecifier);
-
-        agentProfile.setSpecifiers(Profile.SERVICES, services);
-
-        agentContainer = createContainer(runtime, agentProfile, false);
 
         runAgent(ApplianceAgent.class, null);
         runAgent(CommunityCoordinatorAgent.class, null);
     }
 
     public synchronized void stopContainer() throws RuntimeException {
-        if (agentContainer != null) {
+        if (mainContainer != null) {
             try {
-                agentContainer.kill();
-                agentContainer = null;
+                mainContainer.kill();
+                mainContainer = null;
                 logger.info("Agent container successfully killed.");
             } catch (final Exception e) {
                 logger.error("Error stopping the agent container", e);
@@ -80,9 +74,9 @@ public class JadeService {
     }
 
     public synchronized <T> void runAgent(Class<T> agentClass, final Object[] args) {
-        final String agentName = agentClass.getSimpleName() + "[" + UUID.randomUUID() + "]";
+        final String agentName = agentClass.getSimpleName() + "[" + System.currentTimeMillis() % 2137 + "]";
         try {
-            final AgentController agent = agentContainer.createNewAgent(agentName, agentClass.getName(), args);
+            final AgentController agent = mainContainer.createNewAgent(agentName, agentClass.getName(), args);
             agent.start();
         } catch (final StaleProxyException e) {
             throw new RuntimeException("Error running agent [" + agentName + "]", e);

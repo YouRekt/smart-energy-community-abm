@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.StartNewTickBehaviour;
 import jade.core.AID;
 
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ public class CommunityCoordinatorAgent extends BaseAgent {
     protected void setup() {
         super.setup();
 
-        addBehaviour(new StartNewTickBehaviour(this));
         addBehaviour(new SimulationTickBehaviour(this));
     }
 }

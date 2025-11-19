@@ -21,6 +21,6 @@ public class ProcessHealthResponses extends MessageHandlerBehaviour {
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
 
-        return replyBy.after(new Date());
+        return replyBy.before(new Date());
     }
 }

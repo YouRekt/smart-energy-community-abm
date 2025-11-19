@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class StartNewTickBehaviour extends OneShotBehaviour {
     public final static String TICK_REPLY_BY = "tick-reply-by";
-    private static final int REPLY_BY_DELAY = 100;
+    private static final int REPLY_BY_DELAY = 1000;
     private final AID topic;
     private final CommunityCoordinatorAgent agent;
 

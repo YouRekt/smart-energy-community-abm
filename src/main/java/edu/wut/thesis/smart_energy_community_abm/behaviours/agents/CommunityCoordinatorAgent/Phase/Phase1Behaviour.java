@@ -23,7 +23,5 @@ public class Phase1Behaviour extends SequentialBehaviour {
         super.reset();
 
         ((CommunityCoordinatorAgent) myAgent).log("RESET", LogSeverity.ERROR);
-
-        getChildren().iterator().forEachRemaining(behaviour -> ((Behaviour) behaviour).reset());
     }
 }

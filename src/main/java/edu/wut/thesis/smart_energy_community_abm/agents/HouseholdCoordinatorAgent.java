@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.MessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.messaging.TopicManagementHelper;
@@ -40,7 +41,7 @@ public class HouseholdCoordinatorAgent extends BaseAgent {
 
         try {
             TopicManagementHelper topicHelper = (TopicManagementHelper) getHelper(TopicManagementHelper.SERVICE_NAME);
-            AID topic = topicHelper.createTopic("TICK");
+            AID topic = topicHelper.createTopic(MessageSubject.TICK);
             topicHelper.register(topic);
         } catch (ServiceException e) {
             throw new RuntimeException(e);

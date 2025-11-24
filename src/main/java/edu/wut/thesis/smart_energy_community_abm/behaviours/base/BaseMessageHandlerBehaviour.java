@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.base;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.util.ACLPerformativeConverter;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -14,10 +15,10 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     }
 
     @Override
-    public void action() {
+    public final void action() {
         final ACLMessage msg = agent.receive();
-        agent.log("action message executes", LogSeverity.INFO);
         if (msg != null) {
+            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.INFO);
             processMsg(msg);
         } else {
             performBlock();

@@ -18,7 +18,7 @@ public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
-
+        agent.log("Done executes: Phase 1, status: " + (replyBy.before(new Date()) ? "true" : "false"), LogSeverity.INFO);
         return replyBy.before(new Date());
     }
 
@@ -31,5 +31,12 @@ public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
         } else {
             agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
         }
+    }
+
+    @Override
+    protected void performBlock() {
+        Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
+
+        block(replyBy.getTime() - System.currentTimeMillis());
     }
 }

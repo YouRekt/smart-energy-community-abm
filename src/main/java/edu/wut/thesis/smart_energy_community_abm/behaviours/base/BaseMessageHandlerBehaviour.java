@@ -16,11 +16,11 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     @Override
     public void action() {
         final ACLMessage msg = agent.receive();
-
+        agent.log("action message executes", LogSeverity.INFO);
         if (msg != null) {
             processMsg(msg);
         } else {
-            block();
+            performBlock();
         }
     }
 
@@ -34,6 +34,10 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
         restart();
 
         return super.onEnd();
+    }
+
+    protected void performBlock() {
+        block();
     }
 
     private void processMsg(ACLMessage msg) {

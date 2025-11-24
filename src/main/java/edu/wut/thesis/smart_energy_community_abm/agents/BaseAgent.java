@@ -25,19 +25,19 @@ public abstract class BaseAgent extends Agent {
     public void log(String message, LogSeverity severity) {
         switch (severity) {
             case WARNING:
-                logger.warn("{}: {}", getLocalName(), message);
+                logger.warn("{}", message);
                 break;
             case ERROR:
-                logger.error("{}: {}", getLocalName(), message);
+                logger.error("{}", message);
                 break;
             case TRACE:
-                logger.trace("{}: {}", getLocalName(), message);
+                logger.trace("{}", message);
                 break;
             case DEBUG:
-                logger.debug("{}: {}", getLocalName(), message);
+                logger.debug("{}", message);
                 break;
             default:
-                logger.info("{}: {}", getLocalName(), message);
+                logger.info("{}", message);
         }
     }
 }

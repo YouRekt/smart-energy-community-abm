@@ -18,7 +18,6 @@ public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
-        agent.log("Done executes: Phase 1, status: " + (replyBy.before(new Date()) ? "true" : "false"), LogSeverity.INFO);
         return replyBy.before(new Date());
     }
 

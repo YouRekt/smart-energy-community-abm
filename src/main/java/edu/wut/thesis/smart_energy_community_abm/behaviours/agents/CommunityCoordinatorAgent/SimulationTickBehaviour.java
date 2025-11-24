@@ -1,27 +1,31 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase.Phase1Behaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import jade.core.AID;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase1.Phase1Behaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Phase2Behaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase3.Phase3Behaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase4.Phase4Behaviour;
 import jade.core.behaviours.FSMBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.Phase.*;
 
 public class SimulationTickBehaviour extends FSMBehaviour {
-    private static final String PHASE_1 = "phase-1";
 
     public SimulationTickBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
 
         registerFirstState(new Phase1Behaviour(agent), PHASE_1);
+        registerState(new Phase2Behaviour(agent), PHASE_2);
+        registerState(new Phase3Behaviour(agent), PHASE_3);
+        registerState(new Phase4Behaviour(agent), PHASE_4);
 
-        registerState(new OneShotBehaviour() {
-            @Override
-            public void action() {
-                agent.healthyAgents.forEach((AID a) -> agent.log(a.getLocalName(), LogSeverity.ERROR));
-            }
-        }, "Dummy");
-        registerDefaultTransition(PHASE_1, "Dummy");
-        registerDefaultTransition("Dummy", PHASE_1, new String[]{"Dummy", PHASE_1});
+        addTransition(PHASE_1, PHASE_2);
+        addTransition(PHASE_2, PHASE_3);
+        addTransition(PHASE_3, PHASE_4);
+        addTransition(PHASE_4, PHASE_1);
+    }
+
+    private void addTransition(String fromBehaviour, String toBehaviour) {
+        registerDefaultTransition(fromBehaviour, toBehaviour, new String[]{fromBehaviour});
     }
 }

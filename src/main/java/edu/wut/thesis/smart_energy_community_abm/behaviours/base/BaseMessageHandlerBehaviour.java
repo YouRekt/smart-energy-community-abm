@@ -13,7 +13,6 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
         super(agent);
     }
 
-
     @Override
     public void action() {
         final ACLMessage msg = agent.receive();
@@ -26,14 +25,15 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     }
 
     @Override
-    public int onEnd() {
-        this.restart();
-        return super.onEnd();
+    public boolean done() {
+        return false;
     }
 
     @Override
-    public boolean done() {
-        return false;
+    public int onEnd() {
+        restart();
+
+        return super.onEnd();
     }
 
     private void processMsg(ACLMessage msg) {

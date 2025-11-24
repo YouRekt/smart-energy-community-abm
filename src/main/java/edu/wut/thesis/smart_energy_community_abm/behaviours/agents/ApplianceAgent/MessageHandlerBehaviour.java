@@ -3,6 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAge
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
@@ -34,7 +35,7 @@ public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
 
         if (healthCheckTemplate.match(msg)) {
             ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
-            reply.setOntology(agent.coordinatorName);
+            reply.setOntology(MessageSubject.APPLIANCE_HEALTH_CHECK);
             agent.send(reply);
             agent.log("Confirming check to" + agent.coordinatorName, LogSeverity.INFO);
         }

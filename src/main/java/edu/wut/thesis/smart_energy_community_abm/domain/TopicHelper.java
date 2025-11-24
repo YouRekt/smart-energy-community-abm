@@ -5,7 +5,7 @@ import jade.core.Agent;
 import jade.core.ServiceException;
 import jade.core.messaging.TopicManagementHelper;
 
-public class TopicHelper {
+public final class TopicHelper {
     public static AID getTopic(Agent agent, String topicName) throws ServiceException {
         TopicManagementHelper topicHelper = (TopicManagementHelper) agent.getHelper(TopicManagementHelper.SERVICE_NAME);
 

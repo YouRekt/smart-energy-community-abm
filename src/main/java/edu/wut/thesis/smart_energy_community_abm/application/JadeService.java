@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.application;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -67,8 +68,9 @@ public class JadeService {
             mainContainer = createContainer(runtime, mainProfile);
         }
 
-        runAgent(ApplianceAgent.class, null);
-        runAgent(CommunityCoordinatorAgent.class, null);
+        runAgent(ApplianceAgent.class, new Object[]{"Household1"});
+        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1});
+        runAgent(CommunityCoordinatorAgent.class, new Object[]{1});
     }
 
     public synchronized void stopContainer() throws RuntimeException {

@@ -43,6 +43,7 @@ public final class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehavi
         return super.onEnd();
     }
 
+    // TODO: Check if all agents already replied to speed up the process
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(RequestEnergyStatusBehaviour.REQUEST_REPLY_BY);

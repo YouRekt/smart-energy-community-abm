@@ -26,7 +26,7 @@ public final class ProcessPowerUsageBehaviour extends BaseMessageHandlerBehaviou
         if (agent.currentCharge <= agent.minChargeThreshold) {
             agent.log("Something went wrong, power went below minimal threshold", LogSeverity.ERROR);
         }
-        agent.currentCharge = Math.clamp(agent.currentCharge, 0, agent.capacity);
+        agent.currentCharge = Math.clamp(agent.currentCharge, 0, agent.maxCapacity);
         final ACLMessage reply =  msg.createReply(ACLMessage.CONFIRM);
         agent.send(reply);
     }

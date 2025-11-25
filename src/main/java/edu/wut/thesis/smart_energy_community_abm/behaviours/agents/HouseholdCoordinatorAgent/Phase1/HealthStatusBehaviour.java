@@ -16,6 +16,7 @@ public final class HealthStatusBehaviour extends OneShotBehaviour {
     public void action() {
         final ACLMessage msg = (ACLMessage) getDataStore().get(ReceiveTickBehaviour.TICK_MSG);
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+        reply.setOntology(HouseholdCoordinatorAgent.class.getSimpleName());
         agent.send(reply);
     }
 }

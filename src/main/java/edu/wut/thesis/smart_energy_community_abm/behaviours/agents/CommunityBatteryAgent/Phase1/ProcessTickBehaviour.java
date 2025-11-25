@@ -20,6 +20,7 @@ public final class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
     protected void handleInform(ACLMessage msg) {
         receivedTick = true;
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+        reply.setOntology(CommunityBatteryAgent.class.getSimpleName());
         agent.send(reply);
     }
 

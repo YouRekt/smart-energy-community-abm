@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
-    // TODO: Split into householdAgents and EnergySources + battery (for later stages)
-    public final List<AID> healthyAgents = new ArrayList<>();
+    public final List<AID> householdAgents = new ArrayList<>();
+    public final List<AID> energyAgents = new ArrayList<>();
+    public boolean energyPanic = false;
+    public Double minChargeThreshold = 0.0;
     public long tick = -1;
     public short phase = 1;
     public Integer agentCount;

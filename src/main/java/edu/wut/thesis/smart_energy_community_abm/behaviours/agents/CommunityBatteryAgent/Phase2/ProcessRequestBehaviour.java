@@ -22,7 +22,7 @@ public final class ProcessRequestBehaviour extends BaseMessageHandlerBehaviour {
     protected void handleRequest(ACLMessage msg) {
         receivedRequest = true;
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
-        reply.setContent(agent.capacity.toString());
+        reply.setContent(agent.maxCapacity.toString());
         // TODO: Ontology, language, conversation ID, any difference?
         reply.setOntology(CommunityBatteryAgent.class.getSimpleName());
         agent.send(reply);

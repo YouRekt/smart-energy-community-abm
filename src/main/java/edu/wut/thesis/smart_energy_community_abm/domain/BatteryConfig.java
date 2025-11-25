@@ -3,6 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.domain;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 
+// TODO: Remove minChargeThreshold -> moved to CommunityCoordinatorAgent
 public record BatteryConfig(Double capacity, Double minChargeThreshold) implements AgentConfig {
     public BatteryConfig {
         if (capacity == null || capacity <= 0) {

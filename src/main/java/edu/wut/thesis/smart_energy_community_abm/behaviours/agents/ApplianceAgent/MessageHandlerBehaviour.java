@@ -34,6 +34,7 @@ public final class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
 
         if (healthCheckTemplate.match(msg)) {
             ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+            reply.setOntology(ApplianceAgent.class.getSimpleName());
             agent.send(reply);
             agent.log("Confirming check to" + agent.coordinatorName, LogSeverity.DEBUG);
         }

@@ -7,6 +7,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+// TODO: Wrap these type of timeout message handlers into a common base class to stop repeating functionalities
 public final class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
 

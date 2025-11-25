@@ -31,8 +31,11 @@ public final class StartNewTickBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         // Reset state
-        agent.healthyAgents.clear();
+        agent.energyAgents.clear();
+        agent.householdAgents.clear();
         agent.tick++;
+
+        agent.log(String.format("--- Starting Tick %d ---", agent.tick), LogSeverity.INFO);
 
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         msg.addReceiver(topic);
@@ -42,6 +45,5 @@ public final class StartNewTickBehaviour extends OneShotBehaviour {
         agent.send(msg);
 
         getDataStore().put(TICK_REPLY_BY, replyBy);
-        agent.log(String.format("--- Starting Tick %d ---", agent.tick), LogSeverity.INFO);
     }
 }

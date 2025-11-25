@@ -6,8 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.ServiceException;
 
 public final class CommunityBatteryAgent extends BaseAgent {
-    public Double capacity;
-    public Double minChargeThreshold;  // Hard limit
+    public Double maxCapacity;
     // TODO: Implement this into config
     public Double currentCharge = 10000.0;
 
@@ -19,14 +18,9 @@ public final class CommunityBatteryAgent extends BaseAgent {
 
         final Object[] args = getArguments();
 
-        capacity = (Double) args[0];
-        if (capacity == null) {
+        maxCapacity = (Double) args[0];
+        if (maxCapacity == null) {
             throw new IllegalArgumentException("Capacity parameter is null");
-        }
-
-        minChargeThreshold = (Double) args[1];
-        if (minChargeThreshold == null) {
-            throw new IllegalArgumentException("Minimum charge threshold parameter is null");
         }
 
         try {

@@ -7,24 +7,25 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public final class RequestTickStateBehaviour extends OneShotBehaviour {
+public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
     public static final String REQUEST_REPLY_BY = "request-reply-by";
     private static final long REPLY_BY_DELAY = 400;
     private final CommunityCoordinatorAgent agent;
 
-    public RequestTickStateBehaviour(CommunityCoordinatorAgent agent) {
+    public RequestEnergyStatusBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
         this.agent = agent;
     }
 
     @Override
     public void action() {
+        agent.log(String.format("--- Starting Phase 2 of tick %d ---", agent.tick), LogSeverity.INFO);
+
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        agent.healthyAgents.forEach(msg::addReceiver);
+        agent.energyAgents.forEach(msg::addReceiver);
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         msg.setReplyByDate(replyBy);
         agent.send(msg);
         getDataStore().put(REQUEST_REPLY_BY, replyBy);
-        agent.log(String.format("--- Starting Phase 2 of tick %d ---", agent.tick), LogSeverity.INFO);
     }
 }

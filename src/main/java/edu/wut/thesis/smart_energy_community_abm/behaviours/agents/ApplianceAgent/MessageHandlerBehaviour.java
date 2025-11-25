@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 
 public final class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
     private final AID topic;
-    protected ApplianceAgent agent;
+    private final ApplianceAgent agent;
 
     public MessageHandlerBehaviour(ApplianceAgent agent) {
         super(agent);
@@ -35,7 +35,7 @@ public final class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
         if (healthCheckTemplate.match(msg)) {
             ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
             agent.send(reply);
-            agent.log("Confirming check to" + agent.coordinatorName, LogSeverity.INFO);
+            agent.log("Confirming check to" + agent.coordinatorName, LogSeverity.DEBUG);
         }
     }
 }

@@ -13,7 +13,8 @@ public final class Phase4Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 4", LogSeverity.DEBUG);
+                        agent.log(String.format("--- Phase 4: Tick %d ---", agent.tick), LogSeverity.INFO);
+                        agent.tick++;
                     }
                 },
         });

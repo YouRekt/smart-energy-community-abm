@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
 public final class ProcessBatteryResponseBehaviour extends BaseMessageHandlerBehaviour {
@@ -22,12 +23,13 @@ public final class ProcessBatteryResponseBehaviour extends BaseMessageHandlerBeh
         Double externalEnergyUsed = Double.parseDouble(msg.getContent());
         if (externalEnergyUsed > 0.0) {
             // TODO: Implement pulling from external grid
+            agent.log("Battery reported a deficit, we have to pull energy from grid", LogSeverity.ERROR);
         }
     }
 
     @Override
     public boolean done() {
-        return super.done();
+        return receivedMessage;
     }
 
 

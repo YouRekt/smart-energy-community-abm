@@ -19,8 +19,6 @@ public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        agent.log(String.format("--- Starting Phase 2 of tick %d ---", agent.tick), LogSeverity.INFO);
-
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         agent.energyAgents.forEach(msg::addReceiver);
         msg.addReceiver(agent.batteryAgent);

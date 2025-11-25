@@ -14,7 +14,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 2", LogSeverity.DEBUG);
+                        agent.log(String.format("--- Phase 2: Tick %d ---", agent.tick), LogSeverity.INFO);
                     }
                 },
                 new RequestEnergyStatusBehaviour(agent),        // Send requests to GreenEnergy and CommunityBattery agents
@@ -26,8 +26,8 @@ public final class Phase2Behaviour extends PhaseBehaviour {
                 new RequestEnergyUsageBehaviour(agent),         // Send requests to Households to report their energy usage for the tick
                 new ProcessEnergyUsageBehaviour(agent),         // Retrieve the amount of energy used
                 new ReportUsageToBatteryBehaviour(agent),       // Send the amount of green energy used to the battery
-                new ProcessBatteryResponseBehaviour(agent),     // Wait until the battery confirms the update, if it rejects, it means that
-                                                                // the battery has 0 charge and the remaining energy is pulled from the grid
+                new ProcessBatteryResponseBehaviour(agent),     // Wait until the battery confirms the update, if the message content is
+                                                                // greater than 0 we have to pull from external grid
         });
     }
 }

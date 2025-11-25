@@ -8,7 +8,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class Phase1Behaviour extends PhaseBehaviour {
+public final class Phase1Behaviour extends PhaseBehaviour {
     public Phase1Behaviour(GreenEnergyAgent agent) {
         super(agent);
 

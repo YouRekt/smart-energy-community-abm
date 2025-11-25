@@ -1,8 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.application.implementations;
 
-import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
-import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.*;
 import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.*;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
@@ -140,6 +138,8 @@ public final class JadeService implements SimulationService {
 //        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3}, null);
 //        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4}, null);
         runAgent(CommunityCoordinatorAgent.class, new Object[]{1}, CommunityCoordinatorAgent.class.getSimpleName());
+        runAgent(CommunityBatteryAgent.class, new Object[]{10000.0, 2500.0}, CommunityBatteryAgent.class.getSimpleName());
+        runAgent(GreenEnergyAgent.class, new Object[]{86400L, 5000.0, 46800L, 14400.0, 0.1},  GreenEnergyAgent.class.getSimpleName());
 
 //        applyConfig();
     }

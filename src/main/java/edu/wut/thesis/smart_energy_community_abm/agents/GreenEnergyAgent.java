@@ -1,6 +1,9 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.GreenEnergyAgent.SimulationTickBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
+import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import jade.core.ServiceException;
 
 import java.util.Random;
 
@@ -47,6 +50,12 @@ public final class GreenEnergyAgent extends BaseAgent {
 
         if (variation == null) {
             throw new IllegalArgumentException("Argument 'variation' is required");
+        }
+
+        try {
+            TopicHelper.registerTopic(this, MessageSubject.TICK);
+        } catch (final ServiceException e) {
+            throw new RuntimeException(e);
         }
 
         addBehaviour(new SimulationTickBehaviour(this));

@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
     private final GreenEnergyAgent agent;
     private boolean receivedTick = false;
 

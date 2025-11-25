@@ -6,7 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviou
 import static edu.wut.thesis.smart_energy_community_abm.domain.Phase.PHASE_1;
 import static edu.wut.thesis.smart_energy_community_abm.domain.Phase.PHASE_2;
 
-public class SimulationTickBehaviour extends BaseFSMBehaviour {
+public final class SimulationTickBehaviour extends BaseFSMBehaviour {
     public SimulationTickBehaviour(GreenEnergyAgent agent) {
         super(agent);
 

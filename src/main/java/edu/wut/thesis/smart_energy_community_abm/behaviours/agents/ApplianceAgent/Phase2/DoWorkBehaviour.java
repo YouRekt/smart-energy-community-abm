@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.Phase2.ProcessEnergyOutcomeBehaviour.ALLOWED_GREEN_ENERGY;
 
-public class DoWorkBehaviour extends OneShotBehaviour {
+public final class DoWorkBehaviour extends OneShotBehaviour {
     private final ApplianceAgent agent;
 
     public DoWorkBehaviour(ApplianceAgent agent) {

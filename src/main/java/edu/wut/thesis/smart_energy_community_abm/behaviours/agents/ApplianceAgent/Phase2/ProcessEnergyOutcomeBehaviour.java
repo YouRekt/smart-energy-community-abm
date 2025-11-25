@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehaviour {
     public static final String ALLOWED_GREEN_ENERGY = "allowed-green-energy";
     private final ApplianceAgent agent;
     private boolean msgReceived = false;

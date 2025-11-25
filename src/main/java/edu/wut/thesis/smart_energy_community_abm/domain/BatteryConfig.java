@@ -12,7 +12,7 @@ public class BatteryConfig implements AgentConfig {
             throw new IllegalArgumentException("capacity argument cannot be null or less than zero");
         }
 
-        if (minChargeThreshold == null || minChargeThreshold <= 0) {
+        if (minChargeThreshold == null || minChargeThreshold <= 0 || minChargeThreshold > 1.0) {
             throw new IllegalArgumentException("minChargeThreshold argument cannot be null or less than zero");
         }
 

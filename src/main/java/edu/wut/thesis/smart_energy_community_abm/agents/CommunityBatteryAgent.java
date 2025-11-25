@@ -7,10 +7,7 @@ import jade.core.ServiceException;
 
 public final class CommunityBatteryAgent extends BaseAgent {
     public Double maxCapacity;
-    // TODO: Implement this into config
-    public Double currentCharge = 10000.0;
-
-    private String coordinatorName;
+    public Double currentCharge;
 
     @Override
     protected void setup() {
@@ -19,8 +16,15 @@ public final class CommunityBatteryAgent extends BaseAgent {
         final Object[] args = getArguments();
 
         maxCapacity = (Double) args[0];
+
         if (maxCapacity == null) {
             throw new IllegalArgumentException("Capacity parameter is null");
+        }
+
+        currentCharge = (Double) args[1];
+
+        if (currentCharge == null) {
+            throw new IllegalArgumentException("Current charge parameter is null");
         }
 
         try {

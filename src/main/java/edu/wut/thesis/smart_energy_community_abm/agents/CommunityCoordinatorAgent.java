@@ -13,7 +13,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public AID batteryAgent;
     public boolean energyPanic = false;
     public Double minChargeThreshold = 0.0;
-    public long tick = -1;
+    public long tick = 0;
     public short phase = 1;
     public Integer agentCount;
 

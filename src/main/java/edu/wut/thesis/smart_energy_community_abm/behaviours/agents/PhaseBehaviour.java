@@ -1,13 +1,13 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.agents;
 
-import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.SequentialBehaviour;
 
 public abstract class PhaseBehaviour extends SequentialBehaviour {
-    protected final CommunityCoordinatorAgent agent;
+    protected final BaseAgent agent;
 
-    public PhaseBehaviour(CommunityCoordinatorAgent agent) {
+    public PhaseBehaviour(BaseAgent agent) {
         super(agent);
         this.agent = agent;
     }

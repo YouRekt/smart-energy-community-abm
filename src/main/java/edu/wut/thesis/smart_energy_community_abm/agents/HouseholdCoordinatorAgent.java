@@ -1,6 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.MessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import jade.core.AID;
@@ -14,7 +14,6 @@ public class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
     public String name;
     public long tick = 0;
-    public short phase = 1;
     public Integer applianceCount;
 
     @Override
@@ -47,6 +46,6 @@ public class HouseholdCoordinatorAgent extends BaseAgent {
             throw new RuntimeException(e);
         }
 
-        addBehaviour(new MessageHandlerBehaviour(this));
+        addBehaviour(new SimulationTickBehaviour(this));
     }
 }

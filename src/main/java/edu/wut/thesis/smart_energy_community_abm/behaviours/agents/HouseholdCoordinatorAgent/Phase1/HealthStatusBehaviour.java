@@ -6,18 +6,16 @@ import jade.lang.acl.ACLMessage;
 
 public class HealthStatusBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
-    private final ACLMessage msg;
 
-    public HealthStatusBehaviour(HouseholdCoordinatorAgent agent, ACLMessage msg) {
+    public HealthStatusBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
         this.agent = agent;
-        this.msg = msg;
     }
 
     @Override
     public void action() {
+        final ACLMessage msg = (ACLMessage) getDataStore().get(ReceiveTickBehaviour.TICK_MSG);
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
         agent.send(reply);
-        agent.healthyAppliances.clear();
     }
 }

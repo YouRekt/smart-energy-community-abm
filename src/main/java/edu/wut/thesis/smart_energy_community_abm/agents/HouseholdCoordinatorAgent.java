@@ -12,6 +12,7 @@ import java.util.List;
 
 public class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
+    //TODO: Remove
     public String name;
     public long tick = 0;
     public Integer applianceCount;

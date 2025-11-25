@@ -6,6 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.util.ACLPerformativeConv
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
+// TODO: ALL MESSAGE HANDLERS NEED TO IMPLEMENT CONVERSATION ID CHECKING FOR THE CORRECT PHASE
 public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     protected final BaseAgent agent;
 
@@ -18,7 +19,7 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     public final void action() {
         final ACLMessage msg = agent.receive();
         if (msg != null) {
-            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.INFO);
+            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.DEBUG);
             processMsg(msg);
         } else {
             performBlock();

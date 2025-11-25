@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class HealthStatusBehaviour extends OneShotBehaviour {
+public final class HealthStatusBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public HealthStatusBehaviour(HouseholdCoordinatorAgent agent) {
@@ -16,6 +16,7 @@ public class HealthStatusBehaviour extends OneShotBehaviour {
     public void action() {
         final ACLMessage msg = (ACLMessage) getDataStore().get(ReceiveTickBehaviour.TICK_MSG);
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+        reply.setOntology(HouseholdCoordinatorAgent.class.getSimpleName());
         agent.send(reply);
     }
 }

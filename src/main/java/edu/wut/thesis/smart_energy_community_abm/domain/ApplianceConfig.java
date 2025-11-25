@@ -3,16 +3,15 @@ package edu.wut.thesis.smart_energy_community_abm.domain;
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ApplianceConfig implements AgentConfig {
+public record ApplianceConfig(
+        String applianceName,
+        String householdName,
+        List<ApplianceTask> tasks
+) implements AgentConfig {
 
-    private final String applianceName;
-    private final String householdName;
-    private final List<ApplianceTask> tasks = new ArrayList<>();
-
-    public ApplianceConfig(String applianceName, String householdName, List<ApplianceTask> tasks) {
+    public ApplianceConfig {
         if (householdName == null || householdName.isBlank()) {
             throw new IllegalArgumentException("householdName is null or empty");
         }
@@ -21,17 +20,21 @@ public class ApplianceConfig implements AgentConfig {
             throw new IllegalArgumentException("tasks is null or empty");
         }
 
-        this.applianceName = (applianceName == null || applianceName.isBlank())
-                ? ApplianceAgent.class.getSimpleName()
-                : applianceName;
+        if (applianceName == null || applianceName.isBlank()) {
+            applianceName = ApplianceAgent.class.getSimpleName();
+        }
 
-        this.householdName = householdName;
-        this.tasks.addAll(tasks);
+        tasks = List.copyOf(tasks);
     }
 
     @Override
     public AgentParams getAgentParams() {
-        //TODO: Add tasks to ApplianceAgent
-        return new AgentParams(applianceName, ApplianceAgent.class, new Object[]{householdName});
+        return new AgentParams(
+                applianceName,
+                ApplianceAgent.class,
+                new Object[]{
+                        householdName,
+                        tasks
+                });
     }
 }

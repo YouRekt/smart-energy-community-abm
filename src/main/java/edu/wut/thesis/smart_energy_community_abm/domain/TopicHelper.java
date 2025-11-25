@@ -11,4 +11,10 @@ public final class TopicHelper {
 
         return topicHelper.createTopic(topicName);
     }
+
+    public static void registerTopic(Agent agent, String topicName) throws ServiceException {
+        TopicManagementHelper topicHelper = (TopicManagementHelper) agent.getHelper(TopicManagementHelper.SERVICE_NAME);
+        final AID topic =  topicHelper.createTopic(topicName);
+        topicHelper.register(topic);
+    }
 }

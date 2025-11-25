@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.base;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
 import jade.core.behaviours.Behaviour;

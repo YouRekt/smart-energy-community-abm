@@ -1,8 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.application.implementations;
 
-import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
-import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.*;
 import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.*;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
@@ -25,7 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Service
-public class JadeService implements SimulationService {
+public final class JadeService implements SimulationService {
     private static final String TOPIC_SERVICE_PATH = "jade.core.messaging.TopicManagementService";
     private static final String MOBILITY_SERVICE_PATH = "jade.core.mobility.AgentMobilityService";
     private static final String NOTIFICATION_SERVICE_PATH = "jade.core.event.NotificationService";
@@ -98,18 +96,18 @@ public class JadeService implements SimulationService {
     }
 
     private void applyConfig() {
-        for (HouseholdConfig hc : config.getHouseholdConfigs()) {
+        for (HouseholdConfig hc : config.householdConfigs()) {
             runAgent(hc);
-            for (ApplianceConfig ac : hc.getApplianceConfigs()) {
+            for (ApplianceConfig ac : hc.applianceConfigs()) {
                 runAgent(ac);
             }
         }
 
-        for (GreenEnergySourceConfig gc : config.getEnergySourcesConfigs()) {
+        for (GreenEnergySourceConfig gc : config.energySourcesConfigs()) {
             runAgent(gc);
         }
 
-        runAgent(config.batteryConfig);
+        runAgent(config.batteryConfig());
 
         runAgent(config);
     }
@@ -125,21 +123,23 @@ public class JadeService implements SimulationService {
             mainContainer = createContainer(runtime, mainProfile);
         }
 
-        runAgent(ApplianceAgent.class, new Object[]{"Household1"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1}, null);
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2}, null);
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3}, null);
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4}, null);
-        runAgent(CommunityCoordinatorAgent.class, new Object[]{4}, null);
+        runAgent(ApplianceAgent.class, new Object[]{"Household1"}, ApplianceAgent.class.getSimpleName());
+//        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
+        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1}, HouseholdCoordinatorAgent.class.getSimpleName());
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2}, null);
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3}, null);
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4}, null);
+        runAgent(CommunityCoordinatorAgent.class, new Object[]{1}, CommunityCoordinatorAgent.class.getSimpleName());
+        runAgent(CommunityBatteryAgent.class, new Object[]{10000.0, 2500.0}, CommunityBatteryAgent.class.getSimpleName());
+        runAgent(GreenEnergyAgent.class, new Object[]{86400L, 5000.0, 46800L, 14400.0, 0.1},  GreenEnergyAgent.class.getSimpleName());
 
 //        applyConfig();
     }

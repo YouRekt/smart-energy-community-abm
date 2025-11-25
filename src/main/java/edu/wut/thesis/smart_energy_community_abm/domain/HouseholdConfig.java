@@ -2,17 +2,14 @@ package edu.wut.thesis.smart_energy_community_abm.domain;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
-import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HouseholdConfig implements AgentConfig {
-    @Getter
-    private final List<ApplianceConfig> applianceConfigs = new ArrayList<>();
-    private final String householdName;
-
-    public HouseholdConfig(String householdName, List<ApplianceConfig> applianceConfigs) {
+public record HouseholdConfig(
+        List<ApplianceConfig> applianceConfigs,
+        String householdName
+) implements AgentConfig {
+    public HouseholdConfig {
         if (householdName == null || householdName.isBlank()) {
             throw new IllegalArgumentException("householdName is null or empty");
         }
@@ -21,13 +18,16 @@ public class HouseholdConfig implements AgentConfig {
             throw new IllegalArgumentException("applianceConfigs is null or empty");
         }
 
-        this.householdName = householdName;
-        this.getApplianceConfigs().addAll(applianceConfigs);
+        applianceConfigs = List.copyOf(applianceConfigs);
     }
 
     @Override
     public AgentParams getAgentParams() {
-        return new AgentParams(householdName, HouseholdCoordinatorAgent.class, new Object[]{getApplianceConfigs().size()});
+        return new AgentParams(
+                householdName,
+                HouseholdCoordinatorAgent.class,
+                new Object[]{
+                        applianceConfigs.size()
+                });
     }
-
 }

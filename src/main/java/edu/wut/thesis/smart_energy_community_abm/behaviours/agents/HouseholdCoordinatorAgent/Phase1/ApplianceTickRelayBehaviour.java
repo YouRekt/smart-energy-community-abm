@@ -10,7 +10,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class ApplianceTickRelayBehaviour extends OneShotBehaviour {
+public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
     public static final String HEALTH_REPLY_BY = "health-reply-by";
     // TODO: Replace this with a dynamic value based on the CommunityCoordinator's replyBy time (ex. 70%)
     public static final int REPLY_BY_DELAY = 100;
@@ -42,7 +42,5 @@ public class ApplianceTickRelayBehaviour extends OneShotBehaviour {
         getDataStore().put(HEALTH_REPLY_BY, replyBy);
 
         agent.send(msg);
-
-        agent.log("Relayed tick info to my appliances", LogSeverity.INFO);
     }
 }

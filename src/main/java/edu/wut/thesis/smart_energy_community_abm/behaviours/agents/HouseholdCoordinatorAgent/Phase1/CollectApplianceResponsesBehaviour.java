@@ -7,7 +7,8 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
+// TODO: Wrap these type of timeout message handlers into a common base class to stop repeating functionalities
+public final class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public CollectApplianceResponsesBehaviour(HouseholdCoordinatorAgent agent) {
@@ -15,6 +16,7 @@ public class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehavi
         this.agent = agent;
     }
 
+    // TODO: Check if all agents already replied to speed up the process
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);

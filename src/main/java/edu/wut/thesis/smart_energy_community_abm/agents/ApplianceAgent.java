@@ -1,13 +1,13 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.MessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import jade.core.AID;
+import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.ServiceException;
-import jade.core.messaging.TopicManagementHelper;
 
-public class ApplianceAgent extends BaseAgent {
-    public String coordinatorName;
+public final class ApplianceAgent extends BaseAgent {
+    public long tick;
+    public boolean insufficientEnergy = false;
 
     @Override
     protected void setup() {
@@ -15,7 +15,7 @@ public class ApplianceAgent extends BaseAgent {
 
         final Object[] args = getArguments();
 
-        coordinatorName = (String) args[0];
+        final String coordinatorName = (String) args[0];
 
         if (coordinatorName == null) {
             log("Household Coordinator's name is missing", LogSeverity.ERROR);
@@ -24,13 +24,11 @@ public class ApplianceAgent extends BaseAgent {
         }
 
         try {
-            TopicManagementHelper topicHelper = (TopicManagementHelper) getHelper(TopicManagementHelper.SERVICE_NAME);
-            AID topic = topicHelper.createTopic(coordinatorName);
-            topicHelper.register(topic);
-        } catch (ServiceException e) {
+            TopicHelper.registerTopic(this, coordinatorName);
+        } catch (final ServiceException e) {
             throw new RuntimeException(e);
         }
 
-        addBehaviour(new MessageHandlerBehaviour(this));
+        addBehaviour(new SimulationTickBehaviour(this));
     }
 }

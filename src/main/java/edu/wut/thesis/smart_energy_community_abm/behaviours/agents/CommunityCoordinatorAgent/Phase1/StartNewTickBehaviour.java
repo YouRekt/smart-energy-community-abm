@@ -11,9 +11,9 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class StartNewTickBehaviour extends OneShotBehaviour {
+public final class StartNewTickBehaviour extends OneShotBehaviour {
     public static final String TICK_REPLY_BY = "tick-reply-by";
-    private static final int REPLY_BY_DELAY = 500;
+    private static final long REPLY_BY_DELAY = 500;
     private final AID topic;
     private final CommunityCoordinatorAgent agent;
 
@@ -30,23 +30,18 @@ public class StartNewTickBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+        // Reset state
+        agent.energyAgents.clear();
+        agent.householdAgents.clear();
+        agent.batteryAgent = null;
 
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
         msg.addReceiver(topic);
         msg.setContent(Long.toString(agent.tick));
-
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
-
         msg.setReplyByDate(replyBy);
-
         agent.send(msg);
 
         getDataStore().put(TICK_REPLY_BY, replyBy);
-
-        agent.log(String.format("Tick %d", agent.tick), LogSeverity.INFO);
-
-        // Reset state
-        agent.healthyAgents.clear();
-        agent.tick++;
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class SimulationController {
+public final class SimulationController {
     private final SimulationService jadeService;
 
     @PostMapping("/start")

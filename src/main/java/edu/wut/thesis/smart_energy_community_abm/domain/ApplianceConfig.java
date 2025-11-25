@@ -15,18 +15,19 @@ public class ApplianceConfig implements AgentConfig {
     public ApplianceConfig(String applianceName, String householdName, List<ApplianceTask> tasks) {
         if (householdName == null || householdName.isBlank()) {
             throw new IllegalArgumentException("householdName is null or empty");
-        } else
-            this.householdName = householdName;
+        }
 
         if (tasks == null || tasks.isEmpty()) {
             throw new IllegalArgumentException("tasks is null or empty");
-        } else
-            this.tasks.addAll(tasks);
+        }
 
         if (applianceName == null || applianceName.isBlank()) {
             this.applianceName = ApplianceAgent.class.getSimpleName();
         } else
             this.applianceName = applianceName;
+
+        this.householdName = householdName;
+        this.tasks.addAll(tasks);
     }
 
     @Override

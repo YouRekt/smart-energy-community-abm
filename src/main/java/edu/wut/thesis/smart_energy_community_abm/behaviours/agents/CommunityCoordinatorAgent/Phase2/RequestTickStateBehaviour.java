@@ -7,7 +7,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class RequestTickStateBehaviour extends OneShotBehaviour {
+public final class RequestTickStateBehaviour extends OneShotBehaviour {
     public static final String REQUEST_REPLY_BY = "request-reply-by";
     private static final long REPLY_BY_DELAY = 400;
     private final CommunityCoordinatorAgent agent;

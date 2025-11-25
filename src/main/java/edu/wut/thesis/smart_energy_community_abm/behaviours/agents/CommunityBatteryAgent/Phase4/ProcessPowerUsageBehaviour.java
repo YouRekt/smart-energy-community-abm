@@ -5,7 +5,7 @@ import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHand
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
-public class ProcessPowerUsageBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessPowerUsageBehaviour extends BaseMessageHandlerBehaviour {
     private final CommunityBatteryAgent agent;
     private boolean receivedUsage = false;
 

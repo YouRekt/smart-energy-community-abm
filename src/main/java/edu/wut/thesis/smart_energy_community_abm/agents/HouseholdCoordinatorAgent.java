@@ -6,14 +6,13 @@ import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
-import jade.core.messaging.TopicManagementHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
-    //TODO: Remove
+    // TODO: Remove
     public String name;
     public long tick = 0;
     public Integer applianceCount;

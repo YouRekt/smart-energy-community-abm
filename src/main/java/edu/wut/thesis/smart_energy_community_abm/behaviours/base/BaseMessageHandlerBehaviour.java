@@ -6,6 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.util.ACLPerformativeConv
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 
+// TODO: ALL MESSAGE HANDLERS NEED TO IMPLEMENT CONVERSATION ID CHECKING FOR THE CORRECT PHASE
 public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     protected final BaseAgent agent;
 

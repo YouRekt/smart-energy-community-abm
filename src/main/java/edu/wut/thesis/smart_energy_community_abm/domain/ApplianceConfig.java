@@ -6,7 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplianceConfig implements AgentConfig {
+public final class ApplianceConfig implements AgentConfig {
 
     private final String applianceName;
     private final String householdName;

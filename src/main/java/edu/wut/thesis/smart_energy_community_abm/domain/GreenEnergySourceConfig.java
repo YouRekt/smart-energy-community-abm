@@ -3,17 +3,13 @@ package edu.wut.thesis.smart_energy_community_abm.domain;
 import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 
-public class GreenEnergySourceConfig implements AgentConfig {
+/**
+ * @param period Power Stats
+ */
+public record GreenEnergySourceConfig(Long period, Double maxOutputPower, Long mu, Double sigma,
+                                      String agentName) implements AgentConfig {
 
-    // Power Stats
-    private final Long period;
-    private final Double maxOutputPower;
-    private final Long mu;
-    private final Double sigma;
-
-    private final String agentName;
-
-    public GreenEnergySourceConfig(Long period, Double maxOutputPower, Long mu, Double sigma, String agentName) {
+    public GreenEnergySourceConfig {
         if (period == null || period <= 0) {
             throw new IllegalArgumentException("period argument is null or negative");
         }
@@ -34,11 +30,6 @@ public class GreenEnergySourceConfig implements AgentConfig {
             throw new IllegalArgumentException("agentName argument is null or blank");
         }
 
-        this.period = period;
-        this.maxOutputPower = maxOutputPower;
-        this.mu = mu;
-        this.sigma = sigma;
-        this.agentName = agentName;
     }
 
     @Override

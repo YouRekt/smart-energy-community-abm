@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityConfig implements AgentConfig {
+public final class CommunityConfig implements AgentConfig {
     public final BatteryConfig batteryConfig;
     @Getter
     private final List<GreenEnergySourceConfig> energySourcesConfigs = new ArrayList<>();

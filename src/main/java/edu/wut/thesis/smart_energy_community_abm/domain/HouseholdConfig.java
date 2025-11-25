@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseholdConfig implements AgentConfig {
+public final class HouseholdConfig implements AgentConfig {
     @Getter
     private final List<ApplianceConfig> applianceConfigs = new ArrayList<>();
     private final String householdName;

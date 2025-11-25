@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Service
-public class JadeService implements SimulationService {
+public final class JadeService implements SimulationService {
     private static final String TOPIC_SERVICE_PATH = "jade.core.messaging.TopicManagementService";
     private static final String MOBILITY_SERVICE_PATH = "jade.core.mobility.AgentMobilityService";
     private static final String NOTIFICATION_SERVICE_PATH = "jade.core.event.NotificationService";

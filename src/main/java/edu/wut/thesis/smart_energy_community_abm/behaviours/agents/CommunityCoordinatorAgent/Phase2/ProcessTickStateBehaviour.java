@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class ProcessTickStateBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessTickStateBehaviour extends BaseMessageHandlerBehaviour {
     public static final String COMMUNITY_BATTERY_AGENT = "CommunityBatteryAgent";
     public static final String GREEN_ENERGY_AGENT = "GreenEnergyAgent";
     public static final String HOUSEHOLD_COORDINATOR_AGENT = "HouseholdCoordinatorAgent";

@@ -2,7 +2,6 @@ package edu.wut.thesis.smart_energy_community_abm.application.implementations;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.*;
@@ -99,18 +98,18 @@ public final class JadeService implements SimulationService {
     }
 
     private void applyConfig() {
-        for (HouseholdConfig hc : config.getHouseholdConfigs()) {
+        for (HouseholdConfig hc : config.householdConfigs()) {
             runAgent(hc);
-            for (ApplianceConfig ac : hc.getApplianceConfigs()) {
+            for (ApplianceConfig ac : hc.applianceConfigs()) {
                 runAgent(ac);
             }
         }
 
-        for (GreenEnergySourceConfig gc : config.getEnergySourcesConfigs()) {
+        for (GreenEnergySourceConfig gc : config.energySourcesConfigs()) {
             runAgent(gc);
         }
 
-        runAgent(config.batteryConfig);
+        runAgent(config.batteryConfig());
 
         runAgent(config);
     }

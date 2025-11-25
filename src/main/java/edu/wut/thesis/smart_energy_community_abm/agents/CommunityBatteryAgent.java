@@ -1,12 +1,15 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.ServiceException;
 
 public final class CommunityBatteryAgent extends BaseAgent {
-    private Double capacity;
-    private Double minChargeThreshold;  // Hard limit
+    public Double capacity;
+    public Double minChargeThreshold;  // Hard limit
+    // TODO: Implement this into config
+    public Double currentCharge = 10000.0;
 
     private String coordinatorName;
 
@@ -32,6 +35,6 @@ public final class CommunityBatteryAgent extends BaseAgent {
             throw new RuntimeException(e);
         }
 
-
+        addBehaviour(new SimulationTickBehaviour(this));
     }
 }

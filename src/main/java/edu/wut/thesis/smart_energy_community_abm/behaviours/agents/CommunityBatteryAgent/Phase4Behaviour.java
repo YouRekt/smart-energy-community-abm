@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.Phase4.ProcessPowerUsageBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.behaviours.Behaviour;
@@ -16,6 +17,7 @@ public final class Phase4Behaviour extends PhaseBehaviour {
                         agent.log("Entering phase 4", LogSeverity.DEBUG);
                     }
                 },
+                new ProcessPowerUsageBehaviour(agent)
         });
     }
 }

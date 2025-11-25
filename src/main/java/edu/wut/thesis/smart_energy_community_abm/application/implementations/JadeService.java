@@ -100,7 +100,7 @@ public class JadeService implements SimulationService {
     private void applyConfig() {
         for (HouseholdConfig hc : config.householdConfigs) {
             runAgent(hc);
-            for (ApplianceConfig ac : hc.applianceConfigs) {
+            for (ApplianceConfig ac : hc.getApplianceConfigs()) {
                 runAgent(ac);
             }
         }

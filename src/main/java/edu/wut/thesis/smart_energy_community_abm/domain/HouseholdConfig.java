@@ -2,12 +2,14 @@ package edu.wut.thesis.smart_energy_community_abm.domain;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HouseholdConfig implements AgentConfig {
-    public final List<ApplianceConfig> applianceConfigs = new ArrayList<>();
+    @Getter
+    private final List<ApplianceConfig> applianceConfigs = new ArrayList<>();
     private final String householdName;
 
     public HouseholdConfig(String householdName, List<ApplianceConfig> applianceConfigs) {
@@ -20,11 +22,12 @@ public class HouseholdConfig implements AgentConfig {
         }
 
         this.householdName = householdName;
-        this.applianceConfigs.addAll(applianceConfigs);
+        this.getApplianceConfigs().addAll(applianceConfigs);
     }
 
     @Override
     public AgentParams getAgentParams() {
-        return new AgentParams(householdName, HouseholdCoordinatorAgent.class, new Object[]{applianceConfigs.size()});
+        return new AgentParams(householdName, HouseholdCoordinatorAgent.class, new Object[]{getApplianceConfigs().size()});
     }
+
 }

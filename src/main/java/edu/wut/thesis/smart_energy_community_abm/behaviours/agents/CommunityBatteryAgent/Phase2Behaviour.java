@@ -1,7 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.Phase2.ProcessPowerUsageBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.Phase2.ProcessEnergyUsageBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.Phase2.ProcessRequestBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
@@ -19,7 +19,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
                     }
                 },
                 new ProcessRequestBehaviour(agent),         // Process CommunityCoordinator's request for power and respond
-                new ProcessPowerUsageBehaviour(agent)       // Process CommunityCoordinator's information about green energy used
+                new ProcessEnergyUsageBehaviour(agent)       // Process CommunityCoordinator's information about green energy used
         });
     }
 }

@@ -21,9 +21,9 @@ public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
 
     @Override
     protected void handleInform(ACLMessage msg) {
+        receivedTick = true;
         agent.tick = Long.parseLong(msg.getContent());
         getDataStore().put(TICK_MSG, msg);
-        receivedTick = true;
     }
 
     @Override

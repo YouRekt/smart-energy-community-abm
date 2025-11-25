@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,7 +28,7 @@ public class JadeService {
 
     private static final ExecutorService jadeExecutor = Executors.newCachedThreadPool();
     private static final Logger logger = LoggerFactory.getLogger(JadeService.class);
-
+    private final HashMap<Class<?>, Integer> agentCounts = new HashMap<>();
     private ContainerController mainContainer;
 
     private static ContainerController createContainer(final Runtime runtime, final Profile profile) {
@@ -69,8 +70,20 @@ public class JadeService {
         }
 
         runAgent(ApplianceAgent.class, new Object[]{"Household1"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
         runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1});
-        runAgent(CommunityCoordinatorAgent.class, new Object[]{1});
+        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2});
+        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3});
+        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4});
+        runAgent(CommunityCoordinatorAgent.class, new Object[]{4});
     }
 
     public synchronized void stopContainer() throws RuntimeException {
@@ -89,7 +102,8 @@ public class JadeService {
     }
 
     public synchronized <T> void runAgent(Class<T> agentClass, final Object[] args) {
-        final String agentName = agentClass.getSimpleName() + "[" + System.currentTimeMillis() % 2137 + "]";
+        final int id = agentCounts.merge(agentClass, 1, Integer::sum);
+        final String agentName = agentClass.getSimpleName() + "[" + id + "]";
         try {
             final AgentController agent = mainContainer.createNewAgent(agentName, agentClass.getName(), args);
             agent.start();

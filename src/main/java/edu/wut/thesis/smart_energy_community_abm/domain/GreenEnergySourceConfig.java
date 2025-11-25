@@ -1,5 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain;
 
+import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 
 public class GreenEnergySourceConfig implements AgentConfig {
@@ -42,6 +43,6 @@ public class GreenEnergySourceConfig implements AgentConfig {
 
     @Override
     public AgentParams getAgentParams() {
-        return new AgentParams(agentName, GreenEnergySourceConfig.class, new Object[]{period, maxOutputPower, mu, sigma});
+        return new AgentParams(agentName, GreenEnergyAgent.class, new Object[]{period, maxOutputPower, mu, sigma});
     }
 }

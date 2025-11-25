@@ -70,19 +70,19 @@ public class JadeService {
         }
 
         runAgent(ApplianceAgent.class, new Object[]{"Household1"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
-        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household2"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household3"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
+//        runAgent(ApplianceAgent.class, new Object[]{"Household4"});
         runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1});
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2});
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3});
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4});
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2});
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3});
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4});
         runAgent(CommunityCoordinatorAgent.class, new Object[]{4});
     }
 

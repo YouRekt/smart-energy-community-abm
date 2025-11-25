@@ -18,7 +18,7 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     public final void action() {
         final ACLMessage msg = agent.receive();
         if (msg != null) {
-            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.INFO);
+            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.DEBUG);
             processMsg(msg);
         } else {
             performBlock();

@@ -15,7 +15,7 @@ public class Phase1Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 1", LogSeverity.INFO);
+                        agent.log("Entering phase 1", LogSeverity.DEBUG);
                     }
                 },
                 new StartNewTickBehaviour(agent),           // Send TICK message to all agents of interest to get their health

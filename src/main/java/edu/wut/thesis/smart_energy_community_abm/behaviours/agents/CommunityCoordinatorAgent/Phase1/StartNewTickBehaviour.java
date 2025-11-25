@@ -43,7 +43,7 @@ public class StartNewTickBehaviour extends OneShotBehaviour {
 
         getDataStore().put(TICK_REPLY_BY, replyBy);
 
-        agent.log(String.format("Tick %d", agent.tick), LogSeverity.INFO);
+        agent.log(String.format("--- Starting Tick %d ---", agent.tick), LogSeverity.INFO);
 
         // Reset state
         agent.healthyAgents.clear();

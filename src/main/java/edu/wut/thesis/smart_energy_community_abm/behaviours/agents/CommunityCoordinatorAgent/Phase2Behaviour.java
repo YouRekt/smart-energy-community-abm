@@ -24,7 +24,10 @@ public final class Phase2Behaviour extends PhaseBehaviour {
                                                                 // this behaviour will attempt to renegotiate to postpone tasks.
                                                                 // Ends once energyPanic is false (we have enough energy to satisfy the schedule)
                 new RequestEnergyUsageBehaviour(agent),         // Send requests to Households to report their energy usage for the tick
-                new ProcessEnergyUsageBehaviour(agent)          // Retrieve the amount of energy used and update the battery
+                new ProcessEnergyUsageBehaviour(agent),         // Retrieve the amount of energy used
+                new ReportUsageToBatteryBehaviour(agent),       // Send the amount of green energy used to the battery
+                new ProcessBatteryResponseBehaviour(agent),     // Wait until the battery confirms the update, if it rejects, it means that
+                                                                // the battery has 0 charge and the remaining energy is pulled from the grid
         });
     }
 }

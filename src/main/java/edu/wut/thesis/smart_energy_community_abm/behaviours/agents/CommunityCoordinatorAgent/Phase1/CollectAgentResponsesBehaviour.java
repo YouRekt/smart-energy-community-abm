@@ -26,9 +26,10 @@ public final class CollectAgentResponsesBehaviour extends BaseMessageHandlerBeha
         ontologyActions = new HashMap<>();
         ontologyActions.put(HouseholdCoordinatorAgent.class.getSimpleName(), agent.householdAgents::add);
         ontologyActions.put(CommunityBatteryAgent.class.getSimpleName(), agent.energyAgents::add);
-        ontologyActions.put(GreenEnergyAgent.class.getSimpleName(), agent.energyAgents::add);
+        ontologyActions.put(GreenEnergyAgent.class.getSimpleName(), aid -> agent.batteryAgent = aid);
     }
 
+    // TODO: Check if all agents already replied to speed up the process
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);

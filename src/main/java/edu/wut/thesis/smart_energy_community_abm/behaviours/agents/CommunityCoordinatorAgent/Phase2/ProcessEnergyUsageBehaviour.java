@@ -7,9 +7,9 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String GREEN_POWER_USED = "green-power-used";
-    public static final String EXTERNAL_POWER_USED = "external-power-used";
+public final class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehaviour {
+    public static final String GREEN_ENERGY_USED = "green-energy-used";
+    public static final String EXTERNAL_ENERGY_USED = "external-energy-used";
     private final CommunityCoordinatorAgent agent;
     private Double greenEnergyUsed;
     private Double externalEnergyUsed;
@@ -23,6 +23,12 @@ public class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehaviour {
     public void onStart() {
         greenEnergyUsed = 0.0;
         externalEnergyUsed = 0.0;
+    }
+
+    @Override
+    public int onEnd() {
+        getDataStore().put(GREEN_ENERGY_USED, greenEnergyUsed);
+        return super.onEnd();
     }
 
     @Override

@@ -23,6 +23,7 @@ public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
 
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         agent.energyAgents.forEach(msg::addReceiver);
+        msg.addReceiver(agent.batteryAgent);
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         msg.setReplyByDate(replyBy);
         agent.send(msg);

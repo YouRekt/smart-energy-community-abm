@@ -5,6 +5,7 @@ import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHand
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
+// TODO: Move to phase 2?
 public final class ProcessPowerUsageBehaviour extends BaseMessageHandlerBehaviour {
     private final CommunityBatteryAgent agent;
     private boolean receivedUsage = false;
@@ -23,8 +24,8 @@ public final class ProcessPowerUsageBehaviour extends BaseMessageHandlerBehaviou
     protected void handleInform(ACLMessage msg) {
         receivedUsage = true;
         agent.currentCharge += Double.parseDouble(msg.getContent());
-        if (agent.currentCharge <= agent.minChargeThreshold) {
-            agent.log("Something went wrong, power went below minimal threshold", LogSeverity.ERROR);
+        if (agent.currentCharge <= 0) {
+            agent.log("Something went wrong, power went below 0", LogSeverity.ERROR);
         }
         agent.currentCharge = Math.clamp(agent.currentCharge, 0, agent.maxCapacity);
         final ACLMessage reply =  msg.createReply(ACLMessage.CONFIRM);

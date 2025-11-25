@@ -10,6 +10,7 @@ import java.util.List;
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
+    public AID batteryAgent;
     public boolean energyPanic = false;
     public Double minChargeThreshold = 0.0;
     public long tick = -1;

@@ -16,6 +16,7 @@ public final class CollectApplianceResponsesBehaviour extends BaseMessageHandler
         this.agent = agent;
     }
 
+    // TODO: Check if all agents already replied to speed up the process
     @Override
     public boolean done() {
         Date replyBy = (Date) getDataStore().get(ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);

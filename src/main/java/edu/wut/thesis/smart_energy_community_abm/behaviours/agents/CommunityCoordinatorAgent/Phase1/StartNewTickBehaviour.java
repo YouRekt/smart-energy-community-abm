@@ -33,6 +33,7 @@ public final class StartNewTickBehaviour extends OneShotBehaviour {
         // Reset state
         agent.energyAgents.clear();
         agent.householdAgents.clear();
+        agent.batteryAgent = null;
         agent.tick++;
 
         agent.log(String.format("--- Starting Tick %d ---", agent.tick), LogSeverity.INFO);

@@ -28,6 +28,6 @@ public final class CalculateEnergyBalanceBehaviour extends SimpleBehaviour {
 
     @Override
     public boolean done() {
-        return false;
+        return true;
     }
 }

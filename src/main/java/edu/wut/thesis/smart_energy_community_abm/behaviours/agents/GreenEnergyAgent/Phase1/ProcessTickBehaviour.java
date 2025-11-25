@@ -23,6 +23,7 @@ public final class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
         receivedTick = true;
         agent.tick = Long.parseLong(msg.getContent());
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+        reply.setOntology(GreenEnergyAgent.class.getSimpleName());
         agent.send(reply);
     }
 

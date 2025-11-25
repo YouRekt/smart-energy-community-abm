@@ -21,7 +21,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
 
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setOntology(ApplianceAgent.class.getSimpleName());
-        reply.setContent(String.format("%s,%s", "100.0", "0.0"));
+        reply.setContent(String.format("%s,%s", "1000.0", "0.0"));
         agent.send(reply);
     }
 }

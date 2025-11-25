@@ -42,7 +42,5 @@ public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
         getDataStore().put(HEALTH_REPLY_BY, replyBy);
 
         agent.send(msg);
-
-        agent.log("Relayed tick info to my appliances", LogSeverity.INFO);
     }
 }

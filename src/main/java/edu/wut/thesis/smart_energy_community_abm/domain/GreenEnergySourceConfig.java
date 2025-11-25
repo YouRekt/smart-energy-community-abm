@@ -29,6 +29,10 @@ public class GreenEnergySourceConfig implements AgentConfig {
             throw new IllegalArgumentException("sigma argument is null or negative");
         }
 
+        if (agentName == null || agentName.isBlank()) {
+            throw new IllegalArgumentException("agentName argument is null or blank");
+        }
+
         this.period = period;
         this.maxOutputPower = maxOutputPower;
         this.mu = mu;

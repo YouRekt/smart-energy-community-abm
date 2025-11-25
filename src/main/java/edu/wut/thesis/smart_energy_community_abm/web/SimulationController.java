@@ -28,8 +28,10 @@ public class SimulationController {
 
     @PostMapping("/config")
     public ResponseEntity<String> config(@RequestBody CommunityConfig communityConfig) {
+        if (communityConfig == null) {
+            return ResponseEntity.badRequest().body("Invalid configuration: request body is missing or malformed");
+        }
         jadeService.configureSimulation(communityConfig);
-
         return ResponseEntity.ok("Simulation configured");
     }
 }

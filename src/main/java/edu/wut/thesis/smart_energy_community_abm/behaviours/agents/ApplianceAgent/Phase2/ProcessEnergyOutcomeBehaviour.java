@@ -39,7 +39,7 @@ public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehav
     }
 
     @Override
-    protected void handleInform(ACLMessage msg) {
+    protected void handleRequest(ACLMessage msg) {
         msgReceived = true;
         getDataStore().put(ALLOWED_GREEN_ENERGY, msg);
         agent.insufficientEnergy = false;

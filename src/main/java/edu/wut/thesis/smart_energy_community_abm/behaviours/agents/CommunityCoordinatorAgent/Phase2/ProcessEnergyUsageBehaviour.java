@@ -50,4 +50,11 @@ public final class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehavio
             agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
         }
     }
+
+    @Override
+    protected void performBlock() {
+        Date replyBy = (Date) getDataStore().get(RequestEnergyStatusBehaviour.REQUEST_REPLY_BY);
+
+        block(replyBy.getTime() - System.currentTimeMillis());
+    }
 }

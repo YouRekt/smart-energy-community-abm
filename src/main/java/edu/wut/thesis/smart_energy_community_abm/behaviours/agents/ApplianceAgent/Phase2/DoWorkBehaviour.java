@@ -19,7 +19,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
         // TODO: Do work and push metrics
         final ACLMessage msg = (ACLMessage) getDataStore().get(ALLOWED_GREEN_ENERGY);
 
-        final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
+        final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setOntology(ApplianceAgent.class.getSimpleName());
         reply.setContent(String.format("%s,%s", "100.0", "0.0"));
         agent.send(reply);

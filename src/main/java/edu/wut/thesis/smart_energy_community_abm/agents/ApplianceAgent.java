@@ -6,7 +6,7 @@ import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.messaging.TopicManagementHelper;
 
-public class ApplianceAgent extends BaseAgent {
+public final class ApplianceAgent extends BaseAgent {
     public String coordinatorName;
 
     @Override

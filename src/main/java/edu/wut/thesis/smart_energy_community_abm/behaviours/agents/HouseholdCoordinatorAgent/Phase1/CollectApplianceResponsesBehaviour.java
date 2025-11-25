@@ -7,7 +7,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public CollectApplianceResponsesBehaviour(HouseholdCoordinatorAgent agent) {

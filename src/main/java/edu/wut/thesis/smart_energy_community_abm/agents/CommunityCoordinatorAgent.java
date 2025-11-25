@@ -7,7 +7,7 @@ import jade.core.AID;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityCoordinatorAgent extends BaseAgent {
+public final class CommunityCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAgents = new ArrayList<>();
     public long tick = 0;
     public short phase = 1;

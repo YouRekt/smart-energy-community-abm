@@ -10,7 +10,7 @@ import jade.core.messaging.TopicManagementHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HouseholdCoordinatorAgent extends BaseAgent {
+public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
     public String name;
     public long tick = 0;

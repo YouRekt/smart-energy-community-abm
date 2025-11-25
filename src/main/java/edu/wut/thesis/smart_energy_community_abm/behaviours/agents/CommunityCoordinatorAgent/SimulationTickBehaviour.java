@@ -5,7 +5,7 @@ import jade.core.behaviours.FSMBehaviour;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.Phase.*;
 
-public class SimulationTickBehaviour extends FSMBehaviour {
+public final class SimulationTickBehaviour extends FSMBehaviour {
 
     public SimulationTickBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class TimescaleTableInitializer {
+public final class TimescaleTableInitializer {
     private final EntityManager entityManager;
 
     private void createHypertable(String tableName, String timeColumnName) {

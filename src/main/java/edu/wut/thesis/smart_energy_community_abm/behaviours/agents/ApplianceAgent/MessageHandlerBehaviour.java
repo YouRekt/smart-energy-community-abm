@@ -3,14 +3,13 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAge
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
+public final class MessageHandlerBehaviour extends BaseMessageHandlerBehaviour {
     private final AID topic;
     protected ApplianceAgent agent;
 

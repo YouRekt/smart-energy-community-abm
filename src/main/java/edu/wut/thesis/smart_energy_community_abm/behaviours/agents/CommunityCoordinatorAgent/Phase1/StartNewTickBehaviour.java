@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class StartNewTickBehaviour extends OneShotBehaviour {
+public final class StartNewTickBehaviour extends OneShotBehaviour {
     public static final String TICK_REPLY_BY = "tick-reply-by";
     private static final int REPLY_BY_DELAY = 500;
     private final AID topic;

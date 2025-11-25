@@ -7,11 +7,12 @@ import jade.lang.acl.ACLMessage;
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.Phase2.ProcessEnergyOutcomeBehaviour.ALLOWED_GREEN_ENERGY;
 
 public final class ProcessResponseBehaviour extends BaseMessageHandlerBehaviour {
-    private ApplianceAgent agent;
+    private final ApplianceAgent agent;
     private boolean msgReceived = false;
 
     public ProcessResponseBehaviour(ApplianceAgent agent) {
         super(agent);
+        this.agent = agent;
     }
 
     @Override

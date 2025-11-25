@@ -21,10 +21,9 @@ public class ApplianceConfig implements AgentConfig {
             throw new IllegalArgumentException("tasks is null or empty");
         }
 
-        if (applianceName == null || applianceName.isBlank()) {
-            this.applianceName = ApplianceAgent.class.getSimpleName();
-        } else
-            this.applianceName = applianceName;
+        this.applianceName = (applianceName == null || applianceName.isBlank())
+                ? ApplianceAgent.class.getSimpleName()
+                : applianceName;
 
         this.householdName = householdName;
         this.tasks.addAll(tasks);

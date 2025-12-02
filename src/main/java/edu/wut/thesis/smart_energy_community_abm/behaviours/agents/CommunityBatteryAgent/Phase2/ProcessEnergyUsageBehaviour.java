@@ -25,7 +25,7 @@ public final class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehavio
         agent.currentCharge -= Double.parseDouble(msg.getContent());
         Double deficit = 0.0;
         if (agent.currentCharge <= 0) {
-            agent.log("Something went wrong, power went below 0 - responding to coordinator that we need to pull from external grid", LogSeverity.ERROR);
+            agent.log("Something went wrong, power went below 0 - responding to coordinator that we need to pull from external grid", LogSeverity.ERROR, this);
             deficit = agent.currentCharge;
         }
         agent.currentCharge = Math.clamp(agent.currentCharge, 0, agent.maxCapacity);

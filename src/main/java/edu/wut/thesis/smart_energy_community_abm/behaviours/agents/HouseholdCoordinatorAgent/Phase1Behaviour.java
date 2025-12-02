@@ -17,7 +17,7 @@ public final class Phase1Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 1", LogSeverity.DEBUG);
+                        agent.log("Entering phase 1", LogSeverity.DEBUG, this);
                     }
                 },
                 new ReceiveTickBehaviour(agent),                // Receive TICK message
@@ -28,7 +28,7 @@ public final class Phase1Behaviour extends PhaseBehaviour {
                     public void action() {
                         StringBuilder sb = new StringBuilder();
                         agent.healthyAppliances.forEach((appliance) -> sb.append(appliance.getLocalName()).append(" "));
-                        agent.log(sb.toString(), LogSeverity.DEBUG);
+                        agent.log(sb.toString(), LogSeverity.DEBUG, this);
                     }
                 }
         });

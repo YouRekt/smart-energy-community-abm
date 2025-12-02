@@ -17,7 +17,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 2", LogSeverity.DEBUG);
+                        agent.log("Entering phase 2", LogSeverity.DEBUG, this);
                     }
                 },
                 // TODO: Implement behaviour that will handle CommunityCoordinator's energyPanic

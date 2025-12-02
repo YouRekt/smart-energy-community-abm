@@ -19,7 +19,7 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     public final void action() {
         final ACLMessage msg = agent.receive();
         if (msg != null) {
-            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.DEBUG);
+            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.DEBUG, this);
             processMsg(msg);
         } else {
             performBlock();
@@ -71,94 +71,94 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     }
 
     protected void handleAcceptProposal(ACLMessage msg) {
-        agent.log("Not handled: handleAcceptProposal [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleAcceptProposal [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleAgree(ACLMessage msg) {
-        agent.log("Not handled: handleAgree [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleAgree [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleCancel(ACLMessage msg) {
-        agent.log("Not handled: handleCancel [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleCancel [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleCfp(ACLMessage msg) {
-        agent.log("Not handled: handleCfp [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleCfp [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleConfirm(ACLMessage msg) {
-        agent.log("Not handled: handleConfirm [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleConfirm [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleDisconfirm(ACLMessage msg) {
-        agent.log("Not handled: handleDisconfirm [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleDisconfirm [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleFailure(ACLMessage msg) {
-        agent.log("Not handled: handleFailure [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleFailure [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleInform(ACLMessage msg) {
-        agent.log("Not handled: handleInform [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleInform [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleInformIf(ACLMessage msg) {
-        agent.log("Not handled: handleInformIf [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleInformIf [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleInformRef(ACLMessage msg) {
-        agent.log("Not handled: handleInformRef [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleInformRef [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleNotUnderstood(ACLMessage msg) {
-        agent.log("Not handled: handleNotUnderstood [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleNotUnderstood [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handlePropose(ACLMessage msg) {
-        agent.log("Not handled: handlePropose [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handlePropose [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleQueryIf(ACLMessage msg) {
-        agent.log("Not handled: handleQueryIf [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleQueryIf [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleQueryRef(ACLMessage msg) {
-        agent.log("Not handled: handleQueryRef [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleQueryRef [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleRefuse(ACLMessage msg) {
-        agent.log("Not handled: handleRefuse [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleRefuse [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleRejectProposal(ACLMessage msg) {
-        agent.log("Not handled: handleRejectProposal [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleRejectProposal [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleRequest(ACLMessage msg) {
-        agent.log("Not handled: handleRequest [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleRequest [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleRequestWhen(ACLMessage msg) {
-        agent.log("Not handled: handleRequestWhen [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleRequestWhen [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleRequestWhenever(ACLMessage msg) {
-        agent.log("Not handled: handleRequestWhenever [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleRequestWhenever [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleSubscribe(ACLMessage msg) {
-        agent.log("Not handled: handleSubscribe [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleSubscribe [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleProxy(ACLMessage msg) {
-        agent.log("Not handled: handleProxy [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleProxy [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handlePropagate(ACLMessage msg) {
-        agent.log("Not handled: handlePropagate [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handlePropagate [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 
     protected void handleUnknown(ACLMessage msg) {
-        agent.log("Not handled: handleUnknown [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO);
+        agent.log("Not handled: handleUnknown [" + (msg.getContent() == null ? "null" : msg.getContent()) + "]", LogSeverity.INFO, this);
     }
 }

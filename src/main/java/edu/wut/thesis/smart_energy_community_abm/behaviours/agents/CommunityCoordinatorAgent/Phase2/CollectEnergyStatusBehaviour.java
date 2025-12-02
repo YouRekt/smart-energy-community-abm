@@ -60,10 +60,10 @@ public final class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehavi
             if (action != null) {
                 action.accept(msg);
             } else {
-                agent.log("Invalid ontology @ Phase2/CollectEnergyStatusBehaviour", LogSeverity.ERROR);
+                agent.log("Invalid ontology @ Phase2/CollectEnergyStatusBehaviour", LogSeverity.ERROR, this);
             }
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
         }
     }
 

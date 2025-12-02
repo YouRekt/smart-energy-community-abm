@@ -16,7 +16,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 2", LogSeverity.DEBUG);
+                        agent.log("Entering phase 2", LogSeverity.DEBUG, this);
                     }
                 },
                 new ProcessEnergyOutcomeBehaviour(agent),   // Receive information whether we have enough energy to proceed

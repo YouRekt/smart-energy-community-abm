@@ -14,7 +14,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log(String.format("--- Phase 2: Tick %d ---", agent.tick), LogSeverity.INFO);
+                        agent.log(String.format("--- Phase 2: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
                 new RequestEnergyStatusBehaviour(agent),        // Send requests to GreenEnergy and CommunityBattery agents

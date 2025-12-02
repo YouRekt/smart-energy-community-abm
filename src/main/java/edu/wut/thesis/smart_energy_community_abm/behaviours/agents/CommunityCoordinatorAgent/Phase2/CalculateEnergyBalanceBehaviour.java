@@ -22,7 +22,7 @@ public final class CalculateEnergyBalanceBehaviour extends SimpleBehaviour {
         Double powerProduced = (Double) getDataStore().get(POWER_PRODUCED);
         Double availableEnergy = currentCharge + powerProduced;
 
-        agent.log("Available energy: " + availableEnergy, LogSeverity.DEBUG);
+        agent.log("Available energy: " + availableEnergy, LogSeverity.DEBUG, this);
         // TODO: Implement schedule object to read currently scheduled tasks for this tick and sum their power usages
         // agent.energyPanic = true;
         getDataStore().put(AVAILABLE_ENERGY, availableEnergy);

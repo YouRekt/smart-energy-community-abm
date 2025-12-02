@@ -23,22 +23,26 @@ public abstract class BaseAgent extends Agent {
     }
 
     // TODO: Improve logging by appending currently executed behaviour at time of log
-    public void log(String message, LogSeverity severity) {
+    public void log(String message, LogSeverity severity, Object reference) {
+        String format = "@ [{}] - {}";
+
+        String fixedWidthName = String.format("%-25.25s", reference.getClass().getSimpleName().replace("Behaviour", ""));
+
         switch (severity) {
             case WARNING:
-                logger.warn("{}", message);
+                logger.warn(format, fixedWidthName, message);
                 break;
             case ERROR:
-                logger.error("{}", message);
+                logger.error(format, fixedWidthName, message);
                 break;
             case TRACE:
-                logger.trace("{}", message);
+                logger.trace(format, fixedWidthName, message);
                 break;
             case DEBUG:
-                logger.debug("{}", message);
+                logger.debug(format, fixedWidthName, message);
                 break;
             default:
-                logger.info("{}", message);
+                logger.info(format, fixedWidthName, message);
         }
     }
 }

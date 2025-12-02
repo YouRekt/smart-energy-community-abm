@@ -14,7 +14,7 @@ public final class Phase1Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 1", LogSeverity.DEBUG);
+                        agent.log("Entering phase 1", LogSeverity.DEBUG, this);
                     }
                 },
                 new ReceiveTickBehaviour(agent),                // Receive TICK message

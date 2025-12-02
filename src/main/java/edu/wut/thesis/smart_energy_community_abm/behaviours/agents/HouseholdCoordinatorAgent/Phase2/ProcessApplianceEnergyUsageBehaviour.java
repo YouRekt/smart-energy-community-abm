@@ -49,7 +49,7 @@ public final class ProcessApplianceEnergyUsageBehaviour extends BaseMessageHandl
             greenEnergyUsed += Double.parseDouble(parts[0]);
             externalEnergyUsed += Double.parseDouble(parts[1]);
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
         }
     }
 

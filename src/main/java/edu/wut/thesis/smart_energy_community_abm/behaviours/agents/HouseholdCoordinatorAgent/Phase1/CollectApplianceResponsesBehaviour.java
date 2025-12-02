@@ -30,7 +30,7 @@ public final class CollectApplianceResponsesBehaviour extends BaseMessageHandler
         if (replyBy.after(new Date())) {
             agent.healthyAppliances.add(msg.getSender());
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
         }
     }
 

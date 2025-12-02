@@ -26,7 +26,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         agentCount = (Integer) args[0];
 
         if (agentCount == null) {
-            log("Agent count is missing", LogSeverity.ERROR);
+            log("Agent count is missing", LogSeverity.ERROR, this);
             throw new RuntimeException("Agent count is missing");
         }
 

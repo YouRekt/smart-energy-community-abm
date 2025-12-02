@@ -26,7 +26,7 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
         name = (String) args[0];
 
         if (name == null) {
-            log("Agent name is missing", LogSeverity.ERROR);
+            log("Agent name is missing", LogSeverity.ERROR, this);
             doDelete();
             throw new RuntimeException("Agent name is missing");
         }
@@ -34,7 +34,7 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
         applianceCount = (Integer) args[1];
 
         if (applianceCount == null) {
-            log("Agent applianceCount is missing", LogSeverity.ERROR);
+            log("Agent applianceCount is missing", LogSeverity.ERROR, this);
             doDelete();
             throw new RuntimeException("Agent applianceCount is missing");
         }

@@ -46,10 +46,10 @@ public final class CollectAgentResponsesBehaviour extends BaseMessageHandlerBeha
             if (action != null) {
                 action.accept(msg.getSender());
             } else {
-                agent.log("Invalid ontology @ Phase1/CollectAgentResponsesBehaviour", LogSeverity.ERROR);
+                agent.log("Invalid ontology @ Phase1/CollectAgentResponsesBehaviour", LogSeverity.ERROR, this);
             }
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
         }
     }
 

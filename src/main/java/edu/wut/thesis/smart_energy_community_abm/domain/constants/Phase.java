@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.domain;
+package edu.wut.thesis.smart_energy_community_abm.domain.constants;
 
 public final class Phase {
     public static final String PHASE_1 = "phase-1";

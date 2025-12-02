@@ -3,7 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAge
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.Phase1.ReceiveTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 

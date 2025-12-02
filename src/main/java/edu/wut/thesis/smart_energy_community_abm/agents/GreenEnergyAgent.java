@@ -1,8 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.GreenEnergyAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
-import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.ServiceException;
 
 import java.util.Random;

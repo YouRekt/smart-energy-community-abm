@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 

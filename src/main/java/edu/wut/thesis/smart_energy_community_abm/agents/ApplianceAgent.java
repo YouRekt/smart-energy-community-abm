@@ -1,8 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.ServiceException;
 
 public final class ApplianceAgent extends BaseAgent {

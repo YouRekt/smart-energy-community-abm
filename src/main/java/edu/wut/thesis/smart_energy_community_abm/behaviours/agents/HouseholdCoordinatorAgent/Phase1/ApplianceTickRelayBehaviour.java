@@ -1,8 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase1;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
 import jade.core.behaviours.OneShotBehaviour;

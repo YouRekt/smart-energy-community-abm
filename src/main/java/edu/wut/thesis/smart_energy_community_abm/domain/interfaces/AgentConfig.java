@@ -1,6 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.interfaces;
 
-import edu.wut.thesis.smart_energy_community_abm.domain.AgentParams;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.AgentParams;
 
 /**
  * Central interface for agent configuration in the Smart Energy Community ABM system.

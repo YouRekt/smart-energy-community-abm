@@ -1,7 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.application.interfaces;
 
 
-import edu.wut.thesis.smart_energy_community_abm.domain.CommunityConfig;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;
 
 public interface SimulationService {
     void startSimulation();

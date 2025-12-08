@@ -1,18 +1,21 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
+
+import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.CollectEnergyStatusBehaviour.CURRENT_CHARGE;
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.CollectEnergyStatusBehaviour.POWER_PRODUCED;
 
 public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     public static final String AVAILABLE_ENERGY = "available-energy";
-    static final int NO_PANIC = 0;
-    static final int HAS_PANIC = 1;
+    public static final String SHORTFALL = "shortfall";
     private final CommunityCoordinatorAgent agent;
-    private Double availableEnergy;
+    private int result = HandleEnergyBalanceBehaviour.NO_PANIC;
 
     public CalculateEnergyBalanceBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
@@ -23,15 +26,33 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     public void action() {
         Double currentCharge = (Double) getDataStore().get(CURRENT_CHARGE);
         Double powerProduced = (Double) getDataStore().get(POWER_PRODUCED);
-        availableEnergy = currentCharge + powerProduced;
 
-        agent.log("Available energy: " + availableEnergy, LogSeverity.DEBUG, this);
+        agent.updateRunningAverage(powerProduced);
+
+        final double allocatedThisTick = agent.getAllocatedAt(agent.tick);
+        final double availableEnergy = currentCharge + powerProduced;
+        final double shortfall = allocatedThisTick - availableEnergy;
+
+        agent.log(String.format("Allocated: %.2f, Available: %.2f, Shortfall: %.2f",
+                allocatedThisTick, availableEnergy, shortfall), LogSeverity.DEBUG, this);
 
         getDataStore().put(AVAILABLE_ENERGY, availableEnergy);
+        getDataStore().put(SHORTFALL, shortfall);
+
+        if (shortfall > 0) {
+            Map<AID, AllocationEntry> tickAllocs = agent.allocations.getOrDefault(agent.tick, Map.of());
+            int householdsAffected = tickAllocs.size();
+
+            if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
+                agent.energyPanic = true;
+                result = HandleEnergyBalanceBehaviour.HAS_PANIC;
+                agent.log("Energy panic triggered!", LogSeverity.WARNING, agent);
+            }
+        }
     }
 
     @Override
     public int onEnd() {
-        return availableEnergy > agent.getAllocatedAt(agent.tick) ? NO_PANIC : HAS_PANIC;
+        return result;
     }
 }

@@ -1,14 +1,16 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.config;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.interfaces.AgentConfig;
+import edu.wut.thesis.smart_energy_community_abm.domain.strategy.StrategyFactory;
 
 import java.util.List;
 
 public record CommunityConfig(
         BatteryConfig batteryConfig,
         List<GreenEnergySourceConfig> energySourcesConfigs,
-        List<HouseholdConfig> householdConfigs
+        List<HouseholdConfig> householdConfigs,
+        String strategyName
 ) implements AgentConfig {
 
     public CommunityConfig {
@@ -21,6 +23,10 @@ public record CommunityConfig(
         if (batteryConfig == null)
             throw new IllegalArgumentException("batteryConfig cannot be null");
 
+        if (strategyName == null || strategyName.isBlank()) {
+            strategyName = "Balanced";
+        }
+
         energySourcesConfigs = List.copyOf(energySourcesConfigs);
         householdConfigs = List.copyOf(householdConfigs);
     }
@@ -31,7 +37,8 @@ public record CommunityConfig(
                 CommunityCoordinatorAgent.class,
                 new Object[]{
                         householdConfigs.size(),
-                        energySourcesConfigs.size()
+                        energySourcesConfigs.size(),
+                        StrategyFactory.create(strategyName),
                 });
     }
 }

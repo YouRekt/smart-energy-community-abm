@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.domain.interfaces;
+package edu.wut.thesis.smart_energy_community_abm.domain.config.interfaces;
 
 import edu.wut.thesis.smart_energy_community_abm.domain.config.AgentParams;
 

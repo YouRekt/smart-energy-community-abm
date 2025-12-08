@@ -15,6 +15,7 @@ public final class Phase1Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
+                        agent.tick++;
                         agent.log(String.format("--- Phase 1: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },

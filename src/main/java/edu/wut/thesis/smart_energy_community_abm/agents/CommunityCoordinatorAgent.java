@@ -3,7 +3,6 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.GraceContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.PanicContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.PriorityContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.interfaces.NegotiationStrategy;
@@ -15,10 +14,10 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
+    public final Map<AID, Double> cooperationScores = new HashMap<>();
     public final TreeMap<Long, Map<AID, AllocationEntry>> allocations = new TreeMap<>();
     public AID batteryAgent;
-    public boolean energyPanic = false;
-    public Double minChargeThreshold = 0.0;
+    public Double minChargeThreshold = 0.2;
     public long tick = 0;
     public short phase = 1;
     public Integer householdCount;
@@ -56,17 +55,11 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
 
     public double computePriority(AllocationEntry entry, long currentTick) {
         double greenScore = greenScores.getOrDefault(entry.requesterId(), 0.5);
-        double totalEnergy = entry.requestedEnergy();  // For single tick; multiply by duration if multi-tick
+        double cooperationScore = cooperationScores.getOrDefault(entry.requesterId(), 0.5);
+        double totalEnergy = entry.requestedEnergy();
 
-        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, totalEnergy);
+        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
         return strategy.computePriority(ctx);
-    }
-
-    public boolean shouldGrantBatteryGrace(AID householdId, double requestedEnergy, double remainingShortfall, double batteryCharge) {
-        double greenScore = greenScores.getOrDefault(householdId, 0.5);
-
-        GraceContext ctx = new GraceContext(householdId, greenScore, requestedEnergy, remainingShortfall, batteryCharge);
-        return strategy.shouldGrantBatteryGrace(ctx);
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {
@@ -97,5 +90,13 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
                 allocations.remove(tick);
             }
         }
+    }
+
+    public void updateCooperationScore(AID householdId, boolean accepted) {
+        double current = cooperationScores.getOrDefault(householdId, 0.5);
+        double updated = accepted
+                ? Math.min(1.0, current + 0.05)
+                : Math.max(0.0, current - 0.03);
+        cooperationScores.put(householdId, updated);
     }
 }

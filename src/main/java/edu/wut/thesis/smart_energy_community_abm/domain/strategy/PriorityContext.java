@@ -6,5 +6,6 @@ public record PriorityContext(
         AllocationEntry entry,
         long currentTick,
         double greenScore,
+        double cooperationScore,
         double totalEnergyRequested
 ) {}

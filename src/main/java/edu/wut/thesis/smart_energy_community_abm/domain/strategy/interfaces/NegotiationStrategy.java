@@ -7,7 +7,5 @@ public interface NegotiationStrategy {
 
     double computePriority(PriorityContext ctx);
 
-    boolean shouldGrantBatteryGrace(GraceContext ctx);
-
     boolean shouldTriggerPanic(PanicContext ctx);
 }

@@ -44,7 +44,6 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
             int householdsAffected = tickAllocs.size();
 
             if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
-                agent.energyPanic = true;
                 result = HandleEnergyBalanceBehaviour.HAS_PANIC;
                 agent.log("Energy panic triggered!", LogSeverity.WARNING, agent);
             }

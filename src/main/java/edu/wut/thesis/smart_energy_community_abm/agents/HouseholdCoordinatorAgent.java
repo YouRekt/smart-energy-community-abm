@@ -52,4 +52,8 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
 
         addBehaviour(new SimulationTickBehaviour(this));
     }
+
+    public void addAllocation(long tick, AllocationEntry entry) {
+        timetable.computeIfAbsent(tick, _ -> new ArrayList<>()).add(entry);
+    }
 }

@@ -2,7 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
 public final class ProcessBatteryResponseBehaviour extends BaseMessageHandlerBehaviour {

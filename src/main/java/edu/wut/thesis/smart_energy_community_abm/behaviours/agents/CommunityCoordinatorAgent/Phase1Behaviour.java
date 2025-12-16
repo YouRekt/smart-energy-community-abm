@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase1.CollectAgentResponsesBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase1.StartNewTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
@@ -15,6 +15,7 @@ public final class Phase1Behaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
+                        agent.tick++;
                         agent.log(String.format("--- Phase 1: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },

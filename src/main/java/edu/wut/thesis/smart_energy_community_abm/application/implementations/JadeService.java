@@ -2,7 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.application.implementations;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.*;
 import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
-import edu.wut.thesis.smart_energy_community_abm.domain.*;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.*;
 import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
 import jade.core.Profile;
 import jade.core.ProfileImpl;

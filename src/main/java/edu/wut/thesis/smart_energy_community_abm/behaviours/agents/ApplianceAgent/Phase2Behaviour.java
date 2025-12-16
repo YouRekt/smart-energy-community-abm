@@ -5,7 +5,7 @@ import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.Phase2.ProcessEnergyOutcomeBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.Phase2.ProcessResponseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 

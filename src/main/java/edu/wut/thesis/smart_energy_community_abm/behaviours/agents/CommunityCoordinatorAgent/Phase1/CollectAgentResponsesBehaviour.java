@@ -5,7 +5,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 

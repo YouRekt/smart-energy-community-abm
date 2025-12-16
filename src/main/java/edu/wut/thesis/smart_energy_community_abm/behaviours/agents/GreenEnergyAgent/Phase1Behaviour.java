@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.GreenEnergyAgent.Phase1.ProcessTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 

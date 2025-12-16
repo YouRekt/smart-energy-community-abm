@@ -1,17 +1,22 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.MessageSubject;
-import edu.wut.thesis.smart_energy_community_abm.domain.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
+import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
+import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
+    public final TreeMap<Long, List<AllocationEntry>> timetable = new TreeMap<>();
+    public final List<EnergyRequest> pendingRequests = new ArrayList<>();
     // TODO: Remove
     public String name;
     public long tick = 0;

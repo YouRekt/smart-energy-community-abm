@@ -25,51 +25,51 @@ public final class PrepareAndSendPostponeCFPBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        Map<AID, AllocationEntry> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
+//        Map<AID, AllocationEntry> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
         Double shortfall = (Double) getDataStore().get(SHORTFALL);
-
-        if (tickAllocations.isEmpty() || shortfall == null || shortfall <= 0) {
-            getDataStore().put(CFP_TARGETS, new ArrayList<AID>());
-            return;
-        }
-
-        // Prepare: sort by priority (low first)
-        List<PostponeRequest> requests = tickAllocations.values().stream()
-                .map(entry -> new PostponeRequest(
-                        entry.requesterId(),
-                        agent.tick,
-                        entry.grantedEnergy(),
-                        agent.computePriority(entry, agent.tick)
-                ))
-                .sorted(Comparator.comparingDouble(PostponeRequest::priority))
-                .toList();
-
-        // Select targets until we cover shortfall
-        double cumulativeEnergy = 0.0;
-        List<AID> targetHouseholds = new ArrayList<>();
-
-        for (PostponeRequest req : requests) {
-            if (cumulativeEnergy >= shortfall) break;
-            targetHouseholds.add(req.householdId());
-            cumulativeEnergy += req.energyAmount();
-        }
-
-        getDataStore().put(CFP_TARGETS, targetHouseholds);
-
-        if (targetHouseholds.isEmpty()) {
-            agent.log("No households to ask for postponement", LogSeverity.DEBUG, agent);
-            return;
-        }
-
-        // Send CFP
+//
+//        if (tickAllocations.isEmpty() || shortfall == null || shortfall <= 0) {
+//            getDataStore().put(CFP_TARGETS, new ArrayList<AID>());
+//            return;
+//        }
+//
+//        // Prepare: sort by priority (low first)
+//        List<PostponeRequest> requests = tickAllocations.values().stream()
+//                .map(entry -> new PostponeRequest(
+//                        entry.requesterId(),
+//                        agent.tick,
+//                        entry.grantedEnergy(),
+//                        agent.computePriority(entry, agent.tick)
+//                ))
+//                .sorted(Comparator.comparingDouble(PostponeRequest::priority))
+//                .toList();
+//
+//        // Select targets until we cover shortfall
+//        double cumulativeEnergy = 0.0;
+//        List<AID> targetHouseholds = new ArrayList<>();
+//
+//        for (PostponeRequest req : requests) {
+//            if (cumulativeEnergy >= shortfall) break;
+//            targetHouseholds.add(req.householdId());
+//            cumulativeEnergy += req.energyAmount();
+//        }
+//
+//        getDataStore().put(CFP_TARGETS, targetHouseholds);
+//
+//        if (targetHouseholds.isEmpty()) {
+//            agent.log("No households to ask for postponement", LogSeverity.DEBUG, agent);
+//            return;
+//        }
+//
+//        // Send CFP
         ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
-        targetHouseholds.forEach(cfp::addReceiver);
-        cfp.setContent(String.valueOf(agent.tick));
+        agent.householdAgents.forEach(cfp::addReceiver);
+        cfp.setContent(String.valueOf(shortfall));
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         cfp.setReplyByDate(replyBy);
         agent.send(cfp);
 
         getDataStore().put(CFP_REPLY_BY, replyBy);
-        agent.log("Sent postpone CFP to " + targetHouseholds.size() + " households", LogSeverity.DEBUG, agent);
+        agent.log("Sent postpone CFP to households", LogSeverity.DEBUG, agent);
     }
 }

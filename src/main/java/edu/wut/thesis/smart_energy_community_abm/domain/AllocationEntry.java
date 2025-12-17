@@ -7,5 +7,6 @@ public record AllocationEntry(
         double requestedEnergy,
         double grantedEnergy,
         double priority,
-        long requestTimestamp
+        long requestTimestamp,
+        long allocationEnd
 ) { }

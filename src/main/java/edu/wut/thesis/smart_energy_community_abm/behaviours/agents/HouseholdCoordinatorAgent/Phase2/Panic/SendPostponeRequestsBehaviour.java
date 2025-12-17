@@ -3,6 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -26,15 +27,15 @@ public class SendPostponeRequestsBehaviour extends OneShotBehaviour {
     public void action() {
         ACLMessage cfp = (ACLMessage) getDataStore().get(PANIC_CFP);
 
-        long tickToPostpone = Long.parseLong(cfp.getContent());
-        agent.log("Received postpone CFP for tick " + tickToPostpone, LogSeverity.DEBUG, agent);
+        double shortfall = Double.parseDouble(cfp.getContent());
+        agent.log("Received postpone CFP. Shortfall = " + shortfall, LogSeverity.DEBUG, agent);
 
         ACLMessage postponeRequest = new ACLMessage(ACLMessage.REQUEST);
-        postponeRequest.setContent(String.valueOf(tickToPostpone));
+        postponeRequest.setContent(String.valueOf(shortfall));
 
         int replyCount = 0;
-        for (AllocationEntry allocationEntry : agent.timetable.get(tickToPostpone)) {
-            postponeRequest.addReceiver(allocationEntry.requesterId());
+        for (AID aid : agent.timetable.get(agent.tick).keySet()) {
+            postponeRequest.addReceiver(aid);
             replyCount++;
         }
 

@@ -24,7 +24,10 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         List<PostponeResponse> responses = (List<PostponeResponse>) getDataStore().get(CollectPostponeResponsesBehaviour.POSTPONE_RESPONSES);
         Double shortfall = (Double) getDataStore().get(SHORTFALL);
 
-        if (shortfall == null) shortfall = 0.0;
+        if (shortfall == null)
+            throw new RuntimeException();
+
+        // TODO: Handle cleaning the timetable + calculate remaining shortfall for Phase 2a
 
         double freedEnergy = 0.0;
 

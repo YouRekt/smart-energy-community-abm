@@ -26,6 +26,7 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
 
         registerTransition(CHECK_PANIC, EXIT, NO_PANIC);
         registerTransition(CHECK_PANIC, HANDLE_PANIC, HAS_PANIC);
-        addTransition(HANDLE_PANIC, EXIT);
+        addTransition(HANDLE_PANIC, CHECK_PANIC);   // After handled panic the CommunityCoordinator should send the REQUEST
+                                                    // message so we can reuse the logic in the first Behaviour
     }
 }

@@ -1,7 +1,9 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.HandlePostponeReplies;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.CollectPostponeRepliesBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.CollectProposalResultBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.HandlePostponeRepliesBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.SendPostponeRequestsBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
@@ -19,8 +21,9 @@ public class HandlePanicBehaviour extends PhaseBehaviour {
                     }
                 },
                 new SendPostponeRequestsBehaviour(agent),
-                new HandlePostponeReplies(agent)
-                //TODO: Finish panic handling
+                new CollectPostponeRepliesBehaviour(agent),
+                new HandlePostponeRepliesBehaviour(agent),
+                new CollectProposalResultBehaviour(agent)
         });
     }
 }

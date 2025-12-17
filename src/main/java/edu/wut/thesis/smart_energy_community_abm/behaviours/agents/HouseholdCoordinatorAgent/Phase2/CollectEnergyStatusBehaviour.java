@@ -18,6 +18,12 @@ public class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehaviour {
     }
 
     @Override
+    public void onStart() {
+        received = false;
+        panic = false;
+    }
+
+    @Override
     protected void handleCfp(ACLMessage msg) {
         received = true;
         panic = true;

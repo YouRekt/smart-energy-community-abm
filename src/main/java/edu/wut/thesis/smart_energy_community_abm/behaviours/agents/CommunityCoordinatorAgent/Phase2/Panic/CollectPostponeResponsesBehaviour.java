@@ -1,5 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.PostponeResponse;
@@ -9,6 +12,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public final class CollectPostponeResponsesBehaviour extends BaseMessageHandlerBehaviour {
     public static final String POSTPONE_RESPONSES = "postpone-responses";
@@ -28,14 +32,18 @@ public final class CollectPostponeResponsesBehaviour extends BaseMessageHandlerB
     }
 
     @Override
-    protected void handleAcceptProposal(ACLMessage msg) {
-        double energyFreed = Double.parseDouble(msg.getContent());
-        responses.add(new PostponeResponse(msg.getSender(), true, energyFreed));
-    }
-
-    @Override
-    protected void handleRejectProposal(ACLMessage msg) {
-        responses.add(new PostponeResponse(msg.getSender(), false, 0.0));
+    protected void handleInform(ACLMessage msg) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            Map<Long, Double> energyFreed = mapper.readValue(
+                    msg.getContent(),
+                    new TypeReference<>() {
+                    }
+            );
+            responses.add(new PostponeResponse(msg.getSender(), true, energyFreed));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -51,5 +59,11 @@ public final class CollectPostponeResponsesBehaviour extends BaseMessageHandlerB
 
         Date replyBy = (Date) getDataStore().get(PrepareAndSendPostponeCFPBehaviour.CFP_REPLY_BY);
         return replyBy != null && replyBy.before(new Date());
+    }
+
+
+    @Override
+    protected void performBlock() {
+        //TODO: Implement
     }
 }

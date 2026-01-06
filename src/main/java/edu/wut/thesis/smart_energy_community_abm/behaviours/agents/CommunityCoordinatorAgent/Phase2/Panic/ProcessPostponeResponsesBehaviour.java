@@ -1,16 +1,20 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.PostponeResponse;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.CalculateEnergyBalanceBehaviour.SHORTFALL;
 
 public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
-    public static final String REMAINING_SHORTFALL = "remaining-shortfall";
+    public static final String ACCEPT_PROPOSAL_REPLY_BY = "accept-proposal-reply-by";
+    public static final int REPLY_BY_DELAY = 300;
+
     private final CommunityCoordinatorAgent agent;
 
     public ProcessPostponeResponsesBehaviour(CommunityCoordinatorAgent agent) {
@@ -21,26 +25,30 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
     @Override
     @SuppressWarnings("unchecked")
     public void action() {
-        List<PostponeResponse> responses = (List<PostponeResponse>) getDataStore().get(CollectPostponeResponsesBehaviour.POSTPONE_RESPONSES);
+        Map<AID, Double> responses = (Map<AID, Double>) getDataStore().get(CollectPostponeResponsesBehaviour.POSTPONE_RESPONSES);
         Double shortfall = (Double) getDataStore().get(SHORTFALL);
 
-        if (shortfall == null)
-            throw new RuntimeException();
+        Double freedEnergy = 0.0;
 
-        // TODO: Handle cleaning the timetable + calculate remaining shortfall for Phase 2a
+        // TODO: Choose households based on priority
 
-        double freedEnergy = 0.0;
+        ACLMessage acceptedProposals = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+        ACLMessage rejectedProposals = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+
+        boolean isShortfallSaturated = false;
 
         if (responses != null) {
-            for (PostponeResponse resp : responses) {
-                agent.updateCooperationScore(resp.householdId(), resp.accepted());
-
-                if (resp.accepted()) {
-                    freedEnergy += resp.energyFreed();
-                    agent.removeAllocation(agent.tick, resp.householdId());
-                    agent.log("Household " + resp.householdId().getLocalName() +
-                            " accepted postpone, freed " + resp.energyFreed(), LogSeverity.DEBUG, agent);
+            for (var entry : responses.entrySet()) {
+                if (isShortfallSaturated) {
+                    rejectedProposals.addReceiver(entry.getKey());
+                    continue;
                 }
+
+                freedEnergy += entry.getValue();
+                acceptedProposals.addReceiver(entry.getKey());
+
+                if (shortfall <= freedEnergy)
+                    isShortfallSaturated = true;
             }
         }
 
@@ -48,11 +56,19 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
 
         if (remainingShortfall > 0) {
             agent.log("Remaining shortfall after postponements: " + remainingShortfall +
-                    " (will drain battery, excess goes to grid)", LogSeverity.INFO, agent);
+                    " (will drain battery, excess will be pulled from external grid)", LogSeverity.INFO, this);
         } else {
-            agent.log("Panic resolved after postponements", LogSeverity.DEBUG, agent);
+            agent.log("Panic will be resolved after postponements for tick " + agent.tick +
+                    ", sending confirmations to HouseholdCoordinators", LogSeverity.DEBUG, this);
         }
 
-        getDataStore().put(REMAINING_SHORTFALL, remainingShortfall);
+        Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
+        acceptedProposals.setReplyByDate(replyBy);
+        rejectedProposals.setReplyByDate(replyBy);
+
+        getDataStore().put(ACCEPT_PROPOSAL_REPLY_BY, replyBy);
+
+        agent.send(acceptedProposals);
+        agent.send(rejectedProposals);
     }
 }

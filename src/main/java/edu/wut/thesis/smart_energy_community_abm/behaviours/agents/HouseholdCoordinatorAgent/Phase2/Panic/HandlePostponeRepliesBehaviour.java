@@ -21,11 +21,12 @@ public class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
         this.agent = agent;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void action() {
         List<AID> postponeAgreements = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
 
-        Map<AID,AllocationEntry> currentTickAllocations = agent.timetable.get(agent.tick);
+        Map<AID, AllocationEntry> currentTickAllocations = agent.timetable.get(agent.tick);
 
         double totalFreedEnergy = postponeAgreements.stream()
                 .map(currentTickAllocations::get)
@@ -36,15 +37,12 @@ public class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
         ACLMessage cfp = (ACLMessage) getDataStore().get(PANIC_CFP);
         ACLMessage reply = cfp.createReply();
 
-        if (totalFreedEnergy > 0)
-        {
+        if (totalFreedEnergy > 0) {
             reply.setPerformative(ACLMessage.PROPOSE);
             reply.setContent(String.valueOf(totalFreedEnergy));
         } else {
             reply.setPerformative(ACLMessage.REFUSE);
         }
-
-        //TODO: Reply to Appliances that we acknowledge their decision
 
         agent.send(reply);
     }

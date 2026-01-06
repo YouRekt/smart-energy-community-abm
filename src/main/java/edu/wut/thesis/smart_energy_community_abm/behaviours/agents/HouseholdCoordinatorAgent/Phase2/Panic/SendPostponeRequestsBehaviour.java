@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -30,7 +29,7 @@ public class SendPostponeRequestsBehaviour extends OneShotBehaviour {
         double shortfall = Double.parseDouble(cfp.getContent());
         agent.log("Received postpone CFP. Shortfall = " + shortfall, LogSeverity.DEBUG, agent);
 
-        ACLMessage postponeRequest = new ACLMessage(ACLMessage.REQUEST);
+        ACLMessage postponeRequest = new ACLMessage(ACLMessage.CFP);
         postponeRequest.setContent(String.valueOf(shortfall));
 
         int replyCount = 0;

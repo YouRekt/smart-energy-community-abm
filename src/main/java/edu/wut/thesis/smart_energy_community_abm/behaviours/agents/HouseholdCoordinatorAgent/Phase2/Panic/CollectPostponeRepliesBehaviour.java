@@ -47,7 +47,7 @@ public class CollectPostponeRepliesBehaviour extends BaseMessageHandlerBehaviour
     }
 
     @Override
-    protected void handleAgree(ACLMessage msg) {
+    protected void handlePropose(ACLMessage msg) {
         repliesReceived++;
         postponeAgreements.add(msg.getSender());
     }

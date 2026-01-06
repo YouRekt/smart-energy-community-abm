@@ -59,6 +59,7 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
             energyClearedPerTick.put(tick, timetable.get(tick).get(agent).requestedEnergy());
         }
 
+
         return energyClearedPerTick;
     }
 }

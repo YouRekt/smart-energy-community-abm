@@ -27,9 +27,9 @@ public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehav
         msg.setOntology(ApplianceAgent.class.getSimpleName());
 
         if (true) { //TODO: Try to postpone task
-            reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
+            reply.setPerformative(ACLMessage.REFUSE);
         } else {
-            reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+            reply.setPerformative(ACLMessage.PROPOSE);
             //TODO: Reschedule task internally
         }
 

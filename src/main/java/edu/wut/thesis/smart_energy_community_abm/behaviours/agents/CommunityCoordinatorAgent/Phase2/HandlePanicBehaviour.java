@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic.CollectAndFinalizePostponeResponsesBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic.CollectPostponeResponsesBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic.PrepareAndSendPostponeCFPBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2.Panic.ProcessPostponeResponsesBehaviour;
@@ -18,9 +19,12 @@ public class HandlePanicBehaviour extends PhaseBehaviour {
                         agent.log(String.format("--- Handle Panic: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
-                new PrepareAndSendPostponeCFPBehaviour(agent),  // Prepare + send in one
-                new CollectPostponeResponsesBehaviour(agent),   // Async wait for responses
-                new ProcessPostponeResponsesBehaviour(agent)    // Recalculate + resolve in one
+                new PrepareAndSendPostponeCFPBehaviour(agent),          // Prepare + send in one
+                new CollectPostponeResponsesBehaviour(agent),           // Async wait for responses
+                new ProcessPostponeResponsesBehaviour(agent),           // Go through proposals and accept them until we satisfy the shortfall
+                                                                        // , send accept-proposal and reject-proposal
+                new CollectAndFinalizePostponeResponsesBehaviour(agent)
+                // TODO: Handle cleaning the timetable +
         });
     }
 }

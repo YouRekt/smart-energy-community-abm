@@ -3,6 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
 public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
@@ -12,8 +13,9 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
     private static final String HANDLE_PANIC = "handle-panic";
     private static final String EXIT = "exit";
 
-    public HandleEnergyBalanceBehaviour(HouseholdCoordinatorAgent agent) {
+    public HandleEnergyBalanceBehaviour(HouseholdCoordinatorAgent agent, DataStore dataStore) {
         super(agent);
+        setDataStore(dataStore);
 
         registerFirstState(new CollectEnergyStatusBehaviour(agent), CHECK_PANIC);
         registerState(new HandlePanicBehaviour(agent), HANDLE_PANIC);

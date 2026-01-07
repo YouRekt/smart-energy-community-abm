@@ -17,7 +17,7 @@ public final class Phase2Behaviour extends PhaseBehaviour {
                         agent.log("Entering phase 2", LogSeverity.DEBUG, this);
                     }
                 },
-                new HandleEnergyBalanceBehaviour(agent),                // Handle CommunityCoordinator's panic or request
+                new HandleEnergyBalanceBehaviour(agent,getDataStore()), // Handle CommunityCoordinator's panic or request
                                                                         // to report power used
                 new RequestApplianceEnergyUsageBehaviour(agent),        // Request Appliances to report their power usage
                 new ProcessApplianceEnergyUsageBehaviour(agent),        // Retrieve power used by the appliances

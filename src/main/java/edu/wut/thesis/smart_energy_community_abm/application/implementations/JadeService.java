@@ -124,7 +124,7 @@ public final class JadeService implements SimulationService {
             mainContainer = createContainer(runtime, mainProfile);
         }
 
-        runAgent(ApplianceAgent.class, new Object[]{"Household1"}, ApplianceAgent.class.getSimpleName());
+//        runAgent(ApplianceAgent.class, new Object[]{"Household1"}, ApplianceAgent.class.getSimpleName());
 //        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
 //        runAgent(ApplianceAgent.class, new Object[]{"Household2"}, null);
 //        runAgent(ApplianceAgent.class, new Object[]{"Household3"}, null);
@@ -134,15 +134,15 @@ public final class JadeService implements SimulationService {
 //        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
 //        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
 //        runAgent(ApplianceAgent.class, new Object[]{"Household4"}, null);
-        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1}, HouseholdCoordinatorAgent.class.getSimpleName());
+//        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household1", 1}, HouseholdCoordinatorAgent.class.getSimpleName());
 //        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household2", 2}, null);
 //        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household3", 3}, null);
 //        runAgent(HouseholdCoordinatorAgent.class, new Object[]{"Household4", 4}, null);
-        runAgent(CommunityCoordinatorAgent.class, new Object[]{1, 1, new BalancedStrategy()}, CommunityCoordinatorAgent.class.getSimpleName());
-        runAgent(CommunityBatteryAgent.class, new Object[]{10000.0, 2500.0}, CommunityBatteryAgent.class.getSimpleName());
-        runAgent(GreenEnergyAgent.class, new Object[]{86400L, 5000.0, 46800L, 14400.0, 0.1},  GreenEnergyAgent.class.getSimpleName());
+//        runAgent(CommunityCoordinatorAgent.class, new Object[]{1, 1, new BalancedStrategy()}, CommunityCoordinatorAgent.class.getSimpleName());
+//        runAgent(CommunityBatteryAgent.class, new Object[]{10000.0, 2500.0}, CommunityBatteryAgent.class.getSimpleName());
+//        runAgent(GreenEnergyAgent.class, new Object[]{86400L, 5000.0, 46800L, 14400.0, 0.1},  GreenEnergyAgent.class.getSimpleName());
 
-//        applyConfig();
+        applyConfig();
     }
 
     @Override

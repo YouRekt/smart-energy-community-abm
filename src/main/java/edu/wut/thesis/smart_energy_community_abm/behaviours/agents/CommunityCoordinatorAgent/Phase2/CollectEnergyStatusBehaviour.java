@@ -38,8 +38,6 @@ public final class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehavi
 
     @Override
     public int onEnd() {
-        agent.log("Putting: Current Charge" + currentCharge + " PowerProduced" + powerProduced,LogSeverity.DEBUG, this);
-
         getDataStore().put(CURRENT_CHARGE, currentCharge);
         getDataStore().put(POWER_PRODUCED, powerProduced);
         return super.onEnd();

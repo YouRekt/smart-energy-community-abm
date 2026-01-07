@@ -7,17 +7,14 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.ServiceException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> acceptedTasks = new TreeMap<>();  // startTick → instance
     public long tick;
     public boolean insufficientEnergy = false;
-    public List<ApplianceTask> tasks;  // from config
+    public List<ApplianceTask> tasks = new ArrayList<>();  // from config
 
     @SuppressWarnings("unchecked")
     @Override

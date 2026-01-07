@@ -21,7 +21,7 @@ public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
         this.agent = agent;
 
         try {
-            this.topic = TopicHelper.getTopic(this.agent, agent.name);
+            this.topic = TopicHelper.getTopic(this.agent, this.agent.getLocalName());
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }

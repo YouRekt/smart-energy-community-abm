@@ -26,7 +26,7 @@ public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
         reply.setOntology(ApplianceAgent.class.getSimpleName());
         agent.send(reply);
 
-        //TODO: Check schedule and possibly take task
+        //TODO: Check schedule and possibly take task -> not here tho
     }
 
     @Override

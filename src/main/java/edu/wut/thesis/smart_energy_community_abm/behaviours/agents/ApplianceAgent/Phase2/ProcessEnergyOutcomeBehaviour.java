@@ -4,49 +4,47 @@ import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.HandleEnergyBalanceBehaviour.HAS_PANIC;
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.HandleEnergyBalanceBehaviour.NO_PANIC;
+
 public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehaviour {
     public static final String ALLOWED_GREEN_ENERGY = "allowed-green-energy";
-    private final ApplianceAgent agent;
+    public static final String PANIC_CFP = "panic-cfp";
     private boolean msgReceived = false;
+    private boolean panic = false;
 
     public ProcessEnergyOutcomeBehaviour(ApplianceAgent agent) {
         super(agent);
-        this.agent = agent;
     }
 
     @Override
     public void onStart() {
         msgReceived = false;
+        panic = false;
     }
 
     @Override
     protected void handleCfp(ACLMessage msg) {
         msgReceived = true;
-
-        final ACLMessage reply = msg.createReply();
-        msg.setOntology(ApplianceAgent.class.getSimpleName());
-
-        if (true) { //TODO: Try to postpone task
-            reply.setPerformative(ACLMessage.REFUSE);
-        } else {
-            reply.setPerformative(ACLMessage.PROPOSE);
-            //TODO: Reschedule task internally
-        }
-
-        agent.send(reply);
-
-        agent.insufficientEnergy = true;
+        panic = true;
+        getDataStore().put(PANIC_CFP, msg);
     }
 
     @Override
     protected void handleRequest(ACLMessage msg) {
         msgReceived = true;
         getDataStore().put(ALLOWED_GREEN_ENERGY, msg);
-        agent.insufficientEnergy = false;
     }
 
     @Override
     public boolean done() {
         return msgReceived;
+    }
+
+    @Override
+    public int onEnd() {
+        return panic ?
+                HAS_PANIC :
+                NO_PANIC;
     }
 }

@@ -5,11 +5,11 @@ public record ApplianceTaskInstance(
         long startTick,
         int remainingTicks
 ) {
-    long endTick() {
-        return startTick + task.duration();
+    public long endTick() {
+        return startTick + task.duration() - 1;
     }
 
-    boolean isActiveAt(long tick) {
+    public boolean isActiveAt(long tick) {
         return tick >= startTick && tick < endTick();
     }
 }

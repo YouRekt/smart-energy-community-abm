@@ -27,6 +27,11 @@ public abstract class BaseFSMBehaviour extends FSMBehaviour {
         state.setDataStore(getDataStore());
     }
 
+    @Override
+    public void registerTransition(String s1, String s2, int event) {
+        super.registerTransition(s1, s2, event, new String[]{s1});
+    }
+
     protected void addTransition(String fromBehaviour, String toBehaviour) {
         registerDefaultTransition(fromBehaviour, toBehaviour, new String[]{fromBehaviour});
     }

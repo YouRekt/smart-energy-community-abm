@@ -11,7 +11,7 @@ import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
-    public final TreeMap<Long, ApplianceTaskInstance> acceptedTasks = new TreeMap<>();  // startTick → instance
+    public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
     public long tick;
     public boolean insufficientEnergy = false;
     public List<ApplianceTask> tasks = new ArrayList<>();  // from config
@@ -58,5 +58,17 @@ public final class ApplianceAgent extends BaseAgent {
         boolean periodElapsed = (currentTick - lastRun) >= task.period();
         boolean humanTriggered = Math.random() < task.humanActivationChance();
         return periodElapsed || humanTriggered;
+    }
+
+    public boolean isRunning() {
+        return timetable.get(tick) != null;
+    }
+
+    public void clearCurrentTask() {
+        var endTick = timetable.get(tick).endTick();
+
+        for (long t = tick; t <= endTick; t++) {
+            timetable.remove(t);
+        }
     }
 }

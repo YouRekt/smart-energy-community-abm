@@ -7,6 +7,9 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour.IDLE;
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour.RUNNING;
+
 public final class Phase1Behaviour extends PhaseBehaviour {
     public Phase1Behaviour(ApplianceAgent agent) {
         super(agent);
@@ -19,5 +22,10 @@ public final class Phase1Behaviour extends PhaseBehaviour {
                 },
                 new ReceiveTickBehaviour(agent),                // Receive TICK message
         });
+    }
+
+    @Override
+    public int onEnd() {
+        return ((ApplianceAgent) agent).isRunning() ? RUNNING : IDLE;
     }
 }

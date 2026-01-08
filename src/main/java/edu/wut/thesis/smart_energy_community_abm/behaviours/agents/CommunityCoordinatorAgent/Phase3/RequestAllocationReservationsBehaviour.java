@@ -21,6 +21,7 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
     private static final String PROCESS_RESPONSE = "process-response";
     private static final String RESPOND = "respond";
     private static final String EXIT = "exit";
+    private static final String ACKNOWLEDGE = "acknowledge";
     private final CommunityCoordinatorAgent agent;
 
     public RequestAllocationReservationsBehaviour(CommunityCoordinatorAgent agent, DataStore dataStore) {
@@ -31,6 +32,7 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
         registerFirstState(new SendRequestToHouseholdBehaviour(agent), SEND_REQUEST);
         registerState(new ProcessHouseholdResponseBehaviour(agent), PROCESS_RESPONSE);
         registerState(new RespondToHouseholdsRequestBehaviour(agent), RESPOND);
+        registerState(new AcknowledgeAllocationSuccessBehaviour(agent), ACKNOWLEDGE);
         registerLastState(new OneShotBehaviour() {
             @Override
             public void action() {
@@ -41,8 +43,9 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
         addTransition(SEND_REQUEST, PROCESS_RESPONSE);
         registerTransition(PROCESS_RESPONSE, EXIT, REFUSE);
         registerTransition(PROCESS_RESPONSE, RESPOND, INFORM);
-        registerTransition(RESPOND, EXIT, NOT_OVERLOADED);
+        registerTransition(RESPOND, ACKNOWLEDGE, NOT_OVERLOADED);
         registerTransition(RESPOND, PROCESS_RESPONSE, OVERLOADED);
+        registerDefaultTransition(ACKNOWLEDGE, RESPOND);
     }
 
     @Override

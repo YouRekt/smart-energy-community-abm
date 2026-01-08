@@ -1,7 +1,10 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectApplianceAllocationRequestBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectCommunityAllocationRequestBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.RequestAllocationReservationsBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.SendAllocationRequestBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
@@ -17,6 +20,9 @@ public final class Phase3Behaviour extends PhaseBehaviour {
                         agent.log("Entering phase 3", LogSeverity.DEBUG, this);
                     }
                 },
+                new CollectCommunityAllocationRequestBehaviour(agent),
+                new SendAllocationRequestBehaviour(agent),
+                new CollectApplianceAllocationRequestBehaviour(agent),
                 new RequestAllocationReservationsBehaviour(agent, getDataStore()),
         });
     }

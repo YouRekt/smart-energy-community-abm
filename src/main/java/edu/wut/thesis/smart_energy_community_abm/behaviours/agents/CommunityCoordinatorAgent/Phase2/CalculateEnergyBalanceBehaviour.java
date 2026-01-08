@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -40,8 +39,8 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         getDataStore().put(SHORTFALL, shortfall);
 
         if (shortfall > 0) {
-            Map<AID, AllocationEntry> tickAllocs = agent.allocations.getOrDefault(agent.tick, Map.of());
-            int householdsAffected = tickAllocs.size();
+            Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
+            int householdsAffected = tickAllocations.size();
 
             if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
                 result = HandleEnergyBalanceBehaviour.HAS_PANIC;

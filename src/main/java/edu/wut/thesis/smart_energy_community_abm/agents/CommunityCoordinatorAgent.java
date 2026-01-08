@@ -15,7 +15,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
     public final Map<AID, Double> cooperationScores = new HashMap<>();
-    public final TreeMap<Long, Map<AID, AllocationEntry>> allocations = new TreeMap<>();
+    public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
     public AID batteryAgent;
     public Double minChargeThreshold = 0.2;
     public long tick = 0;
@@ -41,7 +41,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
 
         energySourceCount = (Integer) args[1];
 
-        if(energySourceCount == null) {
+        if (energySourceCount == null) {
             log("Energy Agent count is missing", LogSeverity.ERROR, this);
             throw new RuntimeException("Energy Agent count is missing");
         }
@@ -68,28 +68,28 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public double getAllocatedAt(long tick) {
-        return allocations.getOrDefault(tick, Map.of())
-                .values().stream()
-                .mapToDouble(AllocationEntry::grantedEnergy)
-                .sum();
+        return allocations
+                .getOrDefault(tick, Map.of())
+                .values()
+                .stream()
+                .reduce(0.0, Double::sum);
     }
 
     public void updateRunningAverage(double production) {
         runningAvgProduction += (production - runningAvgProduction) / ++productionSampleCount;
     }
 
-    public void addAllocation(long tick, AID householdId, AllocationEntry entry) {
-        allocations.computeIfAbsent(tick, _ -> new HashMap<>()).put(householdId, entry);
+    public void addAllocation(long tick, AID householdId, Double amount) {
+        allocations
+                .computeIfAbsent(tick, _ -> new HashMap<>())
+                .merge(householdId, amount, Double::sum);
     }
 
     public void removeAllocation(long tick, AID householdId) {
-        Map<AID, AllocationEntry> tickAllocs = allocations.get(tick);
-        if (tickAllocs != null) {
-            tickAllocs.remove(householdId);
-            if (tickAllocs.isEmpty()) {
-                allocations.remove(tick);
-            }
-        }
+        allocations.computeIfAbsent(tick, _ -> new HashMap<>()).remove(householdId);
+
+        if (allocations.get(tick).isEmpty())
+            allocations.remove(tick);
     }
 
     public void updateCooperationScore(AID householdId, boolean accepted) {
@@ -98,5 +98,10 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
                 ? Math.min(1.0, current + 0.05)
                 : Math.max(0.0, current - 0.03);
         cooperationScores.put(householdId, updated);
+    }
+
+    public double getPredictedMaxAmount(long tick) {
+        // TODO: Make this legit
+        return 1000.0;
     }
 }

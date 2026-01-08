@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
@@ -32,22 +31,11 @@ public class CollectAndFinalizePostponeResponsesBehaviour extends BaseMessageHan
     @Override
     public int onEnd() {
         allocationsToClear.forEach((currentTick, allocationReductionMap) -> {
-            Map<AID, AllocationEntry> targetInnerMap = agent.allocations.get(currentTick);
+            Map<AID, Double> targetInnerMap = agent.allocations.get(currentTick);
 
             if (targetInnerMap != null) {
                 allocationReductionMap.forEach((aid, reductionAmount) ->
-                        targetInnerMap.computeIfPresent(aid, (_, existingEntry) -> {
-                            double newRequestedEnergy = existingEntry.requestedEnergy() - reductionAmount;
-
-                            return new AllocationEntry(
-                                    existingEntry.requesterId(),
-                                    newRequestedEnergy,
-                                    existingEntry.grantedEnergy(),
-                                    existingEntry.priority(),
-                                    existingEntry.requestTimestamp(),
-                                    existingEntry.allocationEnd()
-                            );
-                        }));
+                        targetInnerMap.computeIfPresent(aid, (_, existingEntry) -> existingEntry - reductionAmount));
             }
         });
 

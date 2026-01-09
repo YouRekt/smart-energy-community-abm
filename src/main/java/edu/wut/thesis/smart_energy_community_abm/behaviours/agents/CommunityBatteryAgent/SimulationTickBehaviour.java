@@ -1,6 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.discovery.DiscoveryPhaseBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.metering.MeteringPhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.CyclicFSMBehaviour;
 import jade.core.behaviours.Behaviour;
 
@@ -16,8 +18,8 @@ public final class SimulationTickBehaviour extends CyclicFSMBehaviour {
     protected List<Behaviour> getPhases() {
         CommunityBatteryAgent agent = (CommunityBatteryAgent) this.myAgent;
         return List.of(
-                new Phase1Behaviour(agent),
-                new Phase2Behaviour(agent)
+                new DiscoveryPhaseBehaviour(agent),
+                new MeteringPhaseBehaviour(agent)
         );
     }
 }

@@ -5,6 +5,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -13,12 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.TICK_REPLY_BY;
+
 public final class CollectAgentResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<AID>> ontologyActions;
 
     public CollectAgentResponsesBehaviour(CommunityCoordinatorAgent agent) {
-        super(agent, StartNewTickBehaviour.TICK_REPLY_BY);
+        super(agent, TICK_REPLY_BY);
         this.agent = agent;
 
         ontologyActions = new HashMap<>();

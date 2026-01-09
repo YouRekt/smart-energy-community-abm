@@ -2,14 +2,17 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.HEALTH_REPLY_BY;
 
 public final class CollectApplianceResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public CollectApplianceResponsesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);
+        super(agent, HEALTH_REPLY_BY);
         this.agent = agent;
     }
 

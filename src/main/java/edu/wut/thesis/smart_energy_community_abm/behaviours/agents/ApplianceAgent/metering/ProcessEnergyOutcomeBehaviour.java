@@ -2,14 +2,13 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAge
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.HandleEnergyBalanceBehaviour.HAS_PANIC;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.HandleEnergyBalanceBehaviour.NO_PANIC;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.HAS_PANIC;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
 public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String ALLOWED_GREEN_ENERGY = "allowed-green-energy";
-    public static final String PANIC_CFP = "panic-cfp";
     private boolean msgReceived = false;
     private boolean panic = false;
 
@@ -27,13 +26,13 @@ public final class ProcessEnergyOutcomeBehaviour extends BaseMessageHandlerBehav
     protected void handleCfp(ACLMessage msg) {
         msgReceived = true;
         panic = true;
-        getDataStore().put(PANIC_CFP, msg);
+        getDataStore().put(DataStoreKey.Metering.PANIC_CFP, msg);
     }
 
     @Override
     protected void handleRequest(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(ALLOWED_GREEN_ENERGY, msg);
+        getDataStore().put(DataStoreKey.Metering.ALLOWED_GREEN_ENERGY, msg);
     }
 
     @Override

@@ -2,13 +2,13 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
 public class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String HOUSEHOLD_RESPONSE = "household-response";
     private boolean refused = false;
     private boolean msgReceived = false;
 
@@ -34,7 +34,7 @@ public class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehavio
     @Override
     protected void handleInform(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(HOUSEHOLD_RESPONSE, msgReceived);
+        getDataStore().put(DataStoreKey.Negotiation.HOUSEHOLD_RESPONSE, msgReceived);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -15,12 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
-    public static final String REQUESTED_ALLOCATIONS = "requested-allocations";
-
     private final Map<AID, List<EnergyRequest>> requestedAllocations = new HashMap<>();
 
     public CollectApplianceAllocationResponsesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, SendApplianceAllocationRequestBehaviour.REQUEST_REPLY_BY);
+        super(agent, DataStoreKey.Negotiation.REQUEST_REPLY_BY);
     }
 
     @Override
@@ -28,7 +27,7 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
         super.onStart();
         requestedAllocations.clear();
 
-        Integer expected = (Integer) getDataStore().get(SendApplianceAllocationRequestBehaviour.REQUEST_REPLY_COUNT);
+        Integer expected = (Integer) getDataStore().get(DataStoreKey.Negotiation.REQUEST_REPLY_COUNT);
         if (expected != null) {
             setExpectedResponses(expected);
         } else {
@@ -38,7 +37,7 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
 
     @Override
     public int onEnd() {
-        getDataStore().put(REQUESTED_ALLOCATIONS, requestedAllocations);
+        getDataStore().put(DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS, requestedAllocations);
         return super.onEnd();
     }
 

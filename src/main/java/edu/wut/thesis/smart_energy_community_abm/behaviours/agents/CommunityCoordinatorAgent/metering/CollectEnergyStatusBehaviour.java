@@ -4,6 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
@@ -12,8 +13,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBehaviour {
-    public static final String CURRENT_CHARGE = "current-charge";
-    public static final String POWER_PRODUCED = "power-produced";
 
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<ACLMessage>> ontologyActions;
@@ -22,7 +21,7 @@ public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBeh
     private Double currentCharge;
 
     public CollectEnergyStatusBehaviour(CommunityCoordinatorAgent agent) {
-        super(agent, RequestEnergyStatusBehaviour.REQUEST_REPLY_BY);
+        super(agent, DataStoreKey.Metering.REQUEST_REPLY_BY);
         this.agent = agent;
 
         ontologyActions = new HashMap<>();
@@ -41,8 +40,8 @@ public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBeh
 
     @Override
     public int onEnd() {
-        getDataStore().put(CURRENT_CHARGE, currentCharge);
-        getDataStore().put(POWER_PRODUCED, powerProduced);
+        getDataStore().put(DataStoreKey.Metering.CURRENT_CHARGE, currentCharge);
+        getDataStore().put(DataStoreKey.Metering.POWER_PRODUCED, powerProduced);
         return super.onEnd();
     }
 

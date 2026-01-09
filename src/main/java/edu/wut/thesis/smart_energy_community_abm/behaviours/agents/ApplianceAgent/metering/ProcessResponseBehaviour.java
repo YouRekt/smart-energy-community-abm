@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.ProcessEnergyOutcomeBehaviour.ALLOWED_GREEN_ENERGY;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.ALLOWED_GREEN_ENERGY;
 
 public final class ProcessResponseBehaviour extends BaseMessageHandlerBehaviour {
     private final ApplianceAgent agent;

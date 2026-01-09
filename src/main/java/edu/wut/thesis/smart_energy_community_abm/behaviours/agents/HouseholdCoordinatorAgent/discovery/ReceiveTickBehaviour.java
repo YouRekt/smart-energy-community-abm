@@ -4,9 +4,11 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.TICK_MSG;
+
 public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String TICK_MSG = "tick-msg";
     private final HouseholdCoordinatorAgent agent;
+
     private boolean receivedTick = false;
 
     public ReceiveTickBehaviour(HouseholdCoordinatorAgent agent) {

@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -9,14 +10,13 @@ import jade.lang.acl.ACLMessage;
 import java.util.*;
 
 public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
-    public static final String POSTPONE_RESPONSES = "postpone-responses";
 
     private final CommunityCoordinatorAgent agent;
 
     private final Map<AID, Double> responses = new HashMap<>();
 
     public CollectPostponeResponsesBehaviour(CommunityCoordinatorAgent agent) {
-        super(agent, PrepareAndSendPostponeCFPBehaviour.CFP_REPLY_BY);
+        super(agent, DataStoreKey.Metering.Panic.CFP_REPLY_BY);
         this.agent = agent;
     }
 
@@ -29,7 +29,7 @@ public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandl
 
     @Override
     public int onEnd() {
-        getDataStore().put(POSTPONE_RESPONSES, responses);
+        getDataStore().put(DataStoreKey.Metering.Panic.POSTPONE_RESPONSES, responses);
         return super.onEnd();
     }
 

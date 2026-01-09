@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.discovery;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
@@ -9,10 +10,12 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.HEALTH_REPLY_BY;
+
 public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
-    public static final String HEALTH_REPLY_BY = "health-reply-by";
     // TODO: Replace this with a dynamic value based on the CommunityCoordinator's replyBy time (ex. 70%)
-    public static final int REPLY_BY_DELAY = 100;
+    private static final int REPLY_BY_DELAY = 100;
+
     private final AID topic;
     private final HouseholdCoordinatorAgent agent;
 

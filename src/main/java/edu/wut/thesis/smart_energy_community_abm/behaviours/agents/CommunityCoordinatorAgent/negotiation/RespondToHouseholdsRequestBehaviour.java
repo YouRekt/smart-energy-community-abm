@@ -10,9 +10,9 @@ import jade.lang.acl.ACLMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.negotiation.ProcessHouseholdResponseBehaviour.HOUSEHOLD_RESPONSE;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.negotiation.RequestAllocationReservationsBehaviour.NOT_OVERLOADED;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.negotiation.RequestAllocationReservationsBehaviour.OVERLOADED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.HOUSEHOLD_RESPONSE;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.NOT_OVERLOADED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.OVERLOADED;
 
 public class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;

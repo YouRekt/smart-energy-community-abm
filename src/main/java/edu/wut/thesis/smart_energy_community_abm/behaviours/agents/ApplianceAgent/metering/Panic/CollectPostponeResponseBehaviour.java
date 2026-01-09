@@ -2,12 +2,13 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAge
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
 import static jade.lang.acl.ACLMessage.*;
 
+// TODO: Make a SingleMessageHandlerBehaviour
 public class CollectPostponeResponseBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String ACCEPTED_PROPOSAL = "accepted-proposal";
     private boolean msgReceived = false;
     private boolean rejected = false;
 
@@ -24,7 +25,7 @@ public class CollectPostponeResponseBehaviour extends BaseMessageHandlerBehaviou
     @Override
     protected void handleAcceptProposal(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(ACCEPTED_PROPOSAL,msg);
+        getDataStore().put(DataStoreKey.Metering.Panic.ACCEPTED_PROPOSAL,msg);
     }
 
     @Override

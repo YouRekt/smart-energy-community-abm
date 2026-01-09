@@ -2,20 +2,18 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
 public final class ProcessApplianceEnergyUsageBehaviour extends TimeoutMessageHandlerBehaviour {
-    public static final String GREEN_ENERGY_USED = "green-energy-used";
-    public static final String EXTERNAL_ENERGY_USED = "external-energy-used";
-
     private final HouseholdCoordinatorAgent agent;
 
     private Double greenEnergyUsed;
     private Double externalEnergyUsed;
 
     public ProcessApplianceEnergyUsageBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, RequestApplianceEnergyUsageBehaviour.REQUEST_REPLY_BY);
+        super(agent, DataStoreKey.Metering.REQUEST_REPLY_BY);
         this.agent = agent;
     }
 
@@ -29,8 +27,8 @@ public final class ProcessApplianceEnergyUsageBehaviour extends TimeoutMessageHa
 
     @Override
     public int onEnd() {
-        getDataStore().put(GREEN_ENERGY_USED, greenEnergyUsed);
-        getDataStore().put(EXTERNAL_ENERGY_USED, externalEnergyUsed);
+        getDataStore().put(DataStoreKey.Metering.GREEN_ENERGY_USED, greenEnergyUsed);
+        getDataStore().put(DataStoreKey.Metering.EXTERNAL_ENERGY_USED, externalEnergyUsed);
         return super.onEnd();
     }
 

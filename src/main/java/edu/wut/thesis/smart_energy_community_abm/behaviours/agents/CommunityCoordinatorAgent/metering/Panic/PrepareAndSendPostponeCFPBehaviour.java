@@ -1,16 +1,16 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.CalculateEnergyBalanceBehaviour.SHORTFALL;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.SHORTFALL;
 
 public final class PrepareAndSendPostponeCFPBehaviour extends OneShotBehaviour {
-    public static final String CFP_REPLY_BY = "cfp-reply-by";
     private static final long REPLY_BY_DELAY = 300;
     private final CommunityCoordinatorAgent agent;
 
@@ -29,7 +29,7 @@ public final class PrepareAndSendPostponeCFPBehaviour extends OneShotBehaviour {
         cfp.setReplyByDate(replyBy);
         agent.send(cfp);
 
-        getDataStore().put(CFP_REPLY_BY, replyBy);
+        getDataStore().put(DataStoreKey.Metering.Panic.CFP_REPLY_BY, replyBy);
         agent.log("Sent postpone CFP to households", LogSeverity.DEBUG, agent);
     }
 }

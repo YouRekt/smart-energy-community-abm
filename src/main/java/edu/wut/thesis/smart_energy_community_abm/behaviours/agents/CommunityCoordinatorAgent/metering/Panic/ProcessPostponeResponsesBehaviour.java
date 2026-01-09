@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -9,11 +10,10 @@ import jade.lang.acl.ACLMessage;
 import java.util.Date;
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.CalculateEnergyBalanceBehaviour.SHORTFALL;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.SHORTFALL;
 
 public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
-    public static final String ACCEPT_PROPOSAL_REPLY_BY = "accept-proposal-reply-by";
-    public static final int REPLY_BY_DELAY = 300;
+    private static final int REPLY_BY_DELAY = 300;
 
     private final CommunityCoordinatorAgent agent;
 
@@ -25,7 +25,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
     @Override
     @SuppressWarnings("unchecked")
     public void action() {
-        Map<AID, Double> responses = (Map<AID, Double>) getDataStore().get(CollectPostponeResponsesBehaviour.POSTPONE_RESPONSES);
+        Map<AID, Double> responses = (Map<AID, Double>) getDataStore().get(DataStoreKey.Metering.Panic.POSTPONE_RESPONSES);
         Double shortfall = (Double) getDataStore().get(SHORTFALL);
 
         Double freedEnergy = 0.0;
@@ -66,7 +66,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         acceptedProposals.setReplyByDate(replyBy);
         rejectedProposals.setReplyByDate(replyBy);
 
-        getDataStore().put(ACCEPT_PROPOSAL_REPLY_BY, replyBy);
+        getDataStore().put(DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY, replyBy);
 
         agent.send(acceptedProposals);
         agent.send(rejectedProposals);

@@ -13,7 +13,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log(String.format("--- Phase 3: Tick %d ---", agent.tick), LogSeverity.INFO, this);
+                        agent.log(String.format("--- Phase 3 [Negotiation]: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
                 new RequestAllocationReservationsBehaviour(agent, getDataStore()),

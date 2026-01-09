@@ -13,7 +13,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 3", LogSeverity.DEBUG, this);
+                        agent.log("Entering phase 3 (Negotiation)", LogSeverity.DEBUG, this);
                     }
                 },
                 new CollectAllocationNegotiationStartRequestBehaviour(agent),

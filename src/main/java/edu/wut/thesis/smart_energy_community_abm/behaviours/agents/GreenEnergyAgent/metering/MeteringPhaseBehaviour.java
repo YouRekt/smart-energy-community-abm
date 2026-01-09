@@ -13,7 +13,7 @@ public final class MeteringPhaseBehaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 2", LogSeverity.DEBUG, this);
+                        agent.log("Entering phase 2 (Metering)", LogSeverity.DEBUG, this);
                     }
                 },
                 new ProcessRequestBehaviour(agent)      // Process CommunityCoordinator's request for power and respond

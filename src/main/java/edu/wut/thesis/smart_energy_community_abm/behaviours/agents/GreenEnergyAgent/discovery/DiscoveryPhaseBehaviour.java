@@ -14,7 +14,7 @@ public final class DiscoveryPhaseBehaviour extends PhaseBehaviour {
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.log("Entering phase 1", LogSeverity.DEBUG, this);
+                        agent.log("Entering phase 1 (Discovery)", LogSeverity.DEBUG, this);
                     }
                 },
                 new ProcessTickBehaviour(agent)    // Receive and respond to TICK message

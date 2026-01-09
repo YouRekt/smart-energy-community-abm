@@ -11,22 +11,20 @@ import java.util.*;
 public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     public static final String POSTPONE_RESPONSES = "postpone-responses";
 
+    private final CommunityCoordinatorAgent agent;
+
     private final Map<AID, Double> responses = new HashMap<>();
 
     public CollectPostponeResponsesBehaviour(CommunityCoordinatorAgent agent) {
         super(agent, PrepareAndSendPostponeCFPBehaviour.CFP_REPLY_BY);
+        this.agent = agent;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onStart() {
         super.onStart();
         responses.clear();
-
-        List<AID> targets = (List<AID>) getDataStore().get(PrepareAndSendPostponeCFPBehaviour.CFP_TARGETS);
-        if (targets != null) {
-            setExpectedResponses(targets.size());
-        }
+        setExpectedResponses(agent.householdAgents.size());
     }
 
     @Override

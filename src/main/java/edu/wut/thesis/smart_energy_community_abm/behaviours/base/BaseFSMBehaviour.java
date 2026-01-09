@@ -32,7 +32,8 @@ public abstract class BaseFSMBehaviour extends FSMBehaviour {
         super.registerTransition(s1, s2, event, new String[]{s1});
     }
 
-    protected void addTransition(String fromBehaviour, String toBehaviour) {
-        registerDefaultTransition(fromBehaviour, toBehaviour, new String[]{fromBehaviour});
+    @Override
+    public void registerDefaultTransition(String s1, String s2) {
+        super.registerDefaultTransition(s1, s2, new String[]{s1});
     }
 }

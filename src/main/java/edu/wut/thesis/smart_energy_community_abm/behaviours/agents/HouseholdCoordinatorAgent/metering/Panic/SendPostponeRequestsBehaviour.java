@@ -13,7 +13,6 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 
 public class SendPostponeRequestsBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 500;
-
     private final HouseholdCoordinatorAgent agent;
 
     public SendPostponeRequestsBehaviour(HouseholdCoordinatorAgent agent) {

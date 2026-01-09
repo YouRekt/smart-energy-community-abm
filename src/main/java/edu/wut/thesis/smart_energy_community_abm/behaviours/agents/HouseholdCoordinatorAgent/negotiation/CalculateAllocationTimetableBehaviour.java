@@ -19,7 +19,6 @@ import static jade.lang.acl.ACLMessage.REFUSE;
 
 public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
-
     private boolean refused = false;
 
     public CalculateAllocationTimetableBehaviour(HouseholdCoordinatorAgent agent) {

@@ -16,7 +16,6 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 
 public class CollectProposalResultBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
-
     private boolean received = false;
 
     public CollectProposalResultBehaviour(HouseholdCoordinatorAgent agent) {

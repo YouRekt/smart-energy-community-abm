@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectCommunityAllocationRequestBehaviour.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectAllocationNegotiationStartRequestBehaviour.ALLOCATION_REQUEST;
 import static jade.lang.acl.ACLMessage.CONFIRM;
 import static jade.lang.acl.ACLMessage.INFORM;
 

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectApplianceAllocationRequestBehaviour.REQUESTED_ALLOCATIONS;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectCommunityAllocationRequestBehaviour.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectApplianceAllocationResponsesBehaviour.REQUESTED_ALLOCATIONS;
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectAllocationNegotiationStartRequestBehaviour.ALLOCATION_REQUEST;
 
 public class FinalizeAllocationNegotiationBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;

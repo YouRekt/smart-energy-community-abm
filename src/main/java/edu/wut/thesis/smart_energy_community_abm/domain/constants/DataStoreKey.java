@@ -19,12 +19,7 @@ public final class DataStoreKey {
         public static final String GREEN_ENERGY_USED = "green-energy-used";
         public static final String EXTERNAL_ENERGY_USED = "external-energy-used";
         public static final String REQUEST_REPLY_BY = "request-reply-by";
-        public static final String REQUEST_REPLY_BY = "request-reply-by";
         public static final String ENERGY_USAGE_REQUEST_MSG = "energy-usage-request-msg";
-        public static final String PANIC_CFP = "panic-cfp";
-        public static final String GREEN_ENERGY_USED = "green-energy-used";
-        public static final String EXTERNAL_ENERGY_USED = "external-energy-used";
-        public static final String REQUEST_REPLY_BY = "request-reply-by";
 
         public static final class Panic {
             public static final String ACCEPTED_PROPOSAL = "accepted-proposal";

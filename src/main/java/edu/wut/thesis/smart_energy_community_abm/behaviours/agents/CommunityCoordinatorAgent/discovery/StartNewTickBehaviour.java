@@ -11,6 +11,8 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.TICK_REPLY_BY;
+
 public final class StartNewTickBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 500;
 
@@ -42,6 +44,6 @@ public final class StartNewTickBehaviour extends OneShotBehaviour {
         msg.setReplyByDate(replyBy);
         agent.send(msg);
 
-        getDataStore().put(DataStoreKey.Discovery.TICK_REPLY_BY, replyBy);
+        getDataStore().put(TICK_REPLY_BY, replyBy);
     }
 }

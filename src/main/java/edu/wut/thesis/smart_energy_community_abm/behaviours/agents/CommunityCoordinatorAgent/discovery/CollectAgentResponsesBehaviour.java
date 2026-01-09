@@ -14,12 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.TICK_REPLY_BY;
+
 public final class CollectAgentResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<AID>> ontologyActions;
 
     public CollectAgentResponsesBehaviour(CommunityCoordinatorAgent agent) {
-        super(agent, DataStoreKey.Discovery.TICK_REPLY_BY);
+        super(agent, TICK_REPLY_BY);
         this.agent = agent;
 
         ontologyActions = new HashMap<>();

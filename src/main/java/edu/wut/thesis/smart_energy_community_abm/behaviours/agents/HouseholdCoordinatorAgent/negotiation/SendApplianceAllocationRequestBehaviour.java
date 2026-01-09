@@ -7,13 +7,13 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-public class SendAllocationRequestBehaviour extends OneShotBehaviour {
+public class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
     public static final String REQUEST_REPLY_BY = "request-reply-by";
     private static final long REPLY_BY_DELAY = 500;
     public static final String REQUEST_REPLY_COUNT = "request-reply-count";
     private final HouseholdCoordinatorAgent agent;
 
-    public SendAllocationRequestBehaviour(HouseholdCoordinatorAgent agent) {
+    public SendApplianceAllocationRequestBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
         this.agent = agent;
     }

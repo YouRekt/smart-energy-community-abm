@@ -4,11 +4,11 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public class CollectCommunityAllocationRequestBehaviour extends BaseMessageHandlerBehaviour {
+public class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessageHandlerBehaviour {
     public static final String ALLOCATION_REQUEST = "allocation-request";
     private boolean msgReceived = false;
 
-    public CollectCommunityAllocationRequestBehaviour(HouseholdCoordinatorAgent agent) {
+    public CollectAllocationNegotiationStartRequestBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
     }
 

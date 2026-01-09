@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CollectApplianceAllocationRequestBehaviour extends TimeoutMessageHandlerBehaviour {
+public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     public static final String REQUESTED_ALLOCATIONS = "requested-allocations";
 
     private final Map<AID, List<EnergyRequest>> requestedAllocations = new HashMap<>();
 
-    public CollectApplianceAllocationRequestBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, SendAllocationRequestBehaviour.REQUEST_REPLY_BY);
+    public CollectApplianceAllocationResponsesBehaviour(HouseholdCoordinatorAgent agent) {
+        super(agent, SendApplianceAllocationRequestBehaviour.REQUEST_REPLY_BY);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CollectApplianceAllocationRequestBehaviour extends TimeoutMessageHa
         super.onStart();
         requestedAllocations.clear();
 
-        Integer expected = (Integer) getDataStore().get(SendAllocationRequestBehaviour.REQUEST_REPLY_COUNT);
+        Integer expected = (Integer) getDataStore().get(SendApplianceAllocationRequestBehaviour.REQUEST_REPLY_COUNT);
         if (expected != null) {
             setExpectedResponses(expected);
         } else {

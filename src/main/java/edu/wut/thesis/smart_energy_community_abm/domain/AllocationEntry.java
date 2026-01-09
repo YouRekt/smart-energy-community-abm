@@ -1,12 +1,13 @@
 package edu.wut.thesis.smart_energy_community_abm.domain;
 
-import jade.core.AID;
-
 public record AllocationEntry(
-        AID requesterId,
         double requestedEnergy,
-        double grantedEnergy,
-        double priority,
         long requestTimestamp,
-        long allocationEnd
-) { }
+        long allocationStart,
+        long duration
+) {
+    public long allocationEnd()
+    {
+        return allocationStart + duration - 1;
+    }
+}

@@ -36,6 +36,6 @@ public class HandlePanicBehaviour extends BaseFSMBehaviour {
         registerTransition(SEND_POSTPONE_RESPONSE, COLLECT_POSTPONE_RESPONSE, PROPOSE);
         registerTransition(COLLECT_POSTPONE_RESPONSE, EXIT, REJECT_PROPOSAL);
         registerTransition(COLLECT_POSTPONE_RESPONSE, CLEAR_TASK, ACCEPT_PROPOSAL);
-        addTransition(CLEAR_TASK, EXIT);
+        registerDefaultTransition(CLEAR_TASK, EXIT);
     }
 }

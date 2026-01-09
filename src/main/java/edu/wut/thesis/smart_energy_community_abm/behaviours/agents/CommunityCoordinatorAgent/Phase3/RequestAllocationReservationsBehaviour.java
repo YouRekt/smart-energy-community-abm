@@ -40,7 +40,7 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
             }
         }, EXIT);
 
-        addTransition(SEND_REQUEST, PROCESS_RESPONSE);
+        registerDefaultTransition(SEND_REQUEST, PROCESS_RESPONSE);
         registerTransition(PROCESS_RESPONSE, EXIT, REFUSE);
         registerTransition(PROCESS_RESPONSE, RESPOND, INFORM);
         registerTransition(RESPOND, ACKNOWLEDGE, NOT_OVERLOADED);

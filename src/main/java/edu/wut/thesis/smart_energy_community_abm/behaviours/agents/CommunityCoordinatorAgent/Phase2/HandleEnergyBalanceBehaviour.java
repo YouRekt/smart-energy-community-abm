@@ -29,6 +29,6 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
 
         registerTransition(CHECK_PANIC, EXIT, NO_PANIC);
         registerTransition(CHECK_PANIC, HANDLE_PANIC, HAS_PANIC);
-        addTransition(HANDLE_PANIC, EXIT);
+        registerDefaultTransition(HANDLE_PANIC, EXIT);
     }
 }

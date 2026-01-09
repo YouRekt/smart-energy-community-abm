@@ -53,9 +53,9 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         addBehaviour(new SimulationTickBehaviour(this));
     }
 
-    public double computePriority(AllocationEntry entry, long currentTick) {
-        double greenScore = greenScores.getOrDefault(entry.requesterId(), 0.5);
-        double cooperationScore = cooperationScores.getOrDefault(entry.requesterId(), 0.5);
+    public double computePriority(AID aid, AllocationEntry entry, long currentTick) {
+        double greenScore = greenScores.getOrDefault(aid, 0.5);
+        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
         double totalEnergy = entry.requestedEnergy();
 
         PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);

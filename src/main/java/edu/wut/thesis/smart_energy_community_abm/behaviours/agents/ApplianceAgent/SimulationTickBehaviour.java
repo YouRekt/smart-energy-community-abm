@@ -18,7 +18,7 @@ public final class SimulationTickBehaviour extends BaseFSMBehaviour {
 
         registerTransition(PHASE_1, PHASE_2, RUNNING);
         registerTransition(PHASE_1, PHASE_3, IDLE);
-        addTransition(PHASE_2, PHASE_3);
-        addTransition(PHASE_3, PHASE_1);
+        registerDefaultTransition(PHASE_2, PHASE_3);
+        registerDefaultTransition(PHASE_3, PHASE_1);
     }
 }

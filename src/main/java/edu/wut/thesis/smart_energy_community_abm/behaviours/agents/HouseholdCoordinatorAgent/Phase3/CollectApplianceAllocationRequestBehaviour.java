@@ -12,6 +12,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.SendAllocationRequestBehaviour.REQUEST_REPLY_BY;
@@ -19,8 +20,8 @@ import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.Househ
 
 public class CollectApplianceAllocationRequestBehaviour extends BaseMessageHandlerBehaviour {
     public static final String REQUESTED_ALLOCATIONS = "requested-allocations";
-    private final Map<AID, EnergyRequest> requestedAllocations = new HashMap<>();
-    private int repliesReceived = 0;
+
+    private final Map<AID, List<EnergyRequest>> requestedAllocations = new HashMap<>();
 
     public CollectApplianceAllocationRequestBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);

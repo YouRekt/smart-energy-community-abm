@@ -4,15 +4,15 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase3.CollectCommunityAllocationRequestBehaviour.ALLOCATION_REQUEST;
 import static jade.lang.acl.ACLMessage.CONFIRM;
 import static jade.lang.acl.ACLMessage.INFORM;
 
-public class CollectCommunityResponseBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String ALLOCATION_REPLY = "allocation-reply";
+public class CollectCommunityCoordinatorResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
     private boolean confirmed = false;
 
-    public CollectCommunityResponseBehaviour(HouseholdCoordinatorAgent agent) {
+    public CollectCommunityCoordinatorResponseBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
     }
 
@@ -25,14 +25,14 @@ public class CollectCommunityResponseBehaviour extends BaseMessageHandlerBehavio
     @Override
     protected void handleInform(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(ALLOCATION_REPLY, msg);
+        getDataStore().put(ALLOCATION_REQUEST, msg);
     }
 
     @Override
     protected void handleConfirm(ACLMessage msg) {
         msgReceived = true;
         confirmed = true;
-        getDataStore().put(ALLOCATION_REPLY, msg);
+        getDataStore().put(ALLOCATION_REQUEST, msg);
     }
 
     @Override

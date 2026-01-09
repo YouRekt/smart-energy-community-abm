@@ -9,13 +9,5 @@ public final class SimulationTickBehaviour extends BaseFSMBehaviour {
 
     public SimulationTickBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
-
-        registerFirstState(new Phase1Behaviour(agent), PHASE_1);
-        registerState(new Phase2Behaviour(agent), PHASE_2);
-        registerState(new Phase3Behaviour(agent), PHASE_3);
-
-        addTransition(PHASE_1, PHASE_2);
-        addTransition(PHASE_2, PHASE_3);
-        addTransition(PHASE_3, PHASE_1);
     }
 }

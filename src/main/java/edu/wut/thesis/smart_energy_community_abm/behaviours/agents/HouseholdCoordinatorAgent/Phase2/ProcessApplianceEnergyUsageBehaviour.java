@@ -1,29 +1,30 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
-
-// TODO: Wrap these type of timeout message handlers into a common base class to stop repeating functionalities
-public final class ProcessApplianceEnergyUsageBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessApplianceEnergyUsageBehaviour extends TimeoutMessageHandlerBehaviour {
     public static final String GREEN_ENERGY_USED = "green-energy-used";
     public static final String EXTERNAL_ENERGY_USED = "external-energy-used";
+
     private final HouseholdCoordinatorAgent agent;
+
     private Double greenEnergyUsed;
     private Double externalEnergyUsed;
 
     public ProcessApplianceEnergyUsageBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent);
+        super(agent, RequestApplianceEnergyUsageBehaviour.REQUEST_REPLY_BY);
         this.agent = agent;
     }
 
     @Override
     public void onStart() {
+        super.onStart();
         greenEnergyUsed = 0.0;
         externalEnergyUsed = 0.0;
+        setExpectedResponses(agent.healthyAppliances.size());
     }
 
     @Override
@@ -33,30 +34,19 @@ public final class ProcessApplianceEnergyUsageBehaviour extends BaseMessageHandl
         return super.onEnd();
     }
 
-    // TODO: Check if all agents already replied to speed up the process
-    @Override
-    public boolean done() {
-        Date replyBy = (Date) getDataStore().get(RequestApplianceEnergyUsageBehaviour.REQUEST_REPLY_BY);
-        return replyBy.before(new Date());
-    }
-
     @Override
     protected void handleInform(ACLMessage msg) {
-        Date replyBy = (Date) getDataStore().get(RequestApplianceEnergyUsageBehaviour.REQUEST_REPLY_BY);
-
-        if (replyBy.after(new Date())) {
-            String[] parts = msg.getContent().split(",");
-            greenEnergyUsed += Double.parseDouble(parts[0]);
-            externalEnergyUsed += Double.parseDouble(parts[1]);
+        if (!isMessageTimely(msg)) {
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
+            try {
+                String[] parts = msg.getContent().split(",");
+                greenEnergyUsed += Double.parseDouble(parts[0]);
+                externalEnergyUsed += Double.parseDouble(parts[1]);
+                incrementReceivedCount();
+            } catch (RuntimeException e) {
+                agent.log("Error parsing usage: " + msg.getContent(), LogSeverity.ERROR, this);
+            }
         }
-    }
-
-    @Override
-    protected void performBlock() {
-        Date replyBy = (Date) getDataStore().get(RequestApplianceEnergyUsageBehaviour.REQUEST_REPLY_BY);
-
-        block(replyBy.getTime() - System.currentTimeMillis());
     }
 }

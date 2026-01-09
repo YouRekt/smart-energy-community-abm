@@ -1,31 +1,34 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.SendPostponeRequestsBehaviour.POSTPONE_REPLY_BY;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase2.Panic.SendPostponeRequestsBehaviour.POSTPONE_REPLY_COUNT;
-
-public class CollectPostponeRepliesBehaviour extends BaseMessageHandlerBehaviour {
+public class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehaviour {
     public static final String POSTPONE_AGREEMENTS = "postpone-agreements";
+
     private final List<AID> postponeAgreements = new ArrayList<>();
-    private int repliesReceived = 0;
 
     public CollectPostponeRepliesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent);
+        super(agent, SendPostponeRequestsBehaviour.POSTPONE_REPLY_BY);
     }
 
     @Override
     public void onStart() {
-        repliesReceived = 0;
+        super.onStart();
         postponeAgreements.clear();
+
+        Integer expected = (Integer) getDataStore().get(SendPostponeRequestsBehaviour.POSTPONE_REPLY_COUNT);
+        if (expected != null) {
+            setExpectedResponses(expected);
+        } else {
+            agent.log("Expected replies count is null", LogSeverity.ERROR, this);
+        }
     }
 
     @Override
@@ -35,32 +38,21 @@ public class CollectPostponeRepliesBehaviour extends BaseMessageHandlerBehaviour
     }
 
     @Override
-    public boolean done() {
-        final Integer expectedReplies = (Integer) getDataStore().get(POSTPONE_REPLY_COUNT);
-        if (expectedReplies == null || expectedReplies == 0) {
-            agent.log("Expected replies: " + (expectedReplies == null ? "null" : "0"), LogSeverity.ERROR, this);
-            return true;
-        }
-
-        Date replyBy = (Date) getDataStore().get(POSTPONE_REPLY_BY);
-        return replyBy.before(new Date()) || repliesReceived == expectedReplies;
-    }
-
-    @Override
     protected void handlePropose(ACLMessage msg) {
-        repliesReceived++;
-        postponeAgreements.add(msg.getSender());
+        if (!isMessageTimely(msg)) {
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+        } else {
+            postponeAgreements.add(msg.getSender());
+            incrementReceivedCount();
+        }
     }
 
     @Override
     protected void handleRefuse(ACLMessage msg) {
-        repliesReceived++;
-    }
-
-    @Override
-    protected void performBlock() {
-        Date replyBy = (Date) getDataStore().get(POSTPONE_REPLY_BY);
-
-        block(replyBy.getTime() - System.currentTimeMillis());
+        if (!isMessageTimely(msg)) {
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+        } else {
+            incrementReceivedCount();
+        }
     }
 }

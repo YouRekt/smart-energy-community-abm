@@ -4,23 +4,21 @@ import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-// TODO: Wrap these type of timeout message handlers into a common base class to stop repeating functionalities
-public final class CollectAgentResponsesBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectAgentResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<AID>> ontologyActions;
 
     public CollectAgentResponsesBehaviour(CommunityCoordinatorAgent agent) {
-        super(agent);
+        super(agent, StartNewTickBehaviour.TICK_REPLY_BY);
         this.agent = agent;
 
         ontologyActions = new HashMap<>();
@@ -29,34 +27,25 @@ public final class CollectAgentResponsesBehaviour extends BaseMessageHandlerBeha
         ontologyActions.put(CommunityBatteryAgent.class.getSimpleName(), aid -> agent.batteryAgent = aid);
     }
 
-    // TODO: Check if all agents already replied to speed up the process
     @Override
-    public boolean done() {
-        Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
-        return replyBy.before(new Date());
+    public void onStart() {
+        super.onStart();
+        int expected = agent.householdCount + agent.energySourceCount + 1;
+        setExpectedResponses(expected);
     }
 
     @Override
     protected void handleConfirm(ACLMessage msg) {
-        Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
-
-        if (replyBy.after(new Date())) {
+        if (!isMessageTimely(msg)) {
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+        } else {
             Consumer<AID> action = ontologyActions.get(msg.getOntology());
-
             if (action != null) {
                 action.accept(msg.getSender());
+                incrementReceivedCount();
             } else {
-                agent.log("Invalid ontology @ Phase1/CollectAgentResponsesBehaviour", LogSeverity.ERROR, this);
+                agent.log("Invalid ontology", LogSeverity.ERROR, this);
             }
-        } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
         }
-    }
-
-    @Override
-    protected void performBlock() {
-        Date replyBy = (Date) getDataStore().get(StartNewTickBehaviour.TICK_REPLY_BY);
-
-        block(replyBy.getTime() - System.currentTimeMillis());
     }
 }

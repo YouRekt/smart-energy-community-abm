@@ -1,43 +1,31 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.Phase1;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
-
-// TODO: Wrap these type of timeout message handlers into a common base class to stop repeating functionalities
-public final class CollectApplianceResponsesBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectApplianceResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public CollectApplianceResponsesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent);
+        super(agent, ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);
         this.agent = agent;
     }
 
-    // TODO: Check if all agents already replied to speed up the process
     @Override
-    public boolean done() {
-        Date replyBy = (Date) getDataStore().get(ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);
-        return replyBy.before(new Date());
+    public void onStart() {
+        super.onStart();
+        setExpectedResponses(agent.applianceCount);
     }
 
     @Override
     protected void handleConfirm(ACLMessage msg) {
-        Date replyBy = (Date) getDataStore().get(ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);
-
-        if (replyBy.after(new Date())) {
-            agent.healthyAppliances.add(msg.getSender());
+        if (!isMessageTimely(msg)) {
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
         } else {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.ERROR, this);
+            agent.healthyAppliances.add(msg.getSender());
+            incrementReceivedCount();
         }
-    }
-
-    @Override
-    protected void performBlock() {
-        Date replyBy = (Date) getDataStore().get(ApplianceTickRelayBehaviour.HEALTH_REPLY_BY);
-
-        block(replyBy.getTime() - System.currentTimeMillis());
     }
 }

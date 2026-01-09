@@ -20,6 +20,7 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
         registerFirstState(new CalculateEnergyBalanceBehaviour(agent), CHECK_PANIC);
         registerState(new HandlePanicBehaviour(agent), HANDLE_PANIC);
         registerLastState(new OneShotBehaviour(agent) {
+            // TODO: Wrap these kinds of exit behaviours to a simple one utility behaviour (just pass the log in constructor)
             @Override
             public void action() {
                 agent.log("Energy balance resolved", LogSeverity.DEBUG, agent);

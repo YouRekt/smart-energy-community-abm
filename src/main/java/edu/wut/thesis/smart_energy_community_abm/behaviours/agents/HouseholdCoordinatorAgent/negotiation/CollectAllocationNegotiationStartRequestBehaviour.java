@@ -2,10 +2,10 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
 public class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String ALLOCATION_REQUEST = "allocation-request";
     private boolean msgReceived = false;
 
     public CollectAllocationNegotiationStartRequestBehaviour(HouseholdCoordinatorAgent agent) {
@@ -20,7 +20,7 @@ public class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessa
     @Override
     protected void handleRequest(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(ALLOCATION_REQUEST, msg);
+        getDataStore().put(DataStoreKey.Negotiation.ALLOCATION_REQUEST, msg);
     }
 
     @Override

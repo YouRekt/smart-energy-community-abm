@@ -2,11 +2,12 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
 public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
-    public static final String TICK_MSG = "tick-msg";
     private final HouseholdCoordinatorAgent agent;
+
     private boolean receivedTick = false;
 
     public ReceiveTickBehaviour(HouseholdCoordinatorAgent agent) {
@@ -23,7 +24,7 @@ public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
     protected void handleInform(ACLMessage msg) {
         receivedTick = true;
         agent.tick = Long.parseLong(msg.getContent());
-        getDataStore().put(TICK_MSG, msg);
+        getDataStore().put(DataStoreKey.Discovery.TICK_MSG, msg);
     }
 
     @Override

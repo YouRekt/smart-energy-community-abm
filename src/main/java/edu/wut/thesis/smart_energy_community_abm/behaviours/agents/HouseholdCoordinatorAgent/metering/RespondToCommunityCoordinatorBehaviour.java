@@ -4,9 +4,9 @@ import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgen
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.CollectEnergyStatusBehaviour.ENERGY_USAGE_REQUEST_MSG;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.ProcessApplianceEnergyUsageBehaviour.EXTERNAL_ENERGY_USED;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.ProcessApplianceEnergyUsageBehaviour.GREEN_ENERGY_USED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.ENERGY_USAGE_REQUEST_MSG;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.EXTERNAL_ENERGY_USED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.GREEN_ENERGY_USED;
 
 public final class RespondToCommunityCoordinatorBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;

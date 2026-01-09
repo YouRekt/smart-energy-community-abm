@@ -11,8 +11,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.List;
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.negotiation.RequestAllocationReservationsBehaviour.AGENT_LIST;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.negotiation.RequestAllocationReservationsBehaviour.OVERLOADED_TICKS;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.AGENT_LIST;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.OVERLOADED_TICKS;
 
 public class SendRequestToHouseholdBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;

@@ -1,20 +1,20 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.CollectEnergyStatusBehaviour.CURRENT_CHARGE;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.CollectEnergyStatusBehaviour.POWER_PRODUCED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.CURRENT_CHARGE;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.POWER_PRODUCED;
 
 public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
-    public static final String AVAILABLE_ENERGY = "available-energy";
-    public static final String SHORTFALL = "shortfall";
     private final CommunityCoordinatorAgent agent;
-    private int result = HandleEnergyBalanceBehaviour.NO_PANIC;
+    private int result = TransitionKeys.Metering.NO_PANIC;
 
     public CalculateEnergyBalanceBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
@@ -35,15 +35,15 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         agent.log(String.format("Allocated: %.2f, Available: %.2f, Shortfall: %.2f",
                 allocatedThisTick, availableEnergy, shortfall), LogSeverity.DEBUG, this);
 
-        getDataStore().put(AVAILABLE_ENERGY, availableEnergy);
-        getDataStore().put(SHORTFALL, shortfall);
+        getDataStore().put(DataStoreKey.Metering.AVAILABLE_ENERGY, availableEnergy);
+        getDataStore().put(DataStoreKey.Metering.SHORTFALL, shortfall);
 
         if (shortfall > 0) {
             Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
             int householdsAffected = tickAllocations.size();
 
             if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
-                result = HandleEnergyBalanceBehaviour.HAS_PANIC;
+                result = TransitionKeys.Metering.HAS_PANIC;
                 agent.log("Energy panic triggered!", LogSeverity.WARNING, agent);
             }
         }

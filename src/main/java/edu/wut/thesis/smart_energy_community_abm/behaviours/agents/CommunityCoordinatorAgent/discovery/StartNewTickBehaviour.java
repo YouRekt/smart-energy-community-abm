@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.discovery;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.AID;
@@ -11,8 +12,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.Date;
 
 public final class StartNewTickBehaviour extends OneShotBehaviour {
-    public static final String TICK_REPLY_BY = "tick-reply-by";
     private static final long REPLY_BY_DELAY = 500;
+
     private final AID topic;
     private final CommunityCoordinatorAgent agent;
 
@@ -41,6 +42,6 @@ public final class StartNewTickBehaviour extends OneShotBehaviour {
         msg.setReplyByDate(replyBy);
         agent.send(msg);
 
-        getDataStore().put(TICK_REPLY_BY, replyBy);
+        getDataStore().put(DataStoreKey.Discovery.TICK_REPLY_BY, replyBy);
     }
 }

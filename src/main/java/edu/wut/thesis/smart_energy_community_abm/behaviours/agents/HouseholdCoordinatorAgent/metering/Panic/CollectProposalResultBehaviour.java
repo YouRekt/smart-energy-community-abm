@@ -12,10 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic.CollectPostponeRepliesBehaviour.POSTPONE_AGREEMENTS;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.POSTPONE_AGREEMENTS;
 
 public class CollectProposalResultBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
+
     private boolean received = false;
 
     public CollectProposalResultBehaviour(HouseholdCoordinatorAgent agent) {

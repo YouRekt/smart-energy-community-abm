@@ -12,13 +12,14 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.*;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.negotiation.CollectApplianceAllocationResponsesBehaviour.REQUESTED_ALLOCATIONS;
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.negotiation.CollectAllocationNegotiationStartRequestBehaviour.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
 public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
+
     private boolean refused = false;
 
     public CalculateAllocationTimetableBehaviour(HouseholdCoordinatorAgent agent) {

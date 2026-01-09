@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -8,12 +9,11 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.CollectEnergyStatusBehaviour.PANIC_CFP;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.PANIC_CFP;
 
 public class SendPostponeRequestsBehaviour extends OneShotBehaviour {
-    public static final String POSTPONE_REPLY_BY = "postpone-reply-by";
-    public static final String POSTPONE_REPLY_COUNT = "postpone-reply-count";
     private static final long REPLY_BY_DELAY = 500;
+
     private final HouseholdCoordinatorAgent agent;
 
     public SendPostponeRequestsBehaviour(HouseholdCoordinatorAgent agent) {
@@ -38,12 +38,12 @@ public class SendPostponeRequestsBehaviour extends OneShotBehaviour {
             replyCount++;
         }
 
-        getDataStore().put(replyCount, POSTPONE_REPLY_COUNT);
+        getDataStore().put(replyCount, DataStoreKey.Metering.Panic.POSTPONE_REPLY_COUNT);
 
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         postponeRequest.setReplyByDate(replyBy);
 
         agent.send(postponeRequest);
-        getDataStore().put(POSTPONE_REPLY_BY, replyBy);
+        getDataStore().put(DataStoreKey.Metering.Panic.POSTPONE_REPLY_BY, replyBy);
     }
 }

@@ -4,7 +4,7 @@ import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import static edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.ProcessEnergyOutcomeBehaviour.PANIC_CFP;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.PANIC_CFP;
 import static jade.lang.acl.ACLMessage.PROPOSE;
 import static jade.lang.acl.ACLMessage.REFUSE;
 

@@ -2,7 +2,9 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
@@ -13,10 +15,6 @@ import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
 public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
-    public static final String AGENT_LIST = "agent-list";
-    public static final String OVERLOADED_TICKS = "overloaded-ticks";
-    public static final int OVERLOADED = 1;
-    public static final int NOT_OVERLOADED = 0;
     private static final String SEND_REQUEST = "send-request";
     private static final String PROCESS_RESPONSE = "process-response";
     private static final String RESPOND = "respond";
@@ -43,8 +41,8 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
         registerDefaultTransition(SEND_REQUEST, PROCESS_RESPONSE);
         registerTransition(PROCESS_RESPONSE, EXIT, REFUSE);
         registerTransition(PROCESS_RESPONSE, RESPOND, INFORM);
-        registerTransition(RESPOND, ACKNOWLEDGE, NOT_OVERLOADED);
-        registerTransition(RESPOND, PROCESS_RESPONSE, OVERLOADED);
+        registerTransition(RESPOND, ACKNOWLEDGE, TransitionKeys.Negotiation.NOT_OVERLOADED);
+        registerTransition(RESPOND, PROCESS_RESPONSE, TransitionKeys.Negotiation.OVERLOADED);
         registerDefaultTransition(ACKNOWLEDGE, RESPOND);
     }
 
@@ -54,7 +52,7 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
 
         final List<AID> agentList = List.copyOf(agent.householdAgents);
 
-        getDataStore().put(AGENT_LIST, agentList);
-        getDataStore().put(OVERLOADED_TICKS, null);
+        getDataStore().put(DataStoreKey.Negotiation.AGENT_LIST, agentList);
+        getDataStore().put(DataStoreKey.Negotiation.OVERLOADED_TICKS, null);
     }
 }

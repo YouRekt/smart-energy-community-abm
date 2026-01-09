@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 
@@ -24,7 +25,7 @@ public class CollectAndFinalizePostponeResponsesBehaviour extends BaseMessageHan
 
     @Override
     public boolean done() {
-        Date replyBy = (Date) getDataStore().get(ProcessPostponeResponsesBehaviour.ACCEPT_PROPOSAL_REPLY_BY);
+        Date replyBy = (Date) getDataStore().get(DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY);
         return replyBy != null && replyBy.before(new Date());
     }
 
@@ -44,7 +45,7 @@ public class CollectAndFinalizePostponeResponsesBehaviour extends BaseMessageHan
 
     @Override
     protected void performBlock() {
-        Date replyBy = (Date) getDataStore().get(ProcessPostponeResponsesBehaviour.ACCEPT_PROPOSAL_REPLY_BY);
+        Date replyBy = (Date) getDataStore().get(DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY);
 
         block(replyBy.getTime() - System.currentTimeMillis());
     }

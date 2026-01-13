@@ -12,10 +12,6 @@ public final class TransitionKeys {
     public static final class Metering {
         public static final int NO_PANIC = 0;
         public static final int HAS_PANIC = 1;
-        public static final int NO_PANIC = 0;
-        public static final int HAS_PANIC = 1;
-        public static final int NO_PANIC = 0;
-        public static final int HAS_PANIC = 1;
 
         public static final class Panic {
         }

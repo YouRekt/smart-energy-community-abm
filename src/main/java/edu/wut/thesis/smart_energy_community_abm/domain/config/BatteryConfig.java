@@ -17,7 +17,7 @@ public record BatteryConfig(
             throw new IllegalArgumentException("minChargeThreshold argument cannot be null or less than zero");
         }
 
-        if (isPercentage == null || !isPercentage) {
+        if (isPercentage == null) {
             throw new IllegalArgumentException("percentage argument cannot be null or less than zero");
         }
     }

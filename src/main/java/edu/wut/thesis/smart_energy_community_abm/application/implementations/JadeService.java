@@ -65,8 +65,10 @@ public final class JadeService implements SimulationService {
     }
 
     public synchronized <T> void runAgent(final Class<T> agentClass, final Object[] args, final String nickname) {
-        final int id = agentCounts.merge(Objects.requireNonNull(nickname, agentClass.getSimpleName()), 1, Integer::sum);
-        StringBuilder sb = new StringBuilder(nickname);
+        String effectiveName = Objects.requireNonNullElse(nickname, agentClass.getSimpleName());
+
+        final int id = agentCounts.merge(effectiveName, 1, Integer::sum);
+        StringBuilder sb = new StringBuilder(effectiveName);
 
         if (id > 1) {
             sb.append('[').append(id).append(']');

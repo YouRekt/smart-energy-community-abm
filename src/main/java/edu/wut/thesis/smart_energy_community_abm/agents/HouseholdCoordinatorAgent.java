@@ -46,11 +46,21 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
     public Map<Long, Double> clearCurrentAllocation(AID agent) {
         final Map<Long, Double> energyClearedPerTick = new HashMap<>();
 
-        for (long t = tick; t <= timetable.get(tick).get(agent).allocationStart(); t++) {
-            timetable.get(t).remove(agent);
-            energyClearedPerTick.put(tick, timetable.get(tick).get(agent).requestedEnergy());
+        if (!timetable.containsKey(tick) || !timetable.get(tick).containsKey(agent)) {
+            return energyClearedPerTick;
         }
 
+        AllocationEntry entry = timetable.get(tick).get(agent);
+        double energyValue = entry.requestedEnergy();
+
+        long endTick = entry.allocationEnd();
+
+        for (long t = tick; t <= endTick; t++) {
+            if (timetable.containsKey(t) && timetable.get(t).containsKey(agent)) {
+                timetable.get(t).remove(agent);
+                energyClearedPerTick.put(t, energyValue);
+            }
+        }
 
         return energyClearedPerTick;
     }

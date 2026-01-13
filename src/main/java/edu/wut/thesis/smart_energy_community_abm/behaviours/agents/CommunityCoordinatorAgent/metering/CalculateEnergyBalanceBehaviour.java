@@ -33,7 +33,7 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         final double shortfall = allocatedThisTick - availableEnergy;
 
         agent.log(String.format("Allocated: %.2f, Available: %.2f, Shortfall: %.2f",
-                allocatedThisTick, availableEnergy, shortfall), LogSeverity.DEBUG, this);
+                allocatedThisTick, availableEnergy, shortfall), LogSeverity.INFO, this);
 
         getDataStore().put(DataStoreKey.Metering.AVAILABLE_ENERGY, availableEnergy);
         getDataStore().put(DataStoreKey.Metering.SHORTFALL, shortfall);

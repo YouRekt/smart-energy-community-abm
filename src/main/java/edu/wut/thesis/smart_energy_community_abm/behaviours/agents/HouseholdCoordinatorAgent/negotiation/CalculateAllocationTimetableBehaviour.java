@@ -37,10 +37,12 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
         try {
             final Map<AID, List<EnergyRequest>> requestedAllocations = (Map<AID, List<EnergyRequest>>) getDataStore().get(REQUESTED_ALLOCATIONS);
 
-            final ACLMessage response = (ACLMessage) getDataStore().get(ALLOCATION_REQUEST);
+            final ACLMessage response = ((ACLMessage) getDataStore().get(ALLOCATION_REQUEST)).createReply();
 
             if (requestedAllocations == null || requestedAllocations.isEmpty()) {
+                agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
                 response.setPerformative(REFUSE);
+                response.setContent("No allocation requests");
                 agent.send(response);
                 refused = true;
                 return;

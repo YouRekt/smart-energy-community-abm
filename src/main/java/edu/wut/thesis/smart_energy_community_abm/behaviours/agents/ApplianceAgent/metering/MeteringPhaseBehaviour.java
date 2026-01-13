@@ -24,6 +24,7 @@ public final class MeteringPhaseBehaviour extends PhaseBehaviour {
 //                new DoWorkBehaviour(agent),                 // Do a unit of work for the current task, report amount of green
 //                                                            // and grid energy used to Household coordinator and Metrics Database
                 new HandleEnergyBalanceBehaviour(agent, getDataStore()),
+                new DoWorkBehaviour(agent)
         });
     }
 }

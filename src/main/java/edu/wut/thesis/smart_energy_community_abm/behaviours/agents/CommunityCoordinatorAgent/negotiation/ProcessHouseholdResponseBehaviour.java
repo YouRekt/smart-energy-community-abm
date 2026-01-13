@@ -26,9 +26,6 @@ public class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehavio
     protected void handleRefuse(ACLMessage msg) {
         msgReceived = true;
         refused = true;
-        final ACLMessage reply = msg.createReply(INFORM);
-
-        agent.send(reply);
     }
 
     @Override

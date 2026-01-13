@@ -15,11 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_BY;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_COUNT;
+
 public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final Map<AID, List<EnergyRequest>> requestedAllocations = new HashMap<>();
 
     public CollectApplianceAllocationResponsesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, DataStoreKey.Negotiation.REQUEST_REPLY_BY);
+        super(agent, REQUEST_REPLY_BY);
     }
 
     @Override
@@ -27,7 +30,7 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
         super.onStart();
         requestedAllocations.clear();
 
-        Integer expected = (Integer) getDataStore().get(DataStoreKey.Negotiation.REQUEST_REPLY_COUNT);
+        Integer expected = (Integer) getDataStore().get(REQUEST_REPLY_COUNT);
         if (expected != null) {
             setExpectedResponses(expected);
         } else {

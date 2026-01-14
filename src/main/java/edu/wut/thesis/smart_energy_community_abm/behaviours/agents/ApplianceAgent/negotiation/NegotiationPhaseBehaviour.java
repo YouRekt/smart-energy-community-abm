@@ -16,6 +16,8 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
                         agent.log("Entering phase 3 (Negotiation)", LogSeverity.DEBUG, this);
                     }
                 },
+                new ReceiveAllocationRequestBehaviour(agent),
+                new HandleAllocationRequestBehaviour(agent, getDataStore()),
         });
     }
 }

@@ -44,7 +44,7 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
 
             if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
                 result = TransitionKeys.Metering.HAS_PANIC;
-                agent.log("Energy panic triggered!", LogSeverity.WARNING, agent);
+                agent.log("Energy panic triggered!", LogSeverity.WARN, agent);
             }
         }
     }

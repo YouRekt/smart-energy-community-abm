@@ -36,7 +36,7 @@ public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandl
     @Override
     protected void handlePropose(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             try {
                 responses.put(msg.getSender(), Double.parseDouble(msg.getContent()));
@@ -50,7 +50,7 @@ public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandl
     @Override
     protected void handleRefuse(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             agent.log("Household refused postponement", LogSeverity.DEBUG, this);
             incrementReceivedCount();

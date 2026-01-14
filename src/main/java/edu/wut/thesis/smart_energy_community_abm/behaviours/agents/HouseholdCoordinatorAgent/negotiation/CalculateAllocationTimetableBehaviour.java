@@ -11,6 +11,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
@@ -50,6 +51,11 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
 
             final ObjectMapper mapper = new ObjectMapper();
 
+            Set<EnergyRequest> allRequests = requestedAllocations.values().stream()
+                    .filter(Objects::nonNull)
+                    .flatMap(List::stream)
+                    .collect(Collectors.toSet());
+
             if (response.getContent() != null && !response.getContent().isEmpty()) {
 
                 final Map<Long, Double> rawOverloads = mapper.readValue(
@@ -57,12 +63,6 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
                         new TypeReference<>() {
                         }
                 );
-
-                List<EnergyRequest> allActiveRequests = requestedAllocations.values().stream().filter(Objects::nonNull)
-                        .flatMap(Collection::stream).toList();
-
-                Set<EnergyRequest> globalSurvivors = Collections.newSetFromMap(new IdentityHashMap<>());
-                globalSurvivors.addAll(allActiveRequests);
 
                 List<Long> sortedTicks = new ArrayList<>(rawOverloads.keySet());
                 Collections.sort(sortedTicks);
@@ -77,7 +77,7 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
                     List<EnergyRequest> candidates = new ArrayList<>();
                     double totalRequestedAtTick = 0;
 
-                    for (EnergyRequest req : globalSurvivors) {
+                    for (EnergyRequest req : allRequests) {
                         if (req.isActive(tick)) {
                             candidates.add(req);
                             totalRequestedAtTick += req.energyPerTick();
@@ -85,42 +85,57 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
                     }
 
                     double maxCapacity = totalRequestedAtTick - overloadAmount;
-
                     Set<EnergyRequest> keptRequests = solveSubsetSum(candidates, maxCapacity);
 
                     for (EnergyRequest req : candidates) {
-                        if (keptRequests.contains(req)) {
-                            continue;
-                        }
-                        globalSurvivors.remove(req);
+                        if (!keptRequests.contains(req)) {
+                            // 1. Remove from global pool
+                            allRequests.remove(req);
 
-                        long endTick = req.startTick() + req.duration();
-                        for (long t = req.startTick(); t < endTick; t++)
-                            if (currentOverloads.containsKey(t))
-                                currentOverloads.put(t, currentOverloads.get(t) - req.energyPerTick());
+                            // 2. Credit energy back to future ticks
+                            long end = req.startTick() + req.duration();
+                            for (long t = req.startTick(); t < end; t++) {
+                                currentOverloads.computeIfPresent(t, (k, v) -> v - req.energyPerTick());
+                            }
+                        }
                     }
                 }
 
-                requestedAllocations.values().stream().filter(Objects::nonNull).forEach(agentList ->
-                        agentList.removeIf(req -> !globalSurvivors.contains(req))
-                );
+                Map<AID, List<EnergyRequest>> filteredMap = allRequests.stream()
+                        .collect(Collectors.groupingBy(EnergyRequest::applianceAID));
 
-                getDataStore().put(REQUESTED_ALLOCATIONS, requestedAllocations);
+                for (var key : requestedAllocations.keySet()) {
+                    if (!filteredMap.containsKey(key)) {
+                        final ACLMessage applianceRefuse = new ACLMessage(REFUSE);
+                        applianceRefuse.addReceiver(key);
+                        applianceRefuse.setContent("No requested tasks accepted");
+                        agent.send(applianceRefuse);
+                    }
+                }
+
+                getDataStore().put(REQUESTED_ALLOCATIONS, filteredMap);
             }
 
             final Map<Long, Double> allocationByTick = new HashMap<>();
 
-            for (List<EnergyRequest> agentList : requestedAllocations.values()) {
-                if (agentList != null)
-                    for (EnergyRequest req : agentList)
-                        for (long t = req.startTick(); t < req.startTick() + req.duration(); t++)
-                            allocationByTick.merge(t, req.energyPerTick(), Double::sum);
+            for (EnergyRequest req : allRequests) {
+                for (long t = req.startTick(); t < req.startTick() + req.duration(); t++) {
+                    allocationByTick.merge(t, req.energyPerTick(), Double::sum);
+                }
             }
 
-            response.setPerformative(INFORM);
-            response.setContent(mapper.writeValueAsString(allocationByTick));
+            if (allRequests.isEmpty()) {
+                agent.log("After solveSubsetSum there were no requests left, sending refuse", LogSeverity.WARN, this);
+                response.setPerformative(REFUSE);
+                response.setContent("No allocation requests after knapsack");
+                agent.send(response);
+                refused = true;
+            } else {
+                response.setPerformative(INFORM);
+                response.setContent(mapper.writeValueAsString(allocationByTick));
 
-            agent.send(response);
+                agent.send(response);
+            }
         } catch (JsonProcessingException e) {
             agent.log("JsonProcessingException when trying to write allocationByTick", LogSeverity.ERROR, this);
         }
@@ -137,13 +152,11 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
         }
 
         int[] dp = new int[capacity + 1];
-        java.util.Arrays.fill(dp, -1);
+        Arrays.fill(dp, -1);
         dp[0] = -2;
-
 
         for (int i = 0; i < n; i++) {
             int weight = weights[i];
-
             for (int w = capacity; w >= weight; w--) {
                 if (dp[w - weight] != -1 && dp[w] == -1) {
                     dp[w] = i;
@@ -156,15 +169,13 @@ public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
             bestWeight--;
         }
 
-        Set<EnergyRequest> keptItems = Collections.newSetFromMap(new IdentityHashMap<>());
+        Set<EnergyRequest> keptItems = new HashSet<>();
         int currentW = bestWeight;
-
         while (currentW > 0) {
-            int itemIndex = dp[currentW];
-            if (itemIndex < 0) break;
-
-            keptItems.add(items.get(itemIndex));
-            currentW -= weights[itemIndex];
+            int idx = dp[currentW];
+            if (idx < 0) break;
+            keptItems.add(items.get(idx));
+            currentW -= weights[idx];
         }
 
         return keptItems;

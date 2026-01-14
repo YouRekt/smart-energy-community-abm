@@ -31,7 +31,7 @@ public class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehavio
     @Override
     protected void handleInform(ACLMessage msg) {
         msgReceived = true;
-        getDataStore().put(DataStoreKey.Negotiation.HOUSEHOLD_RESPONSE, msgReceived);
+        getDataStore().put(DataStoreKey.Negotiation.HOUSEHOLD_RESPONSE, msg);
     }
 
     @Override

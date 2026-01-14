@@ -22,7 +22,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setOntology(ApplianceAgent.class.getSimpleName());
         // (Green Energy, Grid Energy)
-        reply.setContent(String.format("%s,%s", "0.1", "0.0"));
+        reply.setContent(String.format("%s,%s", agent.getCurrentEnergyUsage(), "0.0"));
         agent.send(reply);
     }
 }

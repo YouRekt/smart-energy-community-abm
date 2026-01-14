@@ -40,5 +40,10 @@ public final class DataStoreKey {
         public static final String REQUESTED_ALLOCATIONS = "requested-allocations";
         public static final String REQUEST_REPLY_BY = "request-reply-by";
         public static final String REQUEST_REPLY_COUNT = "request-reply-count";
+        public static final String ALLOCATION_REQUEST_MSG = "allocation-request-msg";
+        public static final String ALLOCATION_RESPONSE_MSG = "allocation-response-msg";
+        public static final String SEND_ALLOCATION_REQUEST = "send-allocation-request";
+        public static final String COLLECT_ALLOCATION_RESPONSE = "collect-allocation-response";
+        public static final String PROCESS_ALLOCATION_RESPONSE = "process-allocation-response";
     }
 }

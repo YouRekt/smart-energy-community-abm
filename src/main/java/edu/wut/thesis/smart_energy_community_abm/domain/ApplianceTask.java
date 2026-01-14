@@ -6,5 +6,6 @@ public record ApplianceTask(
         long period,
         boolean postponable,
         int duration,
-        double energyPerTick
+        double energyPerTick,
+        int taskId
 ) { }

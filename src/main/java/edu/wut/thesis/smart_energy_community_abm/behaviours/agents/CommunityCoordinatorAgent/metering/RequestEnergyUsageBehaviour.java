@@ -19,11 +19,14 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        agent.householdAgents.forEach(msg::addReceiver);
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
-        msg.setReplyByDate(replyBy);
-        agent.send(msg);
+        for (var householdAgent : agent.householdAgents) {
+            ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+            msg.setReplyByDate(replyBy);
+            msg.addReceiver(householdAgent);
+            msg.setContent(Double.toString(agent.getAllocatedAtFor(agent.tick, householdAgent)));
+            agent.send(msg);
+        }
         getDataStore().put(DataStoreKey.Metering.REQUEST_REPLY_BY, replyBy);
     }
 }

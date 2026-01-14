@@ -10,7 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +29,7 @@ class CommunityConfigTest {
                 new GreenEnergySourceConfig(100L, 500.0, 50L, 10.0, 0.1, "WindFarm")
         );
 
-        ApplianceTask task = new ApplianceTask("Task1", 0.5, 100, true, 5, 10.0);
+        ApplianceTask task = new ApplianceTask("Task1", 0.5, 100, true, 5, 10.0, 0);
         ApplianceConfig appConfig = new ApplianceConfig("Washer", "House1", List.of(task));
         validHouseholds = List.of(
                 new HouseholdConfig(List.of(appConfig), "House1")

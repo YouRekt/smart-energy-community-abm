@@ -2,7 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.domain.config;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
-import edu.wut.thesis.smart_energy_community_abm.domain.interfaces.AgentConfig;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.interfaces.AgentConfig;
 
 import java.util.List;
 

@@ -9,13 +9,11 @@ import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.AID;
 import jade.core.ServiceException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
-    public final TreeMap<Long, List<AllocationEntry>> timetable = new TreeMap<>();
+    public final TreeMap<Long, Map<AID, AllocationEntry>> timetable = new TreeMap<>();
     public final List<EnergyRequest> pendingRequests = new ArrayList<>();
     // TODO: Remove
     public String name;
@@ -28,15 +26,7 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
 
         final Object[] args = getArguments();
 
-        name = (String) args[0];
-
-        if (name == null) {
-            log("Agent name is missing", LogSeverity.ERROR, this);
-            doDelete();
-            throw new RuntimeException("Agent name is missing");
-        }
-
-        applianceCount = (Integer) args[1];
+        applianceCount = (Integer) args[0];
 
         if (applianceCount == null) {
             log("Agent applianceCount is missing", LogSeverity.ERROR, this);
@@ -51,5 +41,27 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
         }
 
         addBehaviour(new SimulationTickBehaviour(this));
+    }
+
+    public Map<Long, Double> clearCurrentAllocation(AID agent) {
+        final Map<Long, Double> energyClearedPerTick = new HashMap<>();
+
+        if (!timetable.containsKey(tick) || !timetable.get(tick).containsKey(agent)) {
+            return energyClearedPerTick;
+        }
+
+        AllocationEntry entry = timetable.get(tick).get(agent);
+        double energyValue = entry.requestedEnergy();
+
+        long endTick = entry.allocationEnd();
+
+        for (long t = tick; t <= endTick; t++) {
+            if (timetable.containsKey(t) && timetable.get(t).containsKey(agent)) {
+                timetable.get(t).remove(agent);
+                energyClearedPerTick.put(t, energyValue);
+            }
+        }
+
+        return energyClearedPerTick;
     }
 }

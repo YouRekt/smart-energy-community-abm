@@ -1,18 +1,25 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.discovery.DiscoveryPhaseBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.metering.MeteringPhaseBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.CyclicFSMBehaviour;
+import jade.core.behaviours.Behaviour;
 
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.Phase.*;
+import java.util.List;
 
-public final class SimulationTickBehaviour extends BaseFSMBehaviour {
+public final class SimulationTickBehaviour extends CyclicFSMBehaviour {
+
     public SimulationTickBehaviour(CommunityBatteryAgent agent) {
         super(agent);
+    }
 
-        registerFirstState(new Phase1Behaviour(agent), PHASE_1);
-        registerState(new Phase2Behaviour(agent), PHASE_2);
-
-        addTransition(PHASE_1, PHASE_2);
-        addTransition(PHASE_2, PHASE_1);
+    @Override
+    protected List<Behaviour> getPhases() {
+        CommunityBatteryAgent agent = (CommunityBatteryAgent) this.myAgent;
+        return List.of(
+                new DiscoveryPhaseBehaviour(agent),
+                new MeteringPhaseBehaviour(agent)
+        );
     }
 }

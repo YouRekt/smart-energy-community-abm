@@ -10,7 +10,7 @@ import jade.core.behaviours.DataStore;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
-public class HandleAllocationRequestBehaviour extends BaseFSMBehaviour {
+public final class HandleAllocationRequestBehaviour extends BaseFSMBehaviour {
     private static final String EXIT = "exit";
 
     public HandleAllocationRequestBehaviour(ApplianceAgent agent, DataStore dataStore) {

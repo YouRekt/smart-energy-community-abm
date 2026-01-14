@@ -16,7 +16,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        // TODO: Do work and push metrics
+        // TODO: Do work and push metrics, actually use proper values when sending back to household
         final ACLMessage msg = (ACLMessage) getDataStore().get(ALLOWED_GREEN_ENERGY);
 
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);

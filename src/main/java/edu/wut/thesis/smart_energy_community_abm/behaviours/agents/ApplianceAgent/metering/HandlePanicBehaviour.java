@@ -11,7 +11,7 @@ import jade.core.behaviours.OneShotBehaviour;
 
 import static jade.lang.acl.ACLMessage.*;
 
-public class HandlePanicBehaviour extends BaseFSMBehaviour {
+public final class HandlePanicBehaviour extends BaseFSMBehaviour {
     private static final String SEND_POSTPONE_RESPONSE = "send-postpone-response";
     private static final String COLLECT_POSTPONE_RESPONSE = "collect-postpone-response";
     private static final String EXIT = "exit";

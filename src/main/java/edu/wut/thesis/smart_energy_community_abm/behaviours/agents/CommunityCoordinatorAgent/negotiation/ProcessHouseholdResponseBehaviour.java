@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
-public class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehaviour {
+public final class ProcessHouseholdResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean refused = false;
     private boolean msgReceived = false;
 

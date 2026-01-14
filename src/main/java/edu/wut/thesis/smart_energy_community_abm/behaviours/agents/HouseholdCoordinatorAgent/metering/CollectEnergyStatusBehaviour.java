@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.HAS_PANIC;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
-public class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectEnergyStatusBehaviour extends BaseMessageHandlerBehaviour {
     private boolean received = false;
     private boolean panic = false;
 

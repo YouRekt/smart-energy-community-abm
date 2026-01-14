@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import static jade.lang.acl.ACLMessage.*;
 
 // TODO: Make a SingleMessageHandlerBehaviour
-public class CollectPostponeResponseBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectPostponeResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
     private boolean rejected = false;
 

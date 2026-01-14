@@ -7,7 +7,7 @@ import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
 
-public class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
 
     public CollectAllocationNegotiationStartRequestBehaviour(HouseholdCoordinatorAgent agent) {

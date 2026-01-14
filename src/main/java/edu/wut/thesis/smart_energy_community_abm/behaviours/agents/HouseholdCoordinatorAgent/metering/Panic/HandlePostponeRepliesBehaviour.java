@@ -13,7 +13,7 @@ import java.util.Objects;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.PANIC_CFP;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.POSTPONE_AGREEMENTS;
 
-public class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
+public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public HandlePostponeRepliesBehaviour(HouseholdCoordinatorAgent agent) {

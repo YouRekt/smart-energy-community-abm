@@ -8,7 +8,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 import static jade.lang.acl.ACLMessage.CONFIRM;
 import static jade.lang.acl.ACLMessage.INFORM;
 
-public class CollectCommunityCoordinatorResponseBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectCommunityCoordinatorResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
     private boolean confirmed = false;
 

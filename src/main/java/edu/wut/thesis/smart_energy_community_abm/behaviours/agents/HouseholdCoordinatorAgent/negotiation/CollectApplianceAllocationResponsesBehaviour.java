@@ -18,7 +18,7 @@ import java.util.Map;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_BY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_COUNT;
 
-public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
+public final class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final Map<AID, List<EnergyRequest>> requestedAllocations = new HashMap<>();
 
     public CollectApplianceAllocationResponsesBehaviour(HouseholdCoordinatorAgent agent) {

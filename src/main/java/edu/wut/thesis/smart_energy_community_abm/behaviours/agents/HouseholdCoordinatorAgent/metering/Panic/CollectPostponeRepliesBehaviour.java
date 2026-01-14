@@ -10,7 +10,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehaviour {
+public final class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final List<AID> postponeAgreements = new ArrayList<>();
 
     public CollectPostponeRepliesBehaviour(HouseholdCoordinatorAgent agent) {

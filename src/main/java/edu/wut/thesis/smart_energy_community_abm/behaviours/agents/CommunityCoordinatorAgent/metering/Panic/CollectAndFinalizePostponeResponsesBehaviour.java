@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CollectAndFinalizePostponeResponsesBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectAndFinalizePostponeResponsesBehaviour extends BaseMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
     private final TreeMap<Long, Map<AID, Double>> allocationsToClear = new TreeMap<>();
 

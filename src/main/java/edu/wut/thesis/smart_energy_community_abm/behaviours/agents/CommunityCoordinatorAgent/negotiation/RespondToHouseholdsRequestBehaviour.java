@@ -14,7 +14,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.NOT_OVERLOADED;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.OVERLOADED;
 
-public class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
+public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
     private boolean overloaded = false;
 

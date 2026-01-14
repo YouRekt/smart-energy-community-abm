@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPTED_PROPOSAL;
 
-public class ClearTaskBehaviour extends OneShotBehaviour {
+public final class ClearTaskBehaviour extends OneShotBehaviour {
     private final ApplianceAgent agent;
 
     public ClearTaskBehaviour(ApplianceAgent agent) {

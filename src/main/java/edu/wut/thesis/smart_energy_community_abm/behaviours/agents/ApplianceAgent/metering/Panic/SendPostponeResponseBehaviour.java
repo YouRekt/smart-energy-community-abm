@@ -8,7 +8,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 import static jade.lang.acl.ACLMessage.PROPOSE;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
-public class SendPostponeResponseBehaviour extends OneShotBehaviour {
+public final class SendPostponeResponseBehaviour extends OneShotBehaviour {
     private final ApplianceAgent agent;
     private boolean refuse = false;
 

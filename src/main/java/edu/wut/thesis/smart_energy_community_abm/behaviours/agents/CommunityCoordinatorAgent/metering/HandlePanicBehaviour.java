@@ -10,7 +10,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class HandlePanicBehaviour extends PhaseBehaviour {
+public final class HandlePanicBehaviour extends PhaseBehaviour {
     public HandlePanicBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
         setupSubBehaviours(new Behaviour[]{

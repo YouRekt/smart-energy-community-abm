@@ -11,7 +11,7 @@ import java.util.Date;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_COUNT;
 
-public class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
+public final class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 500;
 
     private final HouseholdCoordinatorAgent agent;

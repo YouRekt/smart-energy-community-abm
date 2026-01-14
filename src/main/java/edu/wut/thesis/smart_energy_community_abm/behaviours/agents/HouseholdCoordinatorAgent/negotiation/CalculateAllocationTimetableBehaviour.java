@@ -18,7 +18,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
-public class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
+public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
     private boolean refused = false;
 

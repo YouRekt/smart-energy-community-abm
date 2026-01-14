@@ -7,7 +7,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
-public class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
+public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
     private static final String CHECK_PANIC = "check-panic";
     private static final String HANDLE_PANIC = "handle-panic";
     private static final String EXIT = "exit";

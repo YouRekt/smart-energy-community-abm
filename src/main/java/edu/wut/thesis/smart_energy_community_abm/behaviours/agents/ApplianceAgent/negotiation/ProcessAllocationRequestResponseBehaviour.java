@@ -15,7 +15,7 @@ import java.util.List;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_RESPONSE_MSG;
 
-public class ProcessAllocationRequestResponseBehaviour extends OneShotBehaviour {
+public final class ProcessAllocationRequestResponseBehaviour extends OneShotBehaviour {
     private final ApplianceAgent agent;
 
     public ProcessAllocationRequestResponseBehaviour(ApplianceAgent agent) {

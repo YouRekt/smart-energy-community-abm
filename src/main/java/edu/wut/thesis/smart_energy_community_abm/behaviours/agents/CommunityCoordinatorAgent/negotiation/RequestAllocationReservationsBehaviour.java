@@ -14,7 +14,7 @@ import java.util.List;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
-public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
+public final class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
     private static final String SEND_REQUEST = "send-request";
     private static final String PROCESS_RESPONSE = "process-response";
     private static final String RESPOND = "respond";

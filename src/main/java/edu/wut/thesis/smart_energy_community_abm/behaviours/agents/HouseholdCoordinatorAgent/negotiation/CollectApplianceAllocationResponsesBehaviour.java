@@ -47,7 +47,7 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
     @Override
     protected void handleInform(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             ObjectMapper mapper = new ObjectMapper();
             try {
@@ -63,7 +63,7 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
     @Override
     protected void handleRefuse(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             incrementReceivedCount();
         }

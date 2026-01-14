@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
+import jade.core.AID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class CalculateAllocationTimetableBehaviourTest {
 
     private EnergyRequest createRequest(double energy) {
         // Tick and duration don't matter for the subset sum logic, only energyPerTick
-        return new EnergyRequest(0, 1, energy);
+        return new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID),0, 1, energy);
     }
 
     @Test

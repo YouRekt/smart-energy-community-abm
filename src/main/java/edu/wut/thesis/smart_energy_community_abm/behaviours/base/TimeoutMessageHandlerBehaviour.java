@@ -71,7 +71,7 @@ public abstract class TimeoutMessageHandlerBehaviour extends BaseMessageHandlerB
     protected boolean isMessageTimely(ACLMessage msg) {
         Date deadline = getDeadline();
         if (deadline != null && new Date().after(deadline)) {
-            agent.log("Received a stale message: " + (msg.getContent() != null ? msg.getContent() : ""), LogSeverity.WARNING, this);
+            agent.log("Received a stale message: " + (msg.getContent() != null ? msg.getContent() : ""), LogSeverity.WARN, this);
             return false;
         }
         return true;

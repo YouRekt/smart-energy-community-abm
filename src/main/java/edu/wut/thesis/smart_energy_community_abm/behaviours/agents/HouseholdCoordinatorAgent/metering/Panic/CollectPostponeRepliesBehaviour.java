@@ -39,7 +39,7 @@ public class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehavi
     @Override
     protected void handlePropose(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             postponeAgreements.add(msg.getSender());
             incrementReceivedCount();
@@ -49,7 +49,7 @@ public class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehavi
     @Override
     protected void handleRefuse(ACLMessage msg) {
         if (!isMessageTimely(msg)) {
-            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARNING, this);
+            agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
             incrementReceivedCount();
         }

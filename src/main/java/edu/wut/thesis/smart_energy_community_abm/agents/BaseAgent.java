@@ -29,7 +29,7 @@ public abstract class BaseAgent extends Agent {
         String fixedWidthName = String.format("%-25.25s", reference.getClass().getSimpleName().replace("Behaviour", ""));
 
         switch (severity) {
-            case WARNING:
+            case WARN:
                 logger.warn(format, fixedWidthName, message);
                 break;
             case ERROR:

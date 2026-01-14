@@ -17,8 +17,11 @@ public class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
 
         setDataStore(dataStore);
 
-        registerFirstState(new ProcessEnergyOutcomeBehaviour(agent), CHECK_PANIC);
-        registerState(new HandlePanicBehaviour(agent, getDataStore()), HANDLE_PANIC);
+        registerFirstState(new ProcessEnergyOutcomeBehaviour(agent), CHECK_PANIC);          // Receive information whether we have enough energy to proceed
+                                                                                            // or we need to postpone some tasks. Try to postpone current
+                                                                                            // task if not possible then send reject to Household coordinator
+        registerState(new HandlePanicBehaviour(agent, getDataStore()), HANDLE_PANIC);       // Process Household coordinator's response with green energy
+                                                                                            // amount that can be used in this tick, the rest report as grid
         registerLastState(new OneShotBehaviour(agent) {
             @Override
             public void action() {

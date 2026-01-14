@@ -75,6 +75,12 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
                 .reduce(0.0, Double::sum);
     }
 
+    public double getAllocatedAtFor(long tick, AID aid) {
+        return allocations
+                .getOrDefault(tick, Map.of())
+                .getOrDefault(aid, 0.0);
+    }
+
     public void updateRunningAverage(double production) {
         runningAvgProduction += (production - runningAvgProduction) / ++productionSampleCount;
     }

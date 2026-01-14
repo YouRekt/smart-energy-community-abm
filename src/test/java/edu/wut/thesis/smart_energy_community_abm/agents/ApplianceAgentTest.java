@@ -19,7 +19,7 @@ class ApplianceAgentTest {
 
     private ApplianceTask createTask(int period, double chance) {
         // Name, Chance, Period, Postponable, Duration, Energy
-        return new ApplianceTask("TestAppliance", chance, period, true, 5, 10.0);
+        return new ApplianceTask("TestAppliance", chance, period, true, 5, 10.0, 0);
     }
 
     @Test

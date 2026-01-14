@@ -16,7 +16,7 @@ class EnergyRequestTest {
         // Given
         long startTick = 100;
         int duration = 10;
-        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 50.0);
+        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 50.0, 0);
 
         // When
         long endTick = request.endTick();
@@ -39,7 +39,7 @@ class EnergyRequestTest {
         // Given
         long startTick = 10;
         int duration = 5; // Ticks: 10, 11, 12, 13, 14
-        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 20.0);
+        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 20.0, 0);
 
         // When
         boolean isActive = request.isActive(tick);
@@ -55,7 +55,7 @@ class EnergyRequestTest {
         // Given
         long startTick = 50;
         int duration = 3;
-        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 10.0);
+        EnergyRequest request = new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID), startTick, duration, 10.0, 0);
 
         // When
         int activeCount = 0;

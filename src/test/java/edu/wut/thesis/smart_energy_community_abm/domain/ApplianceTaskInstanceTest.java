@@ -12,7 +12,7 @@ class ApplianceTaskInstanceTest {
     // Helper to create a task with specific duration
     private ApplianceTask createTask(int duration) {
         // Other fields (name, chance, period, postponable, energy) don't affect time logic
-        return new ApplianceTask("TestTask", 0.0, 100, true, duration, 10.0);
+        return new ApplianceTask("TestTask", 0.0, 100, true, duration, 10.0, 0);
     }
 
     @Test

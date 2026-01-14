@@ -19,7 +19,7 @@ public class ReceiveAllocationRequestResponseBehaviour extends BaseMessageHandle
     }
 
     @Override
-    protected void handleRequest(ACLMessage msg) {
+    protected void handleConfirm(ACLMessage msg) {
         receivedMsg = true;
         getDataStore().put(ALLOCATION_RESPONSE_MSG, msg);
     }

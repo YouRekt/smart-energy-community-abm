@@ -49,7 +49,7 @@ class CalculateAllocationTimetableBehaviourTest {
 
     private EnergyRequest createRequest(double energy) {
         // Tick and duration don't matter for the subset sum logic, only energyPerTick
-        return new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID),0, 1, energy);
+        return new EnergyRequest(new AID("Appliance1@local-test", AID.ISGUID),0, 1, energy, 0);
     }
 
     @Test

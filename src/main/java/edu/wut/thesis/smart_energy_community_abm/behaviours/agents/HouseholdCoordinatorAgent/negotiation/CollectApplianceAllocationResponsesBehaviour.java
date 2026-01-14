@@ -49,13 +49,13 @@ public class CollectApplianceAllocationResponsesBehaviour extends TimeoutMessage
         if (!isMessageTimely(msg)) {
             agent.log("Received a stale message " + ((msg.getContent() == null) ? "" : msg.getContent()), LogSeverity.WARN, this);
         } else {
-            ObjectMapper mapper = new ObjectMapper();
             try {
-                requestedAllocations.put(msg.getSender(), mapper.readValue(msg.getContent(), new TypeReference<>() {
-                }));
+                ObjectMapper mapper = new ObjectMapper();
+                final List<EnergyRequest> energyRequest = mapper.readValue(msg.getContent(), new TypeReference<>() {});
+                requestedAllocations.put(msg.getSender(), energyRequest);
                 incrementReceivedCount();
             } catch (JsonProcessingException e) {
-                agent.log("JsonProcessingException when trying to receive AllocationEntry from appliance", LogSeverity.ERROR, this);
+                agent.log("JsonProcessingException when trying to receive EnergyRequest from appliance: " + e.getMessage(), LogSeverity.ERROR, this);
             }
         }
     }

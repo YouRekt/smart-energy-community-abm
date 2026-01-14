@@ -43,7 +43,7 @@ public class RequestAllocationReservationsBehaviour extends BaseFSMBehaviour {
         registerTransition(PROCESS_RESPONSE, RESPOND, INFORM);
         registerTransition(RESPOND, ACKNOWLEDGE, TransitionKeys.Negotiation.NOT_OVERLOADED);
         registerTransition(RESPOND, PROCESS_RESPONSE, TransitionKeys.Negotiation.OVERLOADED);
-        registerDefaultTransition(ACKNOWLEDGE, RESPOND);
+        registerDefaultTransition(ACKNOWLEDGE, EXIT);
     }
 
     @Override

@@ -17,7 +17,7 @@ class HouseholdConfigTest {
 
     // Helper to create a valid ApplianceConfig
     private ApplianceConfig createDummyApplianceConfig() {
-        ApplianceTask task = new ApplianceTask("Task1", 0.5, 100, true, 5, 10.0);
+        ApplianceTask task = new ApplianceTask("Task1", 0.5, 100, true, 5, 10.0, 0);
         return new ApplianceConfig("Dishwasher", "Household1", List.of(task));
     }
 

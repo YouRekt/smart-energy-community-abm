@@ -17,7 +17,7 @@ class ApplianceConfigTest {
 
     // Helper to create a dummy task for testing
     private ApplianceTask createDummyTask() {
-        return new ApplianceTask("TestTask", 0.5, 100, true, 5, 10.0);
+        return new ApplianceTask("TestTask", 0.5, 100, true, 5, 10.0, 0);
     }
 
     @Test

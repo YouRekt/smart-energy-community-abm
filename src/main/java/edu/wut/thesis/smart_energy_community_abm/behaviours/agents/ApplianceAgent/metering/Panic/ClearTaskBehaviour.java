@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPTED_PROPOSAL;
 
-public class ClearTaskBehaviour extends OneShotBehaviour {
+public final class ClearTaskBehaviour extends OneShotBehaviour {
     private final ApplianceAgent agent;
 
     public ClearTaskBehaviour(ApplianceAgent agent) {
@@ -19,10 +19,5 @@ public class ClearTaskBehaviour extends OneShotBehaviour {
         final ACLMessage msg = (ACLMessage) getDataStore().get(ACCEPTED_PROPOSAL);
 
         agent.clearCurrentTask();
-
-        final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
-        reply.setContent("Task cleared");
-
-        agent.send(reply);
     }
 }

@@ -1,17 +1,16 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.negotiation;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_BY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_COUNT;
 
-public class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
+public final class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 500;
 
     private final HouseholdCoordinatorAgent agent;
@@ -39,6 +38,6 @@ public class SendApplianceAllocationRequestBehaviour extends OneShotBehaviour {
         request.setReplyByDate(replyBy);
 
         agent.send(request);
-        getDataStore().put(DataStoreKey.Negotiation.REQUEST_REPLY_BY, replyBy);
+        getDataStore().put(REQUEST_REPLY_BY, replyBy);
     }
 }

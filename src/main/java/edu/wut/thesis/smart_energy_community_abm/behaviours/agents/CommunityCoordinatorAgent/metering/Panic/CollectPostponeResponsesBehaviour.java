@@ -9,6 +9,8 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.*;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.POSTPONE_RESPONSES;
+
 public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
 
     private final CommunityCoordinatorAgent agent;
@@ -29,7 +31,7 @@ public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandl
 
     @Override
     public int onEnd() {
-        getDataStore().put(DataStoreKey.Metering.Panic.POSTPONE_RESPONSES, responses);
+        getDataStore().put(POSTPONE_RESPONSES, responses);
         return super.onEnd();
     }
 

@@ -6,7 +6,7 @@ import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_RESPONSE_MSG;
 
-public class ReceiveAllocationRequestResponseBehaviour extends BaseMessageHandlerBehaviour {
+public final class ReceiveAllocationRequestResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean receivedMsg = false;
 
     public ReceiveAllocationRequestResponseBehaviour(ApplianceAgent agent) {

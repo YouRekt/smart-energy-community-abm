@@ -10,6 +10,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.Date;
 import java.util.Map;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_MSG_COUNT;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.SHORTFALL;
 
 public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
@@ -35,6 +37,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         ACLMessage acceptedProposals = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         ACLMessage rejectedProposals = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 
+        int acceptedProposalsCount = 0;
         boolean isShortfallSaturated = false;
 
         if (responses != null) {
@@ -46,6 +49,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
 
                 freedEnergy += entry.getValue();
                 acceptedProposals.addReceiver(entry.getKey());
+                acceptedProposalsCount++;
 
                 if (shortfall <= freedEnergy)
                     isShortfallSaturated = true;
@@ -59,14 +63,15 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
                     " (will drain battery, excess will be pulled from external grid)", LogSeverity.INFO, this);
         } else {
             agent.log("Panic will be resolved after postponements for tick " + agent.tick +
-                    ", sending confirmations to HouseholdCoordinators", LogSeverity.DEBUG, this);
+                    ", sending confirmations to HouseholdCoordinators", LogSeverity.INFO, this);
         }
 
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         acceptedProposals.setReplyByDate(replyBy);
         rejectedProposals.setReplyByDate(replyBy);
 
-        getDataStore().put(DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY, replyBy);
+        getDataStore().put(ACCEPT_PROPOSAL_REPLY_BY, replyBy);
+        getDataStore().put(ACCEPT_PROPOSAL_MSG_COUNT, acceptedProposalsCount);
 
         agent.send(acceptedProposals);
         agent.send(rejectedProposals);

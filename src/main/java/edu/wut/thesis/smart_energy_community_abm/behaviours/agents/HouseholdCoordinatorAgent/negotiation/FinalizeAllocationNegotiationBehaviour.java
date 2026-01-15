@@ -16,7 +16,7 @@ import java.util.Map;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
 
-public class FinalizeAllocationNegotiationBehaviour extends OneShotBehaviour {
+public final class FinalizeAllocationNegotiationBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
 
     public FinalizeAllocationNegotiationBehaviour(HouseholdCoordinatorAgent agent) {

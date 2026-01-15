@@ -1,16 +1,14 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.GreenEnergyAgent.discovery;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityBatteryAgent.discovery;
 
-import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
+import edu.wut.thesis.smart_energy_community_abm.agents.CommunityBatteryAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public final class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
-    private final GreenEnergyAgent agent;
+public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
     private boolean receivedTick = false;
 
-    public ProcessTickBehaviour(GreenEnergyAgent agent) {
+    public ReceiveTickBehaviour(CommunityBatteryAgent agent) {
         super(agent);
-        this.agent = agent;
     }
 
     @Override
@@ -21,9 +19,9 @@ public final class ProcessTickBehaviour extends BaseMessageHandlerBehaviour {
     @Override
     protected void handleInform(ACLMessage msg) {
         receivedTick = true;
-        agent.tick = Long.parseLong(msg.getContent());
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
-        reply.setOntology(GreenEnergyAgent.class.getSimpleName());
+        reply.setOntology(CommunityBatteryAgent.class.getSimpleName());
+        reply.setContent("I'm responsive!");
         agent.send(reply);
     }
 

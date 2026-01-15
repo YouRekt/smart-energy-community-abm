@@ -14,7 +14,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 
 public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
     // TODO: Replace this with a dynamic value based on the CommunityCoordinator's replyBy time (ex. 70%)
-    private static final int REPLY_BY_DELAY = 100;
+    private static final int REPLY_BY_DELAY = 300;
 
     private final AID topic;
     private final HouseholdCoordinatorAgent agent;

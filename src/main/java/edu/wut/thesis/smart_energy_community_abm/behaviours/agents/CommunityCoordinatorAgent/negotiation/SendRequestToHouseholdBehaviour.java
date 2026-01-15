@@ -14,7 +14,7 @@ import java.util.Map;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.AGENT_LIST;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.OVERLOADED_TICKS;
 
-public class SendRequestToHouseholdBehaviour extends OneShotBehaviour {
+public final class SendRequestToHouseholdBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
 
     public SendRequestToHouseholdBehaviour(CommunityCoordinatorAgent agent) {

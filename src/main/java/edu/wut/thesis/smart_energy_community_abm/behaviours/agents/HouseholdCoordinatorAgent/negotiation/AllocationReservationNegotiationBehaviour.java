@@ -8,7 +8,7 @@ import jade.core.behaviours.OneShotBehaviour;
 
 import static jade.lang.acl.ACLMessage.*;
 
-public class AllocationReservationNegotiationBehaviour extends BaseFSMBehaviour {
+public final class AllocationReservationNegotiationBehaviour extends BaseFSMBehaviour {
     private static final String CALCULATE_TIMETABLE = "calculate-timetable";
     private static final String COLLECT_COMMUNITY_RESPONSE = "collect-community-response";
     private static final String FINALIZE = "finalize";

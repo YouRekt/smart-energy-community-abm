@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.POSTPONE_AGREEMENTS;
 
-public class CollectProposalResultBehaviour extends BaseMessageHandlerBehaviour {
+public final class CollectProposalResultBehaviour extends BaseMessageHandlerBehaviour {
     private final HouseholdCoordinatorAgent agent;
     private boolean received = false;
 
@@ -37,7 +37,7 @@ public class CollectProposalResultBehaviour extends BaseMessageHandlerBehaviour 
     @Override
     protected void handleAcceptProposal(ACLMessage msg) {
         received = true;
-        final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.REQUEST);
+        final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         final Map<Long, Double> energyClearedPerTick = new HashMap<>();
 
         // TODO: Reply to Appliances that we acknowledge their decision

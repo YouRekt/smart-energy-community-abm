@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBehaviour {
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.CURRENT_CHARGE;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.POWER_PRODUCED;
 
+public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<ACLMessage>> ontologyActions;
 
@@ -40,8 +42,8 @@ public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBeh
 
     @Override
     public int onEnd() {
-        getDataStore().put(DataStoreKey.Metering.CURRENT_CHARGE, currentCharge);
-        getDataStore().put(DataStoreKey.Metering.POWER_PRODUCED, powerProduced);
+        getDataStore().put(CURRENT_CHARGE, currentCharge);
+        getDataStore().put(POWER_PRODUCED, powerProduced);
         return super.onEnd();
     }
 

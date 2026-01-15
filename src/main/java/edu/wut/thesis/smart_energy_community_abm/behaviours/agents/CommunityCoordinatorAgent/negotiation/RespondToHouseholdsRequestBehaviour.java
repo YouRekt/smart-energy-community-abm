@@ -14,7 +14,7 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.NOT_OVERLOADED;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.OVERLOADED;
 
-public class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
+public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
     private boolean overloaded = false;
 
@@ -31,7 +31,7 @@ public class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         try {
-            // TODO: Check schedule if we can fit the requested allocation
+            // TODO: Check schedule if we can fit the requested allocation - use predictions
             final ObjectMapper mapper = new ObjectMapper();
 
             final ACLMessage msg = (ACLMessage) getDataStore().get(HOUSEHOLD_RESPONSE);

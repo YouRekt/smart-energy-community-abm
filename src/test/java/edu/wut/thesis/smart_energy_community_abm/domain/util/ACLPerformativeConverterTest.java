@@ -32,12 +32,12 @@ class ACLPerformativeConverterTest {
     @Test
     @DisplayName("Should correctly convert ACL integer to String")
     void testACLToString() {
-        assertEquals("INFORM", ACLPerformativeConverter.ConvertACLPerformativeToString(ACLMessage.INFORM));
+        assertEquals("INFORM", ACLPerformativeConverter.ConvertACLPerformativeToString(ACLMessage.INFORM, false));
     }
 
     @Test
     @DisplayName("Should handle unknown integers gracefully")
     void testUnknownInteger() {
-        assertEquals("ERR_UNK_PERF", ACLPerformativeConverter.ConvertACLPerformativeToString(-999));
+        assertEquals("ERR_UNK_PERF", ACLPerformativeConverter.ConvertACLPerformativeToString(-999, false));
     }
 }

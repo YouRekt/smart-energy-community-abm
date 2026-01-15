@@ -2,9 +2,10 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.base;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.BaseAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.util.ACLPerformativeConverter;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.util.ACLPerformativeConverter.ConvertACLPerformativeToString;
 
 public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     protected final BaseAgent agent;
@@ -18,7 +19,12 @@ public abstract class BaseMessageHandlerBehaviour extends SimpleBehaviour {
     public final void action() {
         final ACLMessage msg = agent.receive();
         if (msg != null) {
-            agent.log("Received message: [" + ACLPerformativeConverter.ConvertACLPerformativeToString(msg.getPerformative()) + "] " + (msg.getContent() == null ? "null" : msg.getContent()), LogSeverity.DEBUG, this);
+            agent.log("Received message from ["
+                    + msg.getSender().getLocalName()
+                    + "]: " + ConvertACLPerformativeToString(msg.getPerformative(), true) + " "
+                    + (msg.getContent() == null ?
+                    "null" :
+                    msg.getContent()), LogSeverity.DEBUG, this);
             processMsg(msg);
         } else {
             performBlock();

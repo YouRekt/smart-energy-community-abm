@@ -8,11 +8,13 @@ import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoor
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.PhaseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
 public final class HandlePanicBehaviour extends PhaseBehaviour {
-    public HandlePanicBehaviour(HouseholdCoordinatorAgent agent) {
+    public HandlePanicBehaviour(HouseholdCoordinatorAgent agent, DataStore dataStore) {
         super(agent);
+        setDataStore(dataStore);
 
         setupSubBehaviours(new Behaviour[]{
                 new OneShotBehaviour(agent) {

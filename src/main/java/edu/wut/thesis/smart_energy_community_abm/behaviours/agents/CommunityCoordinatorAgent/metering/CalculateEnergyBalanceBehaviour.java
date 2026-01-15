@@ -11,6 +11,7 @@ import java.util.Map;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.*;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
+// TODO: Make sure ALL FIELDS ARE RESET by calling onStart()
 public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
     private int result = NO_PANIC;
@@ -18,6 +19,11 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     public CalculateEnergyBalanceBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
         this.agent = agent;
+    }
+
+    @Override
+    public void onStart() {
+        result = NO_PANIC;
     }
 
     @Override
@@ -37,6 +43,7 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         getDataStore().put(AVAILABLE_ENERGY, availableEnergy);
         getDataStore().put(SHORTFALL, shortfall);
 
+        // TODO: If shortfall is not greater than 0 but close enough - as defined by current strategy - maybe use shouldTriggerPanic; maybe move this whole check to the negotiation shouldTriggerPanic method
         if (shortfall > 0) {
             Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
             int householdsAffected = tickAllocations.size();

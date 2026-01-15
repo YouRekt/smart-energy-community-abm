@@ -2,12 +2,13 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 import java.util.Map;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.REQUEST_REPLY_BY;
 
 public final class RequestApplianceEnergyUsageBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 400;
@@ -29,6 +30,6 @@ public final class RequestApplianceEnergyUsageBehaviour extends OneShotBehaviour
             msg.setContent(Double.toString(agent.timetable.getOrDefault(agent.tick, Map.of()).getOrDefault(applianceAgent, new AllocationEntry(0, 0, 0, 0)).requestedEnergy()));
             agent.send(msg);
         }
-        getDataStore().put(DataStoreKey.Metering.REQUEST_REPLY_BY, replyBy);
+        getDataStore().put(REQUEST_REPLY_BY, replyBy);
     }
 }

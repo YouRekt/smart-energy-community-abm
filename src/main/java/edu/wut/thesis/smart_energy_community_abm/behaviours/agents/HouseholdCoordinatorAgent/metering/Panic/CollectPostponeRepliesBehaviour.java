@@ -2,7 +2,6 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.TimeoutMessageHandlerBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -10,11 +9,13 @@ import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.*;
+
 public final class CollectPostponeRepliesBehaviour extends TimeoutMessageHandlerBehaviour {
     private final List<AID> postponeAgreements = new ArrayList<>();
 
     public CollectPostponeRepliesBehaviour(HouseholdCoordinatorAgent agent) {
-        super(agent, DataStoreKey.Metering.Panic.POSTPONE_REPLY_BY);
+        super(agent, POSTPONE_REPLY_BY);
     }
 
     @Override
@@ -22,7 +23,7 @@ public final class CollectPostponeRepliesBehaviour extends TimeoutMessageHandler
         super.onStart();
         postponeAgreements.clear();
 
-        Integer expected = (Integer) getDataStore().get(DataStoreKey.Metering.Panic.POSTPONE_REPLY_COUNT);
+        Integer expected = (Integer) getDataStore().get(POSTPONE_REPLY_COUNT);
         if (expected != null) {
             setExpectedResponses(expected);
         } else {
@@ -32,7 +33,7 @@ public final class CollectPostponeRepliesBehaviour extends TimeoutMessageHandler
 
     @Override
     public int onEnd() {
-        getDataStore().put(DataStoreKey.Metering.Panic.POSTPONE_AGREEMENTS, postponeAgreements);
+        getDataStore().put(POSTPONE_AGREEMENTS, postponeAgreements);
         return super.onEnd();
     }
 

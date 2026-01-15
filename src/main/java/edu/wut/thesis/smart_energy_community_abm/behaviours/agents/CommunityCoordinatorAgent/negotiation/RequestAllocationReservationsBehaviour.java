@@ -2,7 +2,6 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
@@ -11,6 +10,8 @@ import jade.core.behaviours.OneShotBehaviour;
 
 import java.util.List;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.AGENT_LIST;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.OVERLOADED_TICKS;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
@@ -52,7 +53,7 @@ public final class RequestAllocationReservationsBehaviour extends BaseFSMBehavio
 
         final List<AID> agentList = List.copyOf(agent.householdAgents);
 
-        getDataStore().put(DataStoreKey.Negotiation.AGENT_LIST, agentList);
-        getDataStore().put(DataStoreKey.Negotiation.OVERLOADED_TICKS, null);
+        getDataStore().put(AGENT_LIST, agentList);
+        getDataStore().put(OVERLOADED_TICKS, null);
     }
 }

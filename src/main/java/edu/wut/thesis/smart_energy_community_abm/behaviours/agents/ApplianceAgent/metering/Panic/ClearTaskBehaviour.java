@@ -19,10 +19,5 @@ public final class ClearTaskBehaviour extends OneShotBehaviour {
         final ACLMessage msg = (ACLMessage) getDataStore().get(ACCEPTED_PROPOSAL);
 
         agent.clearCurrentTask();
-
-        final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
-        reply.setContent("Task cleared");
-
-        agent.send(reply);
     }
 }

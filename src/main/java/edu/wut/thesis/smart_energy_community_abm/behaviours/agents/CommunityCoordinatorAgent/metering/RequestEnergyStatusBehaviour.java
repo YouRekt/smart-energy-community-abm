@@ -1,11 +1,12 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.REQUEST_REPLY_BY;
 
 public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
     private static final long REPLY_BY_DELAY = 500;
@@ -26,6 +27,6 @@ public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
         msg.setReplyByDate(replyBy);
         msg.setContent("Requesting energy status");
         agent.send(msg);
-        getDataStore().put(DataStoreKey.Metering.REQUEST_REPLY_BY, replyBy);
+        getDataStore().put(REQUEST_REPLY_BY, replyBy);
     }
 }

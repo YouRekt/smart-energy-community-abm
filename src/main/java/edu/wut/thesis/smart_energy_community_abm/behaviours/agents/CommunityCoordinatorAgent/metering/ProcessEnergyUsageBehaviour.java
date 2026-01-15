@@ -6,6 +6,9 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.lang.acl.ACLMessage;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.EXTERNAL_ENERGY_USED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.GREEN_ENERGY_USED;
+
 public final class ProcessEnergyUsageBehaviour extends TimeoutMessageHandlerBehaviour {
     private final CommunityCoordinatorAgent agent;
 
@@ -27,8 +30,8 @@ public final class ProcessEnergyUsageBehaviour extends TimeoutMessageHandlerBeha
 
     @Override
     public int onEnd() {
-        getDataStore().put(DataStoreKey.Metering.GREEN_ENERGY_USED, greenEnergyUsed);
-        getDataStore().put(DataStoreKey.Metering.EXTERNAL_ENERGY_USED, externalEnergyUsed);
+        getDataStore().put(GREEN_ENERGY_USED, greenEnergyUsed);
+        getDataStore().put(EXTERNAL_ENERGY_USED, externalEnergyUsed);
         return super.onEnd();
     }
 

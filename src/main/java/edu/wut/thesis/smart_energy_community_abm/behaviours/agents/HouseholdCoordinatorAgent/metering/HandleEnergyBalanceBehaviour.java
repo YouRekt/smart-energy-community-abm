@@ -17,7 +17,7 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
         setDataStore(dataStore);
 
         registerFirstState(new CollectEnergyStatusBehaviour(agent), CHECK_PANIC);
-        registerState(new HandlePanicBehaviour(agent), HANDLE_PANIC);
+        registerState(new HandlePanicBehaviour(agent, dataStore), HANDLE_PANIC);
         registerLastState(new OneShotBehaviour(agent) {
             @Override
             public void action() {

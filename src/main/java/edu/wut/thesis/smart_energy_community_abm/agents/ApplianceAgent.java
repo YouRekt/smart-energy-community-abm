@@ -54,7 +54,6 @@ public final class ApplianceAgent extends BaseAgent {
         addBehaviour(new SimulationTickBehaviour(this));
     }
 
-    // TODO: Call this in Phase 3
     public boolean shouldTaskRun(ApplianceTask task, long currentTick) {
         long lastRun = taskSchedule.getOrDefault(task, Long.MIN_VALUE);
         boolean periodElapsed = (currentTick - lastRun) >= task.period();

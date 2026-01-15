@@ -31,7 +31,7 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
     @Override
     public void action() {
         try {
-            // TODO: Check schedule if we can fit the requested allocation
+            // TODO: Check schedule if we can fit the requested allocation - use predictions
             final ObjectMapper mapper = new ObjectMapper();
 
             final ACLMessage msg = (ACLMessage) getDataStore().get(HOUSEHOLD_RESPONSE);

@@ -37,7 +37,7 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
     @Override
     protected void handleAcceptProposal(ACLMessage msg) {
         received = true;
-        final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.REQUEST);
+        final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         final Map<Long, Double> energyClearedPerTick = new HashMap<>();
 
         // TODO: Reply to Appliances that we acknowledge their decision

@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.negotiation.SendAllocationRequestBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTaskInstance;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
@@ -16,7 +15,6 @@ public final class ApplianceAgent extends BaseAgent {
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
     public long tick;
-    public boolean insufficientEnergy = false;
     private List<ApplianceTask> tasks = new ArrayList<>();  // from config
 
     @SuppressWarnings("unchecked")
@@ -120,7 +118,6 @@ public final class ApplianceAgent extends BaseAgent {
         long currentSearchTick = tick + 1;
 
         // Limit search horizon to avoid infinite loops if the schedule is packed forever (unlikely but safe)
-        // For example, look ahead 2x the period or a fixed constant like 200 ticks.
         long searchLimit = tick + Math.max(task.period(), MAX_FUTURE_TICKS);
 
         while (currentSearchTick < searchLimit) {

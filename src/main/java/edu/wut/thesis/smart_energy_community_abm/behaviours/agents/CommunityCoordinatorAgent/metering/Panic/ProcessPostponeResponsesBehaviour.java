@@ -10,6 +10,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.Date;
 import java.util.Map;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_MSG_COUNT;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.SHORTFALL;
 
@@ -36,6 +37,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         ACLMessage acceptedProposals = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         ACLMessage rejectedProposals = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 
+        int acceptedProposalsCount = 0;
         boolean isShortfallSaturated = false;
 
         if (responses != null) {
@@ -47,6 +49,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
 
                 freedEnergy += entry.getValue();
                 acceptedProposals.addReceiver(entry.getKey());
+                acceptedProposalsCount++;
 
                 if (shortfall <= freedEnergy)
                     isShortfallSaturated = true;
@@ -68,6 +71,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         rejectedProposals.setReplyByDate(replyBy);
 
         getDataStore().put(ACCEPT_PROPOSAL_REPLY_BY, replyBy);
+        getDataStore().put(ACCEPT_PROPOSAL_MSG_COUNT, acceptedProposalsCount);
 
         agent.send(acceptedProposals);
         agent.send(rejectedProposals);

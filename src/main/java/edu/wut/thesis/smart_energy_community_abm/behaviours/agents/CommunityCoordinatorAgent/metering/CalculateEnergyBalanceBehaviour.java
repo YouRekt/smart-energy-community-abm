@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
@@ -9,12 +8,12 @@ import jade.core.behaviours.OneShotBehaviour;
 
 import java.util.Map;
 
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.CURRENT_CHARGE;
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.POWER_PRODUCED;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.*;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
 public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
-    private int result = TransitionKeys.Metering.NO_PANIC;
+    private int result = NO_PANIC;
 
     public CalculateEnergyBalanceBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);
@@ -35,8 +34,8 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         agent.log(String.format("Allocated: %.2f, Available: %.2f, Shortfall: %.2f",
                 allocatedThisTick, availableEnergy, shortfall), LogSeverity.INFO, this);
 
-        getDataStore().put(DataStoreKey.Metering.AVAILABLE_ENERGY, availableEnergy);
-        getDataStore().put(DataStoreKey.Metering.SHORTFALL, shortfall);
+        getDataStore().put(AVAILABLE_ENERGY, availableEnergy);
+        getDataStore().put(SHORTFALL, shortfall);
 
         if (shortfall > 0) {
             Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());

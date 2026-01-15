@@ -19,7 +19,7 @@ public final class HandlePanicBehaviour extends PhaseBehaviour {
                         agent.log(String.format("--- Handle Panic: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
-                new PrepareAndSendPostponeCFPBehaviour(agent),          // Prepare + send in one
+                new SendPostponeCFPBehaviour(agent),                    // Prepare + send in one
                 new CollectPostponeResponsesBehaviour(agent),           // Async wait for responses
                 new ProcessPostponeResponsesBehaviour(agent),           // Go through proposals and accept them until we satisfy the shortfall
                                                                         // , send accept-proposal and reject-proposal

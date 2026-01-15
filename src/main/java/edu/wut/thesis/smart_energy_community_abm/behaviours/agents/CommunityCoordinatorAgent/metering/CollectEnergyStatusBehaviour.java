@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public final class CollectEnergyStatusBehaviour extends TimeoutMessageHandlerBehaviour {
-
     private final CommunityCoordinatorAgent agent;
     private final Map<String, Consumer<ACLMessage>> ontologyActions;
 

@@ -16,7 +16,7 @@ public final class DiscoveryPhaseBehaviour extends PhaseBehaviour {
                         agent.log(String.format("--- Phase 1 [Discovery]: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
-                new StartNewTickBehaviour(agent),           // Send TICK message to all agents of interest to get their health
+                new SendNewTickBehaviour(agent),           // Send TICK message to all agents of interest to get their health
                 new CollectAgentResponsesBehaviour(agent)   // Collect health responses from agents
         });
     }

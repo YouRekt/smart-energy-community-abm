@@ -16,7 +16,7 @@ public final class MeteringPhaseBehaviour extends PhaseBehaviour {
                         agent.log("Entering phase 2 (Metering)", LogSeverity.DEBUG, this);
                     }
                 },
-                new ProcessRequestBehaviour(agent)      // Process CommunityCoordinator's request for power and respond
+                new ReceiveEnergyStatusRequestBehaviour(agent)      // Process CommunityCoordinator's request for power and respond
         });
     }
 }

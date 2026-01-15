@@ -24,9 +24,8 @@ public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
         agent.tick = Long.parseLong(msg.getContent());
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
         reply.setOntology(ApplianceAgent.class.getSimpleName());
+        reply.setContent("I'm responsive!");
         agent.send(reply);
-
-        //TODO: Check schedule and possibly take task -> not here tho
     }
 
     @Override

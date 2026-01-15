@@ -4,11 +4,11 @@ import edu.wut.thesis.smart_energy_community_abm.agents.GreenEnergyAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseMessageHandlerBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public final class ProcessRequestBehaviour extends BaseMessageHandlerBehaviour {
+public final class ReceiveEnergyStatusRequestBehaviour extends BaseMessageHandlerBehaviour {
     private final GreenEnergyAgent agent;
     private boolean receivedRequest = false;
 
-    public ProcessRequestBehaviour(GreenEnergyAgent agent) {
+    public ReceiveEnergyStatusRequestBehaviour(GreenEnergyAgent agent) {
         super(agent);
         this.agent = agent;
     }
@@ -24,7 +24,6 @@ public final class ProcessRequestBehaviour extends BaseMessageHandlerBehaviour {
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         final Double producedEnergy = agent.produceEnergy(true);
         reply.setContent(producedEnergy.toString());
-
         reply.setOntology(GreenEnergyAgent.class.getSimpleName());
         agent.send(reply);
     }

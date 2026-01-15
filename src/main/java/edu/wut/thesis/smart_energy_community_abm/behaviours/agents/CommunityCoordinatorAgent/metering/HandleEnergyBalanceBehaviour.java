@@ -2,10 +2,12 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.base.LogBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.behaviours.DataStore;
-import jade.core.behaviours.OneShotBehaviour;
+
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.HAS_PANIC;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
 public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
     private static final String CHECK_PANIC = "check-panic";
@@ -17,17 +19,11 @@ public final class HandleEnergyBalanceBehaviour extends BaseFSMBehaviour {
         setDataStore(dataStore);
 
         registerFirstState(new CalculateEnergyBalanceBehaviour(agent), CHECK_PANIC);
-        registerState(new HandlePanicBehaviour(agent), HANDLE_PANIC);
-        registerLastState(new OneShotBehaviour(agent) {
-            // TODO: Wrap these kinds of exit behaviours to a simple one utility behaviour (just pass the log in constructor)
-            @Override
-            public void action() {
-                agent.log("Energy balance resolved", LogSeverity.DEBUG, agent);
-            }
-        }, EXIT);
+        registerState(new HandlePanicBehaviour(agent, dataStore), HANDLE_PANIC);
+        registerLastState(new LogBehaviour(agent, "Energy balance resolved", LogSeverity.DEBUG), EXIT);
 
-        registerTransition(CHECK_PANIC, EXIT, TransitionKeys.Metering.NO_PANIC);
-        registerTransition(CHECK_PANIC, HANDLE_PANIC, TransitionKeys.Metering.HAS_PANIC);
+        registerTransition(CHECK_PANIC, EXIT, NO_PANIC);
+        registerTransition(CHECK_PANIC, HANDLE_PANIC, HAS_PANIC);
         registerDefaultTransition(HANDLE_PANIC, EXIT);
     }
 }

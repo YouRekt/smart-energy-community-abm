@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import java.util.Date;
 
 public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
-    private static final long REPLY_BY_DELAY = 400;
+    private static final long REPLY_BY_DELAY = 500;
 
     private final CommunityCoordinatorAgent agent;
 
@@ -24,6 +24,7 @@ public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
         msg.addReceiver(agent.batteryAgent);
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         msg.setReplyByDate(replyBy);
+        msg.setContent("Requesting energy status");
         agent.send(msg);
         getDataStore().put(DataStoreKey.Metering.REQUEST_REPLY_BY, replyBy);
     }

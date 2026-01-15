@@ -16,7 +16,7 @@ public final class DiscoveryPhaseBehaviour extends PhaseBehaviour {
                         agent.log("Entering phase 1 (Discovery)", LogSeverity.DEBUG, this);
                     }
                 },
-                new ProcessTickBehaviour(agent)    // Receive and respond to TICK message
+                new ReceiveTickBehaviour(agent)    // Receive and respond to TICK message
         });
     }
 }

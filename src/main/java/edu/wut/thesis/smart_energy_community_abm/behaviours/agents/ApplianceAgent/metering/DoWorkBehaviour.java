@@ -16,13 +16,17 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        // TODO: Do work and push metrics, actually use proper values when sending back to household
+        // TODO: Do work and push metrics to database
         final ACLMessage msg = (ACLMessage) getDataStore().get(ALLOWED_GREEN_ENERGY);
+        final double availableGreenEnergy = Double.parseDouble(msg.getContent());
+        double energyUsedThisTick = agent.getCurrentEnergyUsage();
+        double usedGreenEnergy = Math.min(availableGreenEnergy, energyUsedThisTick);
+        double usedGridEnergy = energyUsedThisTick - usedGreenEnergy;
 
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setOntology(ApplianceAgent.class.getSimpleName());
         // (Green Energy, Grid Energy)
-        reply.setContent(String.format("%s,%s", agent.getCurrentEnergyUsage(), "0.0"));
+        reply.setContent(String.format("%s,%s", usedGreenEnergy, usedGridEnergy));
         agent.send(reply);
     }
 }

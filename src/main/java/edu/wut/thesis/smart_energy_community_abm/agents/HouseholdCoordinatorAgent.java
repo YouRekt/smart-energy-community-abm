@@ -2,7 +2,6 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
-import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
@@ -14,9 +13,6 @@ import java.util.*;
 public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
     public final TreeMap<Long, Map<AID, AllocationEntry>> timetable = new TreeMap<>();
-    public final List<EnergyRequest> pendingRequests = new ArrayList<>();
-    // TODO: Remove
-    public String name;
     public long tick = 0;
     public Integer applianceCount;
 
@@ -41,6 +37,13 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
         }
 
         addBehaviour(new SimulationTickBehaviour(this));
+    }
+
+    public double getAllocatedEnergyFor(long tick, AID appliance) {
+        return timetable
+                .getOrDefault(tick, Map.of())
+                .getOrDefault(appliance, new AllocationEntry(0.0, 0, 0, 0))
+                .requestedEnergy();
     }
 
     public Map<Long, Double> clearCurrentAllocation(AID agent) {

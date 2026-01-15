@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.SimulationTickBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.negotiation.SendAllocationRequestBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTaskInstance;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
@@ -56,9 +57,20 @@ public final class ApplianceAgent extends BaseAgent {
 
     public boolean shouldTaskRun(ApplianceTask task, long currentTick) {
         long lastRun = taskSchedule.getOrDefault(task, Long.MIN_VALUE);
+
+        // 1. If never run, it is due immediately
+        if (lastRun == Long.MIN_VALUE) {
+            return true;
+        }
+
+        // 2. Check if period has elapsed
         boolean periodElapsed = (currentTick - lastRun) >= task.period();
-        boolean humanTriggered = Math.random() < task.humanActivationChance();
-        return periodElapsed || humanTriggered;
+        if (periodElapsed) {
+            return true;
+        }
+
+        // 3. If not strictly due, check random human activation
+        return Math.random() < task.humanActivationChance();
     }
 
     public boolean isRunning() {
@@ -102,5 +114,49 @@ public final class ApplianceAgent extends BaseAgent {
         }
 
         return 0.0;
+    }
+
+    public long findFirstAvailableSlot(ApplianceTask task) {
+        long currentSearchTick = tick + 1;
+
+        // Limit search horizon to avoid infinite loops if the schedule is packed forever (unlikely but safe)
+        // For example, look ahead 2x the period or a fixed constant like 200 ticks.
+        long searchLimit = tick + Math.max(task.period(), MAX_FUTURE_TICKS);
+
+        while (currentSearchTick < searchLimit) {
+            long gap = getAvailableGapDuration(currentSearchTick);
+
+            if (gap >= task.duration()) {
+                return currentSearchTick;
+            }
+
+            // Optimization: If gap is 0 (occupied), jump to the end of the blocking task.
+            if (gap == 0) {
+                // Find next key (start of next task) isn't helpful if we are *inside* a task.
+                // We need the END of the current blocking task.
+                var entry = timetable.floorEntry(currentSearchTick);
+                if (entry != null && entry.getValue().endTick() >= currentSearchTick) {
+                    currentSearchTick = entry.getValue().endTick() + 1;
+                } else {
+                    // Should theoretically not happen if gap returns 0 logic is correct
+                    currentSearchTick++;
+                }
+            } else {
+                // We found a gap, but it was too small.
+                // The gap ends at (currentSearchTick + gap).
+                // The next task starts immediately after.
+                // Safest is to jump to the start of the next task (which defines the end of this gap).
+                Long nextTaskStart = timetable.higherKey(currentSearchTick);
+                if (nextTaskStart != null) {
+                    // The gap ends at nextTaskStart. The task at nextTaskStart is blocking us.
+                    // We need to jump past that task.
+                    currentSearchTick = timetable.get(nextTaskStart).endTick() + 1;
+                } else {
+                    // This implies gap is MAX_LONG, so we should have returned already.
+                    currentSearchTick++;
+                }
+            }
+        }
+        return -1;
     }
 }

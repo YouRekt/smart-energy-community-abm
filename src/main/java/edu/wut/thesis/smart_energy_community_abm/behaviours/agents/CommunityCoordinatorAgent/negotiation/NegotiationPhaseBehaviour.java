@@ -24,7 +24,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
                         agent.tick++;
                         // TODO: REMOVE THIS!!!
                         try {
-                            TimeUnit.SECONDS.sleep(1);
+                            TimeUnit.SECONDS.sleep(5);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }

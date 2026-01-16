@@ -3,15 +3,16 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.AGENT_LIST;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.OVERLOADED_TICKS;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Negotiation.*;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
@@ -35,23 +36,25 @@ public final class RequestAllocationReservationsBehaviour extends BaseFSMBehavio
         registerLastState(new OneShotBehaviour() {
             @Override
             public void action() {
-                agent.log("Finished negotiation with household", LogSeverity.DEBUG, this);
+                agent.log("Finished negotiation with households", LogSeverity.DEBUG, this);
             }
         }, EXIT);
 
         registerDefaultTransition(SEND_REQUEST, PROCESS_RESPONSE);
-        registerTransition(PROCESS_RESPONSE, EXIT, REFUSE);
+        registerTransition(PROCESS_RESPONSE, SEND_REQUEST, REFUSE);
         registerTransition(PROCESS_RESPONSE, RESPOND, INFORM);
-        registerTransition(RESPOND, ACKNOWLEDGE, TransitionKeys.Negotiation.NOT_OVERLOADED);
-        registerTransition(RESPOND, PROCESS_RESPONSE, TransitionKeys.Negotiation.OVERLOADED);
-        registerDefaultTransition(ACKNOWLEDGE, EXIT);
+        registerTransition(PROCESS_RESPONSE, EXIT, FINISHED);
+        registerTransition(RESPOND, ACKNOWLEDGE, NOT_OVERLOADED);
+        registerTransition(RESPOND, PROCESS_RESPONSE, OVERLOADED);
+        registerTransition(ACKNOWLEDGE, SEND_REQUEST, NEXT_HOUSEHOLD);
+        registerTransition(ACKNOWLEDGE, EXIT, FINISHED);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        final List<AID> agentList = List.copyOf(agent.householdAgents);
+        final List<AID> agentList = new ArrayList<>(agent.householdAgents);
 
         getDataStore().put(AGENT_LIST, agentList);
         getDataStore().put(OVERLOADED_TICKS, null);

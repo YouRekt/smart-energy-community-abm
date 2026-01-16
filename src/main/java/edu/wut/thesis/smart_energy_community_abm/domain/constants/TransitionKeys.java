@@ -20,5 +20,7 @@ public final class TransitionKeys {
     public static final class Negotiation {
         public static final int OVERLOADED = 1;
         public static final int NOT_OVERLOADED = 0;
+        public static final int FINISHED = 0;
+        public static final int NEXT_HOUSEHOLD = 1;
     }
 }

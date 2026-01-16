@@ -46,5 +46,7 @@ public final class DataStoreKey {
         public static final String SEND_ALLOCATION_REQUEST = "send-allocation-request";
         public static final String COLLECT_ALLOCATION_RESPONSE = "collect-allocation-response";
         public static final String PROCESS_ALLOCATION_RESPONSE = "process-allocation-response";
+        public static final String APPLIANCE_CONFIRM_MESSAGES = "appliance-confirm-messages";
+        public static final String CONFIRM_REPLY_BY_DELAY = "confirm-reply-by-delay";
     }
 }

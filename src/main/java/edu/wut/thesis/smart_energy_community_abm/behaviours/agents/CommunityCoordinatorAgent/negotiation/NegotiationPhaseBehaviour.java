@@ -22,12 +22,12 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
                 new OneShotBehaviour(agent) {
                     public void action() {
                         agent.tick++;
-                        // TODO: REMOVE THIS!!!
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+//                        // TODO: REMOVE THIS!!!
+//                        try {
+//                            TimeUnit.SECONDS.sleep(5);
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
                     }
                 },
         });

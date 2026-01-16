@@ -15,10 +15,21 @@ import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataSto
 
 public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
     private final HouseholdCoordinatorAgent agent;
+    private boolean refused;
 
     public HandlePostponeRepliesBehaviour(HouseholdCoordinatorAgent agent) {
         super(agent);
         this.agent = agent;
+    }
+
+    @Override
+    public void onStart() {
+        refused = false;
+    }
+
+    @Override
+    public int onEnd() {
+        return refused ? ACLMessage.REFUSE : ACLMessage.PROPOSE;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,6 +53,7 @@ public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
             reply.setContent(String.valueOf(totalFreedEnergy));
         } else {
             reply.setPerformative(ACLMessage.REFUSE);
+            refused = true;
         }
 
         agent.send(reply);

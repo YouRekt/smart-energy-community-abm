@@ -143,6 +143,14 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
     }
 
     private Set<EnergyRequest> solveSubsetSum(List<EnergyRequest> items, double limit) {
+        if (limit <= 0.0001) {
+            return Collections.emptySet();
+        }
+
+        if (items.isEmpty()) {
+            return Collections.emptySet();
+        }
+
         final double SCALE = 1000.0;
         int capacity = (int) Math.floor(limit * SCALE);
         int n = items.size();

@@ -49,7 +49,6 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
             final LongFunction<Double> energyPerTick = (tick) -> agent.getAllocatedAt(tick) + request.get(tick);
 
             final Map<Long, Double> overloadedTicks = agent.calculateAverageProduction(startTick, endTick, energyPerTick);
-            agent.log(overloadedTicks.toString(), LogSeverity.DEBUG, this);
             final ACLMessage reply = msg.createReply();
 
             if (overloadedTicks.values().stream().filter(n -> n > 0).toList().isEmpty()) {

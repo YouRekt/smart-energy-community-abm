@@ -29,6 +29,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
 //                            throw new RuntimeException(e);
 //                        }
                         agent.getPredictedMaxAmount(agent.tick);
+                        agent.logCurrentAverageProduction();
                     }
                 },
         });

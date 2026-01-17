@@ -6,6 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModel;
+import edu.wut.thesis.smart_energy_community_abm.domain.prediction.MovingAveragePredictionModel;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStrategy;
 import jade.core.AID;
 
@@ -118,6 +119,12 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         double predictedMax = predictionModel.predictAvailableEnergy(tick);
         log("Predicting " + predictedMax + " energy for tick " + tick, LogSeverity.DEBUG, this);
         return predictedMax;
+    }
+    
+    public void logCurrentAverageProduction() {
+        // TODO: Remove when app is final
+        double avg = ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();
+        log("Current average production " + avg, LogSeverity.DEBUG, this);
     }
 
     public void updatePredictionModel(double production, double batteryCharge) {

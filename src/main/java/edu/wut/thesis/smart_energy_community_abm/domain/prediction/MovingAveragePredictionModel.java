@@ -96,7 +96,7 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
         return balances;
     }
 
-    private double calculateAverageProduction() {
+    public double calculateAverageProduction() {
         if (productionHistory.isEmpty()) {
             return 0.0;
         }

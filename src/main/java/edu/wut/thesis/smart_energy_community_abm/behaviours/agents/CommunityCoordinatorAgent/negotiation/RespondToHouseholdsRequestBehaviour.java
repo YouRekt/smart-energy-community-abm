@@ -45,7 +45,7 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
             );
             final long startTick = Collections.min(request.keySet());
             final long endTick = Collections.max(request.keySet());
-            final LongFunction<Double> energyPerTick = (tick) -> agent.getAllocatedAt(tick) + request.get(tick);
+            final LongFunction<Double> energyPerTick = (tick) -> agent.getAllocatedAt(tick) + request.getOrDefault(tick, 0.0);
 
             final Map<Long, Double> overloadedTicks = agent.calculateAverageProduction(startTick, endTick, energyPerTick);
             final ACLMessage reply = msg.createReply();

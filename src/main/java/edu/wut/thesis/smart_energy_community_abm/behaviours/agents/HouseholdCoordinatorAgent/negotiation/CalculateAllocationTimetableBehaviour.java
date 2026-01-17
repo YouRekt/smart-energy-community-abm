@@ -37,7 +37,6 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
     public void action() {
         try {
             final Map<AID, List<EnergyRequest>> requestedAllocations = (Map<AID, List<EnergyRequest>>) getDataStore().get(REQUESTED_ALLOCATIONS);
-
             final ACLMessage communityResponse = (ACLMessage) getDataStore().get(ALLOCATION_REQUEST);
             final ACLMessage response = communityResponse.createReply();
 
@@ -65,12 +64,12 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
                         }
                 );
 
-                List<Long> sortedTicks = new ArrayList<>(rawOverloads.keySet());
-                Collections.sort(sortedTicks);
+                List<Long> sortedOverloadTicks = new ArrayList<>(rawOverloads.keySet());
+                Collections.sort(sortedOverloadTicks);
 
                 Map<Long, Double> currentOverloads = new HashMap<>(rawOverloads);
 
-                for (Long tick : sortedTicks) {
+                for (Long tick : sortedOverloadTicks) {
                     double overloadAmount = currentOverloads.get(tick);
 
                     if (overloadAmount <= 0) continue;
@@ -84,6 +83,9 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
                             totalRequestedAtTick += req.energyPerTick();
                         }
                     }
+
+                    if (candidates.isEmpty())
+                        continue;
 
                     double maxCapacity = totalRequestedAtTick - overloadAmount;
                     Set<EnergyRequest> keptRequests = solveSubsetSum(candidates, maxCapacity);

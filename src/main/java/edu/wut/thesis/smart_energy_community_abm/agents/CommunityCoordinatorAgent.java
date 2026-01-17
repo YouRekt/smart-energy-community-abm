@@ -14,6 +14,8 @@ import java.util.*;
 import java.util.function.LongFunction;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
+    public static final int MAX_NEGOTIATION_RETRIES = 5;
+
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
@@ -120,7 +122,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         log("Predicting " + predictedMax + " energy for tick " + tick, LogSeverity.DEBUG, this);
         return predictedMax;
     }
-    
+
     public void logCurrentAverageProduction() {
         // TODO: Remove when app is final
         double avg = ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();

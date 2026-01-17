@@ -49,5 +49,6 @@ public final class DataStoreKey {
         public static final String PROCESS_ALLOCATION_RESPONSE = "process-allocation-response";
         public static final String APPLIANCE_CONFIRM_MESSAGES = "appliance-confirm-messages";
         public static final String CONFIRM_REPLY_BY_DELAY = "confirm-reply-by-delay";
+        public static final String NEGOTIATION_RETRIES = "negotiation-retries";
     }
 }

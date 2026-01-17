@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -13,8 +14,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS;
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.MAX_NEGOTIATION_RETRIES;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.*;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
@@ -36,12 +37,17 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
     @Override
     public void action() {
         try {
+            int tries = (Integer) getDataStore().get(NEGOTIATION_RETRIES);
+
             final Map<AID, List<EnergyRequest>> requestedAllocations = (Map<AID, List<EnergyRequest>>) getDataStore().get(REQUESTED_ALLOCATIONS);
             final ACLMessage communityResponse = (ACLMessage) getDataStore().get(ALLOCATION_REQUEST);
             final ACLMessage response = communityResponse.createReply();
 
-            if (requestedAllocations == null || requestedAllocations.isEmpty()) {
-                agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
+            if (requestedAllocations == null || requestedAllocations.isEmpty() || tries > MAX_NEGOTIATION_RETRIES) {
+                if (requestedAllocations == null || requestedAllocations.isEmpty())
+                    agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
+                if (tries > MAX_NEGOTIATION_RETRIES)
+                    agent.log("Exceeded max request allocation retries, quitting", LogSeverity.WARN, this);
                 response.setPerformative(REFUSE);
                 response.setContent("No allocation requests");
                 agent.send(response);
@@ -136,6 +142,8 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
             } else {
                 response.setPerformative(INFORM);
                 response.setContent(mapper.writeValueAsString(allocationByTick));
+                tries++;
+                getDataStore().put(NEGOTIATION_RETRIES, tries);
 
                 agent.send(response);
             }

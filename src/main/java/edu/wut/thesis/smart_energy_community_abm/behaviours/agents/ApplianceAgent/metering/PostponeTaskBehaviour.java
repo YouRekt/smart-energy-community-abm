@@ -17,6 +17,6 @@ public class PostponeTaskBehaviour extends OneShotBehaviour {
     public void action() {
         final ApplianceTask taskToPostpone = (ApplianceTask) getDataStore().get(TASK_TO_POSTPONE);
         // TODO: To when should we postpone the task?
-        agent.taskSchedule.put(taskToPostpone, Long.MIN_VALUE);
+        agent.taskSchedule.put(taskToPostpone, agent.taskSchedule.get(taskToPostpone) + taskToPostpone.period());
     }
 }

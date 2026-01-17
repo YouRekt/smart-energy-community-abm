@@ -39,6 +39,10 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
         addBehaviour(new SimulationTickBehaviour(this));
     }
 
+    public Set<AID> getActiveAppliancesAt(long tick) {
+        return timetable.getOrDefault(tick, Map.of()).keySet();
+    }
+
     public double getAllocatedEnergyFor(long tick, AID appliance) {
         return timetable
                 .getOrDefault(tick, Map.of())

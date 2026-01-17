@@ -1,7 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
+import edu.wut.thesis.smart_energy_community_abm.application.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
 import edu.wut.thesis.smart_energy_community_abm.domain.config.*;
 import org.junit.jupiter.api.DisplayName;
@@ -89,11 +89,15 @@ class SimulationControllerTest {
         ApplianceConfig appConfig = new ApplianceConfig("Washer", "House1", List.of(task));
         HouseholdConfig house = new HouseholdConfig(List.of(appConfig), "House1");
 
+        // NEW: Create a valid PredictionModelConfig
+        PredictionModelConfig predictionConfig = new PredictionModelConfig("MOVING_AVERAGE", 0.2, 10);
+
         return new CommunityConfig(
                 battery,
                 List.of(source),
                 List.of(house),
-                "Balanced"
+                "Balanced",
+                predictionConfig // NEW: Pass the 5th argument
         );
     }
 }

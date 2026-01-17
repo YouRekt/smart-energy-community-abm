@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.application.implementations;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
+import edu.wut.thesis.smart_energy_community_abm.application.JadeService;
 import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;

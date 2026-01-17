@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
@@ -6,7 +6,7 @@ import jade.core.behaviours.OneShotBehaviour;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.TASK_TO_POSTPONE;
 
-public class PostponeTaskBehaviour extends OneShotBehaviour {
+public final class PostponeTaskBehaviour extends OneShotBehaviour {
     final private ApplianceAgent agent;
 
     PostponeTaskBehaviour(ApplianceAgent agent) {

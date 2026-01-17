@@ -1,9 +1,6 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic.ClearTaskBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic.CollectPostponeResponseBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic.SendPostponeResponseBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.DataStore;

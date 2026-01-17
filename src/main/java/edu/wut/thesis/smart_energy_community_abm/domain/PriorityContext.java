@@ -1,6 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
-
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
+package edu.wut.thesis.smart_energy_community_abm.domain;
 
 public record PriorityContext(
         AllocationEntry entry,

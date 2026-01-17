@@ -1,8 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.config;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.domain.config.interfaces.AgentConfig;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.StrategyFactory;
+import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModelFactory;
+import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStrategyFactory;
 
 import java.util.List;
 
@@ -10,7 +10,8 @@ public record CommunityConfig(
         BatteryConfig batteryConfig,
         List<GreenEnergySourceConfig> energySourcesConfigs,
         List<HouseholdConfig> householdConfigs,
-        String strategyName
+        String strategyName,
+        PredictionModelConfig predictionModelConfig
 ) implements AgentConfig {
 
     public CommunityConfig {
@@ -38,7 +39,15 @@ public record CommunityConfig(
                 new Object[]{
                         householdConfigs.size(),
                         energySourcesConfigs.size(),
-                        StrategyFactory.create(strategyName),
+                        NegotiationStrategyFactory.create(strategyName),
+                        EnergyPredictionModelFactory.create(
+                                predictionModelConfig.name(),
+                                new Object[]{
+                                        batteryConfig.capacity(),
+                                        predictionModelConfig.minBatteryChargeThreshold(),
+                                        predictionModelConfig.windowSize()
+                                }
+                        )
                 });
     }
 }

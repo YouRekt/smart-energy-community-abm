@@ -1,7 +1,7 @@
-package edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations;
+package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.*;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.interfaces.NegotiationStrategy;
+import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
+import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 
 public final class GreenScoreFirstStrategy implements NegotiationStrategy {
     private static final double GREENSCORE_WEIGHT = 0.6;

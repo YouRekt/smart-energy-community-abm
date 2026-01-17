@@ -45,6 +45,7 @@ public record CommunityConfig(
                                 new Object[]{
                                         batteryConfig.capacity(),
                                         predictionModelConfig.minBatteryChargeThreshold(),
+                                        predictionModelConfig.productionSafetyFactor(),
                                         predictionModelConfig.windowSize()
                                 }
                         )

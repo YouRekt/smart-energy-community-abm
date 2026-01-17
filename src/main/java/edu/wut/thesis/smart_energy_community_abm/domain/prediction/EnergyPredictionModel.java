@@ -1,5 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.prediction;
 
+import java.util.Map;
+import java.util.function.LongFunction;
+
 public interface EnergyPredictionModel {
     String getName();
     /**
@@ -18,4 +21,18 @@ public interface EnergyPredictionModel {
      * @return The estimated energy amount available for distribution.
      */
     double predictAvailableEnergy(long tick);
+
+    /**
+     * Simulates the energy balance over a range of ticks, accounting for cumulative battery usage.
+     *
+     * @param startTick       The starting tick of the simulation.
+     * @param endTick         The ending tick (inclusive).
+     * @param loadPerTickProvider A function that returns the allocated load (energy demand) for a given tick.
+     * @return A map where: <br/>
+     * {@code Key} = tick <br/>
+     * {@code Value} = (AllocatedLoad - PredictedAvailable), where if <br/>
+     * entry > 0 : Overload (Deficit). <br/>
+     * entry < 0 : Surplus (Available capacity).
+     */
+    Map<Long, Double> simulateEnergyBalances(long startTick, long endTick, LongFunction<Double> loadPerTickProvider);
 }

@@ -10,6 +10,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStra
 import jade.core.AID;
 
 import java.util.*;
+import java.util.function.LongFunction;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public final List<AID> householdAgents = new ArrayList<>();
@@ -114,10 +115,16 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public double getPredictedMaxAmount(long tick) {
-        return predictionModel.predictAvailableEnergy(tick);
+        double predictedMax = predictionModel.predictAvailableEnergy(tick);
+        log("Predicting " + predictedMax + " energy for tick " + tick, LogSeverity.DEBUG, this);
+        return predictedMax;
     }
 
     public void updatePredictionModel(double production, double batteryCharge) {
         predictionModel.update(production, batteryCharge);
+    }
+
+    public Map<Long, Double> calculateAverageProduction(long startTick, long endTick, LongFunction<Double> loadPerTickProvider) {
+        return predictionModel.simulateEnergyBalances(startTick, endTick, loadPerTickProvider);
     }
 }

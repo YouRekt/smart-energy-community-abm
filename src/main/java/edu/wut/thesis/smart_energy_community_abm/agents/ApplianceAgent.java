@@ -44,6 +44,7 @@ public final class ApplianceAgent extends BaseAgent {
         // TODO: Add seed to config
         Random rand = new Random();
         tasks.forEach(task -> taskSchedule.put(task, rand.nextLong(MAX_FUTURE_TICKS)));
+//        tasks.forEach(task -> taskSchedule.put(task, 4L));
 
         try {
             TopicHelper.registerTopic(this, coordinatorName);

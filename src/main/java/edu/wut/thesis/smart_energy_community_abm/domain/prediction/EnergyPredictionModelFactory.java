@@ -44,13 +44,22 @@ public final class EnergyPredictionModelFactory {
         double minChargeThreshold = ((Number) args[1]).doubleValue();
 
         if (args[2] == null) {
-            throw new IllegalArgumentException("Argument 2 (Window Size) cannot be null");
+            throw new IllegalArgumentException("Argument 2 (Production Safety Factor) cannot be null");
         }
-        if (!(args[2] instanceof Integer)) {
-            throw new IllegalArgumentException("Argument 2 (Window Size) must be an Integer, got: " + args[2].getClass().getSimpleName());
+        if (!(args[2] instanceof Number)) {
+            throw new IllegalArgumentException("Argument 2 (Production Safety Factor) must be a Number, got: " + args[2].getClass().getSimpleName());
         }
-        int windowSize = (Integer) args[2];
 
-        return new MovingAveragePredictionModel(batteryCapacity, minChargeThreshold, windowSize);
+        double productionSafetyFactor = ((Number) args[2]).doubleValue();
+
+        if (args[3] == null) {
+            throw new IllegalArgumentException("Argument 3 (Window Size) cannot be null");
+        }
+        if (!(args[3] instanceof Integer)) {
+            throw new IllegalArgumentException("Argument 3 (Window Size) must be an Integer, got: " + args[3].getClass().getSimpleName());
+        }
+        int windowSize = (Integer) args[3];
+
+        return new MovingAveragePredictionModel(batteryCapacity, minChargeThreshold, productionSafetyFactor, windowSize);
     }
 }

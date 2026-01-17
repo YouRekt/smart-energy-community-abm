@@ -89,15 +89,14 @@ class SimulationControllerTest {
         ApplianceConfig appConfig = new ApplianceConfig("Washer", "House1", List.of(task));
         HouseholdConfig house = new HouseholdConfig(List.of(appConfig), "House1");
 
-        // NEW: Create a valid PredictionModelConfig
-        PredictionModelConfig predictionConfig = new PredictionModelConfig("MOVING_AVERAGE", 0.2, 10);
+        PredictionModelConfig predictionConfig = new PredictionModelConfig("MovingAverage", 0.2, 0.0,10);
 
         return new CommunityConfig(
                 battery,
                 List.of(source),
                 List.of(house),
                 "Balanced",
-                predictionConfig // NEW: Pass the 5th argument
+                predictionConfig
         );
     }
 }

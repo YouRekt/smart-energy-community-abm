@@ -37,7 +37,7 @@ class CommunityConfigTest {
                 new HouseholdConfig(List.of(appConfig), "House1")
         );
 
-        validPredictionConfig = new PredictionModelConfig("MOVING_AVERAGE", 0.2, 10);
+        validPredictionConfig = new PredictionModelConfig("MovingAverage", 0.2, 0.0, 10);
     }
 
     @Test

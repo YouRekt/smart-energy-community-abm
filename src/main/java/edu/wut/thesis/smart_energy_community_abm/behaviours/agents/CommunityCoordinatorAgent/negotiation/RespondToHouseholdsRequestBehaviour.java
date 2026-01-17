@@ -50,7 +50,11 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
             final Map<Long, Double> overloadedTicks = agent.calculateAverageProduction(startTick, endTick, energyPerTick);
             final ACLMessage reply = msg.createReply();
 
-            if (overloadedTicks.values().stream().filter(n -> n > 0).toList().isEmpty()) {
+            if (overloadedTicks.entrySet().stream()
+                    .filter(e -> e.getValue() > 0)
+                    .filter(e -> request.containsKey(e.getKey()))
+                    .toList()
+                    .isEmpty()) {
                 request.forEach((key, value) -> agent.addAllocation(key, msg.getSender(), value));
 
                 reply.setPerformative(ACLMessage.CONFIRM);

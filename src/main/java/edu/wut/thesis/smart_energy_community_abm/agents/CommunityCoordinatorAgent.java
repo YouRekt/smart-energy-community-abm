@@ -114,7 +114,10 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public double getPredictedMaxAmount(long tick) {
-        // TODO: Make this legit
-        return 1000.0;
+        return predictionModel.predictAvailableEnergy(tick);
+    }
+
+    public void updatePredictionModel(double production, double batteryCharge) {
+        predictionModel.update(production, batteryCharge);
     }
 }

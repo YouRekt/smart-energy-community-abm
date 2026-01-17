@@ -2,7 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.domain.prediction;
 
 import java.util.Arrays;
 
-public class EnergyPredictionModelFactory {
+public final class EnergyPredictionModelFactory {
 
     public static EnergyPredictionModel create(String name, Object[] args) {
         if (name == null) {

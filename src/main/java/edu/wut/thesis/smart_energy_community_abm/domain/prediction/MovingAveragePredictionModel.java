@@ -40,7 +40,7 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
     @Override
     public double predictAvailableEnergy(long tick) {
         if (productionHistory.isEmpty()) {
-            return 1000.0;
+            return lastKnownBatteryCharge;
         }
 
         double sum = 0.0;
@@ -50,9 +50,8 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
         double avgProduction = sum / productionHistory.size();
 
         double usableBattery = Math.max(0, lastKnownBatteryCharge - (batteryCapacity * minChargeThreshold));
-        double batteryContribution = usableBattery * 0.05;
-
-        double prediction = (avgProduction * 0.90) + batteryContribution;
+        // double batteryContribution = usableBattery * 0.05;
+        double prediction = (avgProduction * 0.90) + usableBattery;
 
         return Math.max(0.0, prediction);
     }

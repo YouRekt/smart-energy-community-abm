@@ -61,9 +61,16 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void handleRejectProposal(ACLMessage msg) {
         received = true;
+        final ACLMessage rejectClearTaskRequest = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+        List<AID> proposals = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
+        proposals.forEach(rejectClearTaskRequest::addReceiver);
+        agent.send(rejectClearTaskRequest);
+        // TODO: Make sure appliance responds back and then we proceed?
+
         agent.log("Community Coordinator rejected proposal", LogSeverity.DEBUG, this);
     }
 }

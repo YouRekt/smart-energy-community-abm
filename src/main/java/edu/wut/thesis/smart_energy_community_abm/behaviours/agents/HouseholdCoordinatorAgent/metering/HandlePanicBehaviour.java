@@ -25,7 +25,7 @@ public final class HandlePanicBehaviour extends BaseFSMBehaviour {
         super(agent);
         setDataStore(dataStore);
 
-        registerFirstState(new LogBehaviour(agent, String.format("--- Handle Panic: Tick %d ---", agent.tick), LogSeverity.INFO), LOG);
+        registerFirstState(new LogBehaviour(agent, String.format("--- Handle Panic: Tick %d ---", agent.tick), LogSeverity.DEBUG), LOG);
         registerState(new SendPostponeRequestsBehaviour(agent), SEND_POSTPONE_REQUESTS);
         registerState(new CollectPostponeRepliesBehaviour(agent), COLLECT_POSTPONE_REPLIES);
         registerState(new HandlePostponeRepliesBehaviour(agent), HANDLE_POSTPONE_REPLIES);

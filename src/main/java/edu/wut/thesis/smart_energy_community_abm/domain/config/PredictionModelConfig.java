@@ -1,5 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.config;
 
+// TODO: What is the best way to handle different prediciton models configs?
 public record PredictionModelConfig(
         String name,
         Double minBatteryChargeThreshold,

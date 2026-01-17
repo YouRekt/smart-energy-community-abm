@@ -61,6 +61,7 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
             final Map<Long, Double> response = new HashMap<>();
             overloadedTicks.entrySet().stream()
                     .filter(e -> e.getValue() > 0)
+                    .filter(e -> request.containsKey(e.getKey()))
                     .forEach(e -> response.put(e.getKey(), e.getValue()));
 
             reply.setPerformative(ACLMessage.INFORM);

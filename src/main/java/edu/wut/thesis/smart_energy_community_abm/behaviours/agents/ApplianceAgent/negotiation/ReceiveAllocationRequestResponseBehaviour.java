@@ -25,6 +25,12 @@ public final class ReceiveAllocationRequestResponseBehaviour extends BaseMessage
     }
 
     @Override
+    protected void handleRefuse(ACLMessage msg) {
+        receivedMsg = true;
+        getDataStore().put(ALLOCATION_RESPONSE_MSG, msg);
+    }
+
+    @Override
     public boolean done() {
         return receivedMsg;
     }

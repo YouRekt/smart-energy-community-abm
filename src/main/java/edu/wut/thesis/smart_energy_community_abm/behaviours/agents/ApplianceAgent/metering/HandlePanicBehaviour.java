@@ -16,6 +16,7 @@ public final class HandlePanicBehaviour extends BaseFSMBehaviour {
     private static final String COLLECT_POSTPONE_RESPONSE = "collect-postpone-response";
     private static final String EXIT = "exit";
     private static final String CLEAR_TASK = "clear-task";
+    private static final String POSTPONE_TASK = "postpone-task";
 
     public HandlePanicBehaviour(ApplianceAgent agent, DataStore dataStore) {
         super(agent);
@@ -25,6 +26,7 @@ public final class HandlePanicBehaviour extends BaseFSMBehaviour {
         registerFirstState(new SendPostponeResponseBehaviour(agent), SEND_POSTPONE_RESPONSE);
         registerState(new CollectPostponeResponseBehaviour(agent), COLLECT_POSTPONE_RESPONSE);
         registerState(new ClearTaskBehaviour(agent), CLEAR_TASK);
+        registerState(new PostponeTaskBehaviour(agent), POSTPONE_TASK);
         registerLastState(new OneShotBehaviour(agent) {
             @Override
             public void action() {
@@ -34,8 +36,9 @@ public final class HandlePanicBehaviour extends BaseFSMBehaviour {
 
         registerTransition(SEND_POSTPONE_RESPONSE, EXIT, REFUSE);
         registerTransition(SEND_POSTPONE_RESPONSE, COLLECT_POSTPONE_RESPONSE, PROPOSE);
-        registerTransition(COLLECT_POSTPONE_RESPONSE, EXIT, REJECT_PROPOSAL);
+        registerTransition(COLLECT_POSTPONE_RESPONSE, POSTPONE_TASK, REJECT_PROPOSAL);
         registerTransition(COLLECT_POSTPONE_RESPONSE, CLEAR_TASK, ACCEPT_PROPOSAL);
+        registerDefaultTransition(POSTPONE_TASK, EXIT);
         registerDefaultTransition(CLEAR_TASK, EXIT);
     }
 }

@@ -40,7 +40,6 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
         final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         final Map<Long, Double> energyClearedPerTick = new HashMap<>();
 
-        // TODO: Reply to Appliances that we acknowledge their decision
         List<AID> proposals = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
         for (AID appliance : proposals) {
             agent.clearCurrentAllocation(appliance).forEach((tick, energy) ->

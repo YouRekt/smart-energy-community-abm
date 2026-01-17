@@ -30,6 +30,7 @@ public final class DataStoreKey {
             public static final String POSTPONE_REPLY_BY = "postpone-reply-by";
             public static final String POSTPONE_REPLY_COUNT = "postpone-reply-count";
             public static final String ACCEPT_PROPOSAL_MSG_COUNT = "accept-proposal-msg-count";
+            public static final String TASK_TO_POSTPONE = "task-to-postpone";
         }
     }
 

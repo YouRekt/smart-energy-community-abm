@@ -23,7 +23,6 @@ public final class HandlePanicBehaviour extends PhaseBehaviour {
                 new ProcessPostponeResponsesBehaviour(agent),           // Go through proposals and accept them until we satisfy the shortfall
                                                                         // , send accept-proposal and reject-proposal
                 new CollectAndFinalizePostponeResponsesBehaviour(agent)
-                // TODO: Handle cleaning the timetable +
         });
     }
 }

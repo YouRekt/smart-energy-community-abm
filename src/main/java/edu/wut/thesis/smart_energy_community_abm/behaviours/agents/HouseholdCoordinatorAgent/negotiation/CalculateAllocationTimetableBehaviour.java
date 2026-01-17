@@ -38,7 +38,8 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
         try {
             final Map<AID, List<EnergyRequest>> requestedAllocations = (Map<AID, List<EnergyRequest>>) getDataStore().get(REQUESTED_ALLOCATIONS);
 
-            final ACLMessage response = ((ACLMessage) getDataStore().get(ALLOCATION_REQUEST)).createReply();
+            final ACLMessage communityResponse = (ACLMessage) getDataStore().get(ALLOCATION_REQUEST);
+            final ACLMessage response = communityResponse.createReply();
 
             if (requestedAllocations == null || requestedAllocations.isEmpty()) {
                 agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
@@ -56,10 +57,10 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
                     .flatMap(List::stream)
                     .collect(Collectors.toSet());
 
-            if (response.getContent() != null && !response.getContent().isEmpty()) {
+            if (communityResponse.getContent() != null && !communityResponse.getContent().isEmpty()) {
 
                 final Map<Long, Double> rawOverloads = mapper.readValue(
-                        response.getContent(),
+                        communityResponse.getContent(),
                         new TypeReference<>() {
                         }
                 );

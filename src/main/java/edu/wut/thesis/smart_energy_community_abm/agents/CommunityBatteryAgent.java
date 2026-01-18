@@ -5,6 +5,8 @@ import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import jade.core.ServiceException;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper.BATTERY_CHARGE;
+
 public final class CommunityBatteryAgent extends BaseAgent {
     public Double maxCapacity;
     public Double currentCharge;
@@ -34,5 +36,9 @@ public final class CommunityBatteryAgent extends BaseAgent {
         }
 
         addBehaviour(new SimulationTickBehaviour(this));
+    }
+
+    public void pushCurrentCharge() {
+        pushMetric(BATTERY_CHARGE, currentCharge);
     }
 }

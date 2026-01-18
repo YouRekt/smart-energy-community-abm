@@ -18,7 +18,6 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
 
     @Override
     public void action() {
-        // TODO: Do work and push metrics to database
         final ACLMessage msg = (ACLMessage) getDataStore().get(ALLOWED_GREEN_ENERGY);
         final double availableGreenEnergy = Double.parseDouble(msg.getContent());
         final double energyNeeded = agent.getCurrentEnergyUsage();
@@ -28,6 +27,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
         ApplianceTaskInstance instance = agent.timetable.get(agent.tick);
         if (instance != null) {
             agent.taskSchedule.put(agent.timetable.get(agent.tick).task(), agent.tick);
+            agent.pushConsumedEnergy(usedGreenEnergy, usedGridEnergy);
             if (instance.endTick() == agent.tick) {
                 agent.log("Task " + instance.task().taskName() + " (ID: " + instance.task().taskId() + ") finished at tick " + agent.tick, LogSeverity.INFO, this);
             }

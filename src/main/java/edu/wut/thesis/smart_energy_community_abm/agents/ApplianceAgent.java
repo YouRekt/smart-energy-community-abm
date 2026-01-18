@@ -5,17 +5,17 @@ import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTask;
 import edu.wut.thesis.smart_energy_community_abm.domain.ApplianceTaskInstance;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper;
 import jade.core.ServiceException;
 
 import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final static int MAX_FUTURE_TICKS = 200;
-
+    private String householdName;
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
-    public long tick;
-    private List<ApplianceTask> tasks = new ArrayList<>();  // from config
+    private final List<ApplianceTask> tasks = new ArrayList<>();  // from config
 
     @SuppressWarnings("unchecked")
     @Override
@@ -45,6 +45,8 @@ public final class ApplianceAgent extends BaseAgent {
         Random rand = new Random();
         tasks.forEach(task -> taskSchedule.put(task, rand.nextLong(MAX_FUTURE_TICKS)));
 //        tasks.forEach(task -> taskSchedule.put(task, 4L));
+
+        householdName = coordinatorName;
 
         try {
             TopicHelper.registerTopic(this, coordinatorName);
@@ -157,5 +159,11 @@ public final class ApplianceAgent extends BaseAgent {
             }
         }
         return -1;
+    }
+
+    public void pushConsumedEnergy(double greenEnergy, double gridEnergy)
+    {
+        pushMetric(MetricNameHelper.applianceGreenConsumption(householdName, getLocalName()), greenEnergy);
+        pushMetric(MetricNameHelper.applianceGridConsumption(householdName, getLocalName()), gridEnergy);
     }
 }

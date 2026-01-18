@@ -23,8 +23,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
     public AID batteryAgent;
     public Double minChargeThreshold = 0.2;
-    public long tick = 0;
-    public short phase = 1;
     public Integer householdCount;
     public Integer energySourceCount;
     public double runningAvgProduction = 0.0;

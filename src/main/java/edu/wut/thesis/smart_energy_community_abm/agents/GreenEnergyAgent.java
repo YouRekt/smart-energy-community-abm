@@ -3,13 +3,13 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.GreenEnergyAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.MessageSubject;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
+import edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper;
 import jade.core.ServiceException;
 
 import java.util.Random;
 
 public final class GreenEnergyAgent extends BaseAgent {
     private final Random random = new Random();
-    public long tick;
     private Long period;
     private Double maxOutputPower;
     private Long peakTick;
@@ -83,5 +83,9 @@ public final class GreenEnergyAgent extends BaseAgent {
         }
 
         return production;
+    }
+
+    public void pushProducedEnergy(double producedEnergy) {
+        pushMetric(MetricNameHelper.sourceProduction(getLocalName()), producedEnergy);
     }
 }

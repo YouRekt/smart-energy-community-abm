@@ -23,6 +23,7 @@ public final class ReceiveEnergyStatusRequestBehaviour extends BaseMessageHandle
         receivedRequest = true;
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         final Double producedEnergy = agent.produceEnergy(true);
+        agent.pushProducedEnergy(producedEnergy);
         reply.setContent(producedEnergy.toString());
         reply.setOntology(GreenEnergyAgent.class.getSimpleName());
         agent.send(reply);

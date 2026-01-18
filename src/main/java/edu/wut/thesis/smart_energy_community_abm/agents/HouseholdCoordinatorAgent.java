@@ -13,7 +13,6 @@ import java.util.*;
 public final class HouseholdCoordinatorAgent extends BaseAgent {
     public final List<AID> healthyAppliances = new ArrayList<>();
     public final TreeMap<Long, Map<AID, AllocationEntry>> timetable = new TreeMap<>();
-    public long tick = 0;
     public Integer applianceCount;
 
     @Override

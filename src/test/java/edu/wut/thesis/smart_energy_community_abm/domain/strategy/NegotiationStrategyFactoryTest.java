@@ -1,9 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations.*;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.interfaces.NegotiationStrategy;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +9,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StrategyFactoryTest {
+class NegotiationStrategyFactoryTest {
 
     static Stream<Arguments> strategyProvider() {
         return Stream.of(
@@ -30,7 +27,7 @@ class StrategyFactoryTest {
     @MethodSource("strategyProvider")
     @DisplayName("Should create correct strategy implementation based on name")
     void testCreateStrategy(String strategyName, Class<? extends NegotiationStrategy> expectedClass) {
-        NegotiationStrategy strategy = StrategyFactory.create(strategyName);
+        NegotiationStrategy strategy = NegotiationStrategyFactory.create(strategyName);
         assertNotNull(strategy);
         assertInstanceOf(expectedClass, strategy);
     }

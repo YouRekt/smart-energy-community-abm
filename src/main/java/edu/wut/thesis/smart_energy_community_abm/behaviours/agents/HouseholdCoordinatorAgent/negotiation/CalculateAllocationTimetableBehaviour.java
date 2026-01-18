@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.EnergyRequest;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
@@ -13,8 +14,8 @@ import jade.lang.acl.ACLMessage;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUESTED_ALLOCATIONS;
-import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.MAX_NEGOTIATION_RETRIES;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.*;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
@@ -36,12 +37,17 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
     @Override
     public void action() {
         try {
+            int tries = (Integer) getDataStore().get(NEGOTIATION_RETRIES);
+
             final Map<AID, List<EnergyRequest>> requestedAllocations = (Map<AID, List<EnergyRequest>>) getDataStore().get(REQUESTED_ALLOCATIONS);
+            final ACLMessage communityResponse = (ACLMessage) getDataStore().get(ALLOCATION_REQUEST);
+            final ACLMessage response = communityResponse.createReply();
 
-            final ACLMessage response = ((ACLMessage) getDataStore().get(ALLOCATION_REQUEST)).createReply();
-
-            if (requestedAllocations == null || requestedAllocations.isEmpty()) {
-                agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
+            if (requestedAllocations == null || requestedAllocations.isEmpty() || tries > MAX_NEGOTIATION_RETRIES) {
+                if (requestedAllocations == null || requestedAllocations.isEmpty())
+                    agent.log("Received 0 allocation requests or none fit the Community schedule", LogSeverity.INFO, this);
+                if (tries > MAX_NEGOTIATION_RETRIES)
+                    agent.log("Exceeded max request allocation retries, quitting", LogSeverity.WARN, this);
                 response.setPerformative(REFUSE);
                 response.setContent("No allocation requests");
                 agent.send(response);
@@ -56,20 +62,20 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
                     .flatMap(List::stream)
                     .collect(Collectors.toSet());
 
-            if (response.getContent() != null && !response.getContent().isEmpty()) {
+            if (communityResponse.getContent() != null && !communityResponse.getContent().isEmpty()) {
 
                 final Map<Long, Double> rawOverloads = mapper.readValue(
-                        response.getContent(),
+                        communityResponse.getContent(),
                         new TypeReference<>() {
                         }
                 );
 
-                List<Long> sortedTicks = new ArrayList<>(rawOverloads.keySet());
-                Collections.sort(sortedTicks);
+                List<Long> sortedOverloadTicks = new ArrayList<>(rawOverloads.keySet());
+                Collections.sort(sortedOverloadTicks);
 
                 Map<Long, Double> currentOverloads = new HashMap<>(rawOverloads);
 
-                for (Long tick : sortedTicks) {
+                for (Long tick : sortedOverloadTicks) {
                     double overloadAmount = currentOverloads.get(tick);
 
                     if (overloadAmount <= 0) continue;
@@ -83,6 +89,9 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
                             totalRequestedAtTick += req.energyPerTick();
                         }
                     }
+
+                    if (candidates.isEmpty())
+                        continue;
 
                     double maxCapacity = totalRequestedAtTick - overloadAmount;
                     Set<EnergyRequest> keptRequests = solveSubsetSum(candidates, maxCapacity);
@@ -133,6 +142,8 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
             } else {
                 response.setPerformative(INFORM);
                 response.setContent(mapper.writeValueAsString(allocationByTick));
+                tries++;
+                getDataStore().put(NEGOTIATION_RETRIES, tries);
 
                 agent.send(response);
             }
@@ -142,6 +153,14 @@ public final class CalculateAllocationTimetableBehaviour extends OneShotBehaviou
     }
 
     private Set<EnergyRequest> solveSubsetSum(List<EnergyRequest> items, double limit) {
+        if (limit <= 0.0001) {
+            return Collections.emptySet();
+        }
+
+        if (items.isEmpty()) {
+            return Collections.emptySet();
+        }
+
         final double SCALE = 1000.0;
         int capacity = (int) Math.floor(limit * SCALE);
         int n = items.size();

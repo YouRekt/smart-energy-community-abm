@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering.Panic.HandlePanicBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.LogBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;

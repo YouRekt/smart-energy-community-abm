@@ -5,6 +5,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.PANIC_CFP;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.TASK_TO_POSTPONE;
 import static jade.lang.acl.ACLMessage.PROPOSE;
 import static jade.lang.acl.ACLMessage.REFUSE;
 
@@ -30,10 +31,10 @@ public final class SendPostponeResponseBehaviour extends OneShotBehaviour {
 
         var currentTask = agent.timetable.get(agent.tick);
 
-        if (currentTask.task().postponable()) { //TODO: Try to postpone task
+        if (currentTask.task().postponable()) {
             reply.setPerformative(PROPOSE);
             reply.setContent(String.valueOf(currentTask.task().energyPerTick()));
-            //TODO: Reschedule task internally -> remember to ask for it in phase 3 -> add it to accepted tasks?
+            getDataStore().put(TASK_TO_POSTPONE, currentTask.task());
         } else {
             reply.setPerformative(REFUSE);
             refuse = true;

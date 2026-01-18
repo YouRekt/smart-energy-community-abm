@@ -1,14 +1,9 @@
-package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering;
+package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.HouseholdCoordinatorAgent;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic.CollectPostponeRepliesBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic.CollectProposalResultBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic.HandlePostponeRepliesBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.HouseholdCoordinatorAgent.metering.Panic.SendPostponeRequestsBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.LogBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.DataStore;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -25,7 +20,7 @@ public final class HandlePanicBehaviour extends BaseFSMBehaviour {
         super(agent);
         setDataStore(dataStore);
 
-        registerFirstState(new LogBehaviour(agent, String.format("--- Handle Panic: Tick %d ---", agent.tick), LogSeverity.INFO), LOG);
+        registerFirstState(new LogBehaviour(agent, "--- Handle Panic! ---", LogSeverity.DEBUG), LOG);
         registerState(new SendPostponeRequestsBehaviour(agent), SEND_POSTPONE_REQUESTS);
         registerState(new CollectPostponeRepliesBehaviour(agent), COLLECT_POSTPONE_REPLIES);
         registerState(new HandlePostponeRepliesBehaviour(agent), HANDLE_POSTPONE_REPLIES);

@@ -33,7 +33,7 @@ public final class SendPostponeRequestsBehaviour extends OneShotBehaviour {
         postponeRequest.setContent(String.valueOf(shortfall));
 
         int replyCount = 0;
-        for (AID aid : agent.timetable.get(agent.tick).keySet()) {
+        for (AID aid : agent.getActiveAppliancesAt(agent.tick)) {
             postponeRequest.addReceiver(aid);
             replyCount++;
         }

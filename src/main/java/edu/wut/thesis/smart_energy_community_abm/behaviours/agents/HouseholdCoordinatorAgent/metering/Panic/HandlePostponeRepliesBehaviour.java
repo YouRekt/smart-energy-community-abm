@@ -36,6 +36,16 @@ public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
     @Override
     public void action() {
         List<AID> postponeAgreements = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
+        ACLMessage cfp = (ACLMessage) getDataStore().get(PANIC_CFP);
+        ACLMessage reply = cfp.createReply();
+
+        // TODO: Implement a cleaner way of handling this (if there are no tasks skip the sending behaviours?)
+        if (postponeAgreements == null || postponeAgreements.isEmpty()) {
+            reply.setPerformative(ACLMessage.REFUSE);
+            refused = true;
+            agent.send(reply);
+            return;
+        }
 
         Map<AID, AllocationEntry> currentTickAllocations = agent.timetable.get(agent.tick);
 
@@ -44,9 +54,6 @@ public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
                 .filter(Objects::nonNull)
                 .mapToDouble(AllocationEntry::requestedEnergy)
                 .sum();
-
-        ACLMessage cfp = (ACLMessage) getDataStore().get(PANIC_CFP);
-        ACLMessage reply = cfp.createReply();
 
         if (totalFreedEnergy > 0) {
             reply.setPerformative(ACLMessage.PROPOSE);

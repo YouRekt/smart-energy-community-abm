@@ -22,7 +22,6 @@ public abstract class BaseAgent extends Agent {
         }
     }
 
-    // TODO: Improve logging by appending currently executed behaviour at time of log
     public void log(String message, LogSeverity severity, Object reference) {
         String format = "@ [{}] - {}";
 

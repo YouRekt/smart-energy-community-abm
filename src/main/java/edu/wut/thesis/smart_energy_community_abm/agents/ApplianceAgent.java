@@ -41,8 +41,10 @@ public final class ApplianceAgent extends BaseAgent {
         }
 
         tasks.addAll(configTasks);
-        // TODO: Maybe add some delay so all tasks don't schedule at once?
-        tasks.forEach(task -> taskSchedule.put(task, Long.MIN_VALUE));
+        // TODO: Add seed to config
+        Random rand = new Random();
+        tasks.forEach(task -> taskSchedule.put(task, rand.nextLong(MAX_FUTURE_TICKS)));
+//        tasks.forEach(task -> taskSchedule.put(task, 4L));
 
         try {
             TopicHelper.registerTopic(this, coordinatorName);

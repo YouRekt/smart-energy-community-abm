@@ -19,6 +19,8 @@ services:
       - "1099:1099"
     networks:
       - smart-energy-network
+    volumes:
+      - ./logs:/logs
 
   timescaledb:
     image: timescale/timescaledb:latest-pg17

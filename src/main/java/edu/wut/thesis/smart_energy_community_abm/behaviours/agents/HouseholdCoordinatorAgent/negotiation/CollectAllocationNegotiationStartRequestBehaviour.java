@@ -6,6 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey;
 import jade.lang.acl.ACLMessage;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
+import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.NEGOTIATION_RETRIES;
 
 public final class CollectAllocationNegotiationStartRequestBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
@@ -17,6 +18,7 @@ public final class CollectAllocationNegotiationStartRequestBehaviour extends Bas
     @Override
     public void onStart() {
         msgReceived = false;
+        getDataStore().put(NEGOTIATION_RETRIES, 0);
     }
 
     @Override

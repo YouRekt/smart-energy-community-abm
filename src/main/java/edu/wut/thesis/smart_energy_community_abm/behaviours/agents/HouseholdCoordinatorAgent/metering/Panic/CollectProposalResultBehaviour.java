@@ -40,7 +40,6 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
         final ACLMessage clearTaskRequest = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         final Map<Long, Double> energyClearedPerTick = new HashMap<>();
 
-        // TODO: Reply to Appliances that we acknowledge their decision
         List<AID> proposals = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
         for (AID appliance : proposals) {
             agent.clearCurrentAllocation(appliance).forEach((tick, energy) ->
@@ -61,9 +60,16 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void handleRejectProposal(ACLMessage msg) {
         received = true;
+        final ACLMessage rejectClearTaskRequest = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+        List<AID> proposals = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
+        proposals.forEach(rejectClearTaskRequest::addReceiver);
+        agent.send(rejectClearTaskRequest);
+        // TODO: Make sure appliance responds back and then we proceed?
+
         agent.log("Community Coordinator rejected proposal", LogSeverity.DEBUG, this);
     }
 }

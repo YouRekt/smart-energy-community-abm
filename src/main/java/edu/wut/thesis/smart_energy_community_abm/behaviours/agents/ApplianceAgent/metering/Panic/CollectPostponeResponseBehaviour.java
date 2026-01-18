@@ -7,7 +7,6 @@ import jade.lang.acl.ACLMessage;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPTED_PROPOSAL;
 import static jade.lang.acl.ACLMessage.*;
 
-// TODO: Make a SingleMessageHandlerBehaviour
 public final class CollectPostponeResponseBehaviour extends BaseMessageHandlerBehaviour {
     private boolean msgReceived = false;
     private boolean rejected = false;

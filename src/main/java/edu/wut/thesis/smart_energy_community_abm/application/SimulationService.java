@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.application.interfaces;
+package edu.wut.thesis.smart_energy_community_abm.application;
 
 
 import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;

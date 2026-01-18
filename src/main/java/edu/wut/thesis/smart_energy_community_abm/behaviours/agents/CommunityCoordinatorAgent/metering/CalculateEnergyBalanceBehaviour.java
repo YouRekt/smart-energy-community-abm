@@ -31,6 +31,7 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         Double currentCharge = (Double) getDataStore().get(CURRENT_CHARGE);
         Double powerProduced = (Double) getDataStore().get(POWER_PRODUCED);
 
+        agent.updatePredictionModel(powerProduced, currentCharge);
         agent.updateRunningAverage(powerProduced);
 
         final double allocatedThisTick = agent.getAllocatedAt(agent.tick);

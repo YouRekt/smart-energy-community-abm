@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.ApplianceAgent;
+import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.ApplianceAgent.metering.Panic.HandlePanicBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.base.BaseFSMBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;

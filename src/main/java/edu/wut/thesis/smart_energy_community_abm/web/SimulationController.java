@@ -1,6 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.web;
 
-import edu.wut.thesis.smart_energy_community_abm.application.interfaces.SimulationService;
+import edu.wut.thesis.smart_energy_community_abm.application.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -3,14 +3,19 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.PanicContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.PriorityContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.interfaces.NegotiationStrategy;
+import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
+import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
+import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModel;
+import edu.wut.thesis.smart_energy_community_abm.domain.prediction.MovingAveragePredictionModel;
+import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStrategy;
 import jade.core.AID;
 
 import java.util.*;
+import java.util.function.LongFunction;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
+    public static final int MAX_NEGOTIATION_RETRIES = 5;
+
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
@@ -25,6 +30,8 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public double runningAvgProduction = 0.0;
     public long productionSampleCount = 0;
     public NegotiationStrategy strategy;
+
+    private EnergyPredictionModel predictionModel;
 
     @Override
     protected void setup() {
@@ -48,7 +55,11 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
 
         strategy = (NegotiationStrategy) args[2];
 
-        log("Using Negotiation Strategy: " + strategy.getName(), LogSeverity.DEBUG, this);
+        log("Using Negotiation Strategy: " + strategy.getName(), LogSeverity.INFO, this);
+
+        predictionModel = (EnergyPredictionModel) args[3];
+
+        log("Using Prediction Model: " + predictionModel.getName(), LogSeverity.INFO, this);
 
         addBehaviour(new SimulationTickBehaviour(this));
     }
@@ -107,7 +118,22 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public double getPredictedMaxAmount(long tick) {
-        // TODO: Make this legit
-        return 1000.0;
+        double predictedMax = predictionModel.predictAvailableEnergy(tick);
+        log("Predicting " + predictedMax + " energy for tick " + tick, LogSeverity.DEBUG, this);
+        return predictedMax;
+    }
+
+    public void logCurrentAverageProduction() {
+        // TODO: Remove when app is final
+        double avg = ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();
+        log("Current average production " + avg, LogSeverity.DEBUG, this);
+    }
+
+    public void updatePredictionModel(double production, double batteryCharge) {
+        predictionModel.update(production, batteryCharge);
+    }
+
+    public Map<Long, Double> calculateAverageProduction(long startTick, long endTick, LongFunction<Double> loadPerTickProvider) {
+        return predictionModel.simulateEnergyBalances(startTick, endTick, loadPerTickProvider);
     }
 }

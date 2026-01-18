@@ -1,11 +1,8 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations.BalancedStrategy;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations.EnergyVolumeStrategy;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations.GreenScoreFirstStrategy;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.implementations.ReservationFirstStrategy;
-import edu.wut.thesis.smart_energy_community_abm.domain.strategy.interfaces.NegotiationStrategy;
+import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
+import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

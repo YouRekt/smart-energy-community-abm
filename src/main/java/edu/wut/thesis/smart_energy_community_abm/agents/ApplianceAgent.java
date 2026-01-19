@@ -12,10 +12,10 @@ import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final static int MAX_FUTURE_TICKS = 200;
-    private String householdName;
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
     private final List<ApplianceTask> tasks = new ArrayList<>();  // from config
+    private String householdName;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -34,7 +34,7 @@ public final class ApplianceAgent extends BaseAgent {
 
         final List<ApplianceTask> configTasks = (List<ApplianceTask>) args[1];
 
-        if  (configTasks == null || configTasks.isEmpty()) {
+        if (configTasks == null || configTasks.isEmpty()) {
             log("Task list missing or empty", LogSeverity.ERROR, this);
             doDelete();
             throw new RuntimeException("Task list missing or empty");
@@ -161,8 +161,7 @@ public final class ApplianceAgent extends BaseAgent {
         return -1;
     }
 
-    public void pushConsumedEnergy(double greenEnergy, double gridEnergy)
-    {
+    public void pushConsumedEnergy(double greenEnergy, double gridEnergy) {
         pushMetric(MetricNameHelper.applianceGreenConsumption(householdName, getLocalName()), greenEnergy);
         pushMetric(MetricNameHelper.applianceGridConsumption(householdName, getLocalName()), gridEnergy);
     }

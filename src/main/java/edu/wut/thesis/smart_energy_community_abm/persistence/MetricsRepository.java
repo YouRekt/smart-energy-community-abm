@@ -92,4 +92,21 @@ public interface MetricsRepository extends JpaRepository<Metric, Metric.MetricID
             @Param("namePattern") String namePattern,
             @Param("minTick") long minTick
     );
+
+    List<Metric> findAllByNameAndTimestampGreaterThan(String name, long timestamp, Pageable pageable);
+
+    @Query(value = """
+            SELECT m.timestamp as timestamp, SUM(m.value) as value
+            FROM metrics m
+            WHERE m.name LIKE :namePattern
+            AND m.timestamp > :minTick
+            GROUP BY m.timestamp
+            ORDER BY m.timestamp DESC
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<AggregatedMetric> findAggregateSumByNamePatternSinceDesc(
+            @Param("namePattern") String namePattern,
+            @Param("minTick") long minTick,
+            @Param("limit") int limit
+    );
 }

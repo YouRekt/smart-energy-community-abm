@@ -14,11 +14,7 @@ public class SimulationState {
 
     private SimulationRun currentRun;
 
-    private final AtomicLong currentTick = new AtomicLong(0);
-
     public void startNewRun() {
-        this.currentTick.set(0);
-
         this.currentRun = SimulationRun.builder()
                 .startTime(LocalDateTime.now())
                 .status(SimulationRun.RunStatus.RUNNING)
@@ -36,15 +32,10 @@ public class SimulationState {
     }
 
     public LocalDateTime getCurrentRunStartTime() {
-        return currentRun != null ? currentRun.getStartTime() : LocalDateTime.now();
+        return currentRun != null ? currentRun.getStartTime() : null;
     }
 
     public Long getCurrentRunId() {
         return currentRun != null ? currentRun.getId() : null;
-    }
-
-    public long getTick() { return currentTick.get(); }
-    public void incrementTick() {
-        currentTick.incrementAndGet();
     }
 }

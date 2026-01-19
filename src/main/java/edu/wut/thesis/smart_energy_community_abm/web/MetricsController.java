@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -121,10 +122,11 @@ public final class MetricsController {
         LocalDateTime start;
         LocalDateTime end;
         boolean useWindowLimit = (limit != null && limit > 0);
+        boolean useDelta = (lastTick != null && lastTick >= 0);
 
         if (runId != null) {
             SimulationRun run = runRepository.findById(runId)
-                    .orElseThrow(() -> new RuntimeException("Run not found"));
+                    .orElseThrow(() -> new NoSuchElementException("Run not found"));
             start = run.getStartTime();
             end = run.getEndTime(); // Null if currently running
         } else {
@@ -132,21 +134,14 @@ public final class MetricsController {
             end = null;
         }
 
-        if (lastTick != null && lastTick >= 0 && !useWindowLimit) {
-            if (isAggregate) {
-                return metricsRepository.findAggregateSumByNamePatternSince(pattern, lastTick)
-                        .stream().map(MetricResponse::from).toList();
-            } else {
-                return metricsRepository.findAllByNameAndTimestampGreaterThanOrderByTimestampAsc(pattern, lastTick)
-                        .stream().map(MetricResponse::from).toList();
-            }
-        }
-
         List<MetricResponse> result;
 
         if (useWindowLimit) {
             if (isAggregate) {
-                if (end == null) {
+                if (useDelta) {
+                    result = metricsRepository.findAggregateSumByNamePatternSinceDesc(pattern, lastTick, limit)
+                            .stream().map(MetricResponse::from).collect(Collectors.toList());
+                } else if (end == null) {
                     result = metricsRepository.findAggregateSumByNamePatternAfterTimeDesc(pattern, start, limit)
                             .stream().map(MetricResponse::from).collect(Collectors.toList());
                 } else {
@@ -156,7 +151,10 @@ public final class MetricsController {
             } else {
                 Pageable pageable = PageRequest.of(0, limit, Sort.by("timestamp").descending());
 
-                if (end == null) {
+                if (useDelta) {
+                    result = metricsRepository.findAllByNameAndTimestampGreaterThan(pattern, lastTick, pageable)
+                            .stream().map(MetricResponse::from).collect(Collectors.toList());
+                } else if (end == null) {
                     result = metricsRepository.findAllByNameAndTimeGreaterThanEqual(pattern, start, pageable)
                             .stream().map(MetricResponse::from).collect(Collectors.toList());
                 } else {
@@ -169,6 +167,16 @@ public final class MetricsController {
             return result;
 
         } else {
+            if (useDelta) {
+                if (isAggregate) {
+                    return metricsRepository.findAggregateSumByNamePatternSince(pattern, lastTick)
+                            .stream().map(MetricResponse::from).toList();
+                } else {
+                    return metricsRepository.findAllByNameAndTimestampGreaterThanOrderByTimestampAsc(pattern, lastTick)
+                            .stream().map(MetricResponse::from).toList();
+                }
+            }
+
             if (isAggregate) {
                 if (end == null) {
                     return metricsRepository.findAggregateSumByNamePatternAfterTime(pattern, start)

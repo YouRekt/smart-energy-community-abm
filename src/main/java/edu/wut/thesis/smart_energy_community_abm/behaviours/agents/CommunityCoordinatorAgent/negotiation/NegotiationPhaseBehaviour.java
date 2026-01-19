@@ -19,7 +19,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
                 new RequestAllocationReservationsBehaviour(agent, getDataStore()),
                 new OneShotBehaviour(agent) {
                     public void action() {
-                        agent.incrementTick();
+                        agent.tick++;
 //                        // TODO: REMOVE THIS!!!
 //                        try {
 //                            TimeUnit.SECONDS.sleep(5);

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @RestController
 @RequestMapping("/api/simulation")
 @RequiredArgsConstructor
@@ -17,11 +19,11 @@ public final class SimulationController {
     private final SimulationService jadeService;
     private final SimulationState simulationState;
 
-    private boolean isConfigured = false;
+    private final AtomicBoolean isConfigured = new AtomicBoolean(false);
 
     @PostMapping("/start")
     public ResponseEntity<String> startSimulation() {
-        if (!isConfigured) {
+        if (!isConfigured.get()) {
             return ResponseEntity.badRequest()
                     .body("Error: Configuration missing. Please upload a config before starting.");
         }
@@ -53,11 +55,11 @@ public final class SimulationController {
         try {
             jadeService.configureSimulation(communityConfig);
 
-            isConfigured = true;
+            isConfigured.set(true);
 
             return ResponseEntity.ok("Simulation configured");
         } catch (Exception e) {
-            isConfigured = false;
+            isConfigured.set(false);
             return ResponseEntity.internalServerError().body("Configuration failed: " + e.getMessage());
         }
     }

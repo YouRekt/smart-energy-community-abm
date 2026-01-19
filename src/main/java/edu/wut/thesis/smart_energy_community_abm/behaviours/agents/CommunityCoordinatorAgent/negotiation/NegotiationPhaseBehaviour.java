@@ -6,8 +6,6 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 
-import java.util.concurrent.TimeUnit;
-
 public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
     public NegotiationPhaseBehaviour(CommunityCoordinatorAgent agent) {
         super(agent);

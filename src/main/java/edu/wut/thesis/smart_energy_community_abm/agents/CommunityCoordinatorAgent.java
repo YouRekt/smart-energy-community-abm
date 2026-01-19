@@ -1,12 +1,14 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
+import edu.wut.thesis.smart_energy_community_abm.config.SpringContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModel;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.MovingAveragePredictionModel;
+import edu.wut.thesis.smart_energy_community_abm.domain.simulation.SimulationState;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStrategy;
 import jade.core.AID;
 
@@ -15,7 +17,7 @@ import java.util.function.LongFunction;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public static final int MAX_NEGOTIATION_RETRIES = 5;
-
+    private SimulationState simulationState;
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
@@ -23,8 +25,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
     public AID batteryAgent;
     public Double minChargeThreshold = 0.2;
-    public long tick = 0;
-    public short phase = 1;
     public Integer householdCount;
     public Integer energySourceCount;
     public double runningAvgProduction = 0.0;
@@ -36,6 +36,8 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     @Override
     protected void setup() {
         super.setup();
+
+        simulationState = SpringContext.getBean(SimulationState.class);
 
         final Object[] args = getArguments();
 

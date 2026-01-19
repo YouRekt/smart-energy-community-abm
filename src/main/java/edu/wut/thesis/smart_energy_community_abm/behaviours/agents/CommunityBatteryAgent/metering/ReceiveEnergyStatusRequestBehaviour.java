@@ -23,6 +23,7 @@ public final class ReceiveEnergyStatusRequestBehaviour extends BaseMessageHandle
         receivedRequest = true;
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setContent(agent.currentCharge.toString());
+        agent.pushCurrentCharge();
         reply.setOntology(CommunityBatteryAgent.class.getSimpleName());
         agent.send(reply);
     }

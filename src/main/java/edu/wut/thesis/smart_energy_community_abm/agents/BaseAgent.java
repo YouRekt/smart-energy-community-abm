@@ -7,29 +7,22 @@ import edu.wut.thesis.smart_energy_community_abm.persistence.MetricsRepository;
 import jade.core.Agent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
 import java.time.LocalDateTime;
 
 public abstract class BaseAgent extends Agent {
     private final static Logger logger = LoggerFactory.getLogger(BaseAgent.class);
-    private MetricsRepository metricsRepository;
     public long tick = 0;
+    private MetricsRepository metricsRepository;
 
     @Override
     protected void setup() {
         super.setup();
 
-        ApplicationContext context = SpringContext.getApplicationContext();
-        if (context != null) {
-            metricsRepository = context.getBean(MetricsRepository.class);
-        } else {
-            throw new RuntimeException("Application Context is null");
-        }
+        metricsRepository = SpringContext.getBean(MetricsRepository.class);
     }
 
-    protected void pushMetric(String name, double value)
-    {
+    protected void pushMetric(String name, double value) {
         metricsRepository.save(Metric.builder()
                 .name(name)
                 .value(value)

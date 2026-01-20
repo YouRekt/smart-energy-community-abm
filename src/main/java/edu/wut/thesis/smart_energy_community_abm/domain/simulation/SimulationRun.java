@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SimulationRun {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +21,8 @@ public class SimulationRun {
 
     @Enumerated(EnumType.STRING)
     private RunStatus status;
+
+    private Long randomSeed;
 
     public enum RunStatus {
         RUNNING,

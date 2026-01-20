@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api/simulation")
@@ -20,6 +21,7 @@ public final class SimulationController {
     private final SimulationState simulationState;
 
     private final AtomicBoolean isConfigured = new AtomicBoolean(false);
+    private final AtomicLong randomSeed = new AtomicLong(0L);
 
     @PostMapping("/start")
     public ResponseEntity<String> startSimulation() {
@@ -31,7 +33,7 @@ public final class SimulationController {
         // Finish a run if one is already in progress
         simulationState.finishRun();
 
-        simulationState.startNewRun();
+        simulationState.startNewRun(randomSeed.get());
 
         jadeService.startSimulation();
         return ResponseEntity.ok("Started Run ID: " + simulationState.getCurrentRunId());
@@ -56,6 +58,7 @@ public final class SimulationController {
             jadeService.configureSimulation(communityConfig);
 
             isConfigured.set(true);
+            randomSeed.set(communityConfig.seed());
 
             return ResponseEntity.ok("Simulation configured");
         } catch (Exception e) {

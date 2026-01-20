@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.config.SpringContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
@@ -17,7 +16,6 @@ import java.util.function.LongFunction;
 
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public static final int MAX_NEGOTIATION_RETRIES = 5;
-    private SimulationState simulationState;
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
     public final Map<AID, Double> greenScores = new HashMap<>();
@@ -36,8 +34,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     @Override
     protected void setup() {
         super.setup();
-
-        simulationState = SpringContext.getBean(SimulationState.class);
 
         final Object[] args = getArguments();
 
@@ -64,15 +60,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         log("Using Prediction Model: " + predictionModel.getName(), LogSeverity.INFO, this);
 
         addBehaviour(new SimulationTickBehaviour(this));
-    }
-
-    public double computePriority(AID aid, AllocationEntry entry, long currentTick) {
-        double greenScore = greenScores.getOrDefault(aid, 0.5);
-        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
-        double totalEnergy = entry.requestedEnergy();
-
-        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
-        return strategy.computePriority(ctx);
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {
@@ -126,7 +113,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public void logCurrentAverageProduction() {
-        // TODO: Remove when app is final
         double avg = ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();
         log("Current average production " + avg, LogSeverity.DEBUG, this);
     }

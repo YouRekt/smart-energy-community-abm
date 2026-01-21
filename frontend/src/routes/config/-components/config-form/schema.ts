@@ -44,17 +44,31 @@ const batteryConfigSchema = z
 		isPercentage: z.boolean(),
 	})
 	.superRefine((data, ctx) => {
-		if (data.isPercentage && data.startingCharge > 100) {
-			ctx.addIssue({
-				code: 'too_big',
-				maximum: 100,
-				origin: 'number',
-				inclusive: true,
-				input: data.startingCharge,
-				message:
-					'Starting charge percentage must be between 0 and 100 %',
-				path: ['startingCharge'],
-			});
+		if (data.isPercentage) {
+			if (data.startingCharge > 100) {
+				ctx.addIssue({
+					code: 'too_big',
+					maximum: 100,
+					origin: 'number',
+					inclusive: true,
+					input: data.startingCharge,
+					message:
+						'Starting charge percentage must be between 0 and 100 %',
+					path: ['startingCharge'],
+				});
+			}
+		} else {
+			if (data.startingCharge > data.capacity) {
+				ctx.addIssue({
+					code: 'too_big',
+					maximum: data.capacity,
+					origin: 'number',
+					inclusive: true,
+					input: data.startingCharge,
+					message: "Starting charge can't be greater than capacity",
+					path: ['startingCharge'],
+				});
+			}
 		}
 	});
 
@@ -88,9 +102,17 @@ const energySourcesConfigSchema = z.object({
 		.positive({ message: 'Standard deviation must be positive' }),
 	variation: z.coerce
 		.number<number>()
-		.gt(0, { message: 'Variation must be greater than 0' })
-		.max(1, { message: 'Variation must be at most 1' }),
+		.gt(0, { message: 'Variation must be greater than 0 %' })
+		.max(100, { message: 'Variation must be at most 100 %' }),
 });
+
+const energySourcesConfigSchemaTransformed =
+	energySourcesConfigSchema.transform((data) => {
+		return {
+			...data,
+			variation: data.variation / 100,
+		};
+	});
 
 const applianceTaskSchema = z.object({
 	taskName: z.string().min(1, { message: 'Task name required' }),
@@ -122,9 +144,7 @@ const applianceConfigSchema = z.object({
 	applianceName: z
 		.string()
 		.min(3, { message: 'Appliance name must be at least 3 characters' }),
-	householdName: z
-		.string()
-		.min(3, { message: 'Household name must be at least 3 characters' }),
+	householdName: z.string().optional(), // will be by a transform
 	tasks: z.array(applianceTaskSchemaTransformed).min(1, {
 		message: 'At least one task required',
 	}),
@@ -138,6 +158,20 @@ const householdConfigSchema = z.object({
 		message: 'At least one appliance required',
 	}),
 });
+
+const householdConfigSchemaTransformed = householdConfigSchema.transform(
+	(data) => {
+		return {
+			...data,
+			applianceConfigs: data.applianceConfigs.map((appliance) => {
+				return {
+					...appliance,
+					hasHouseholdName: data.householdName,
+				};
+			}),
+		};
+	},
+);
 
 const formSchema = z
 	.object({
@@ -156,16 +190,28 @@ const formSchema = z
 			.default('Balanced'),
 		predictionModelConfig: predictionModelConfigSchemaTransformed,
 		batteryConfig: batteryConfigSchemaTransformed,
-		energySourcesConfigs: z.array(energySourcesConfigSchema).min(1, {
-			message: 'At least one energy source required',
-		}),
-		householdConfigs: z.array(householdConfigSchema).min(1, {
+		energySourcesConfigs: z
+			.array(energySourcesConfigSchemaTransformed)
+			.min(1, {
+				message: 'At least one energy source required',
+			}),
+		householdConfigs: z.array(householdConfigSchemaTransformed).min(1, {
 			message: 'At least one household required',
 		}),
 	})
 	.superRefine((data, ctx) => {
 		const taskIds = new Set<number>();
+		const householdNames = new Set<string>();
 		data.householdConfigs.forEach((household, householdIndex) => {
+			if (householdNames.has(household.householdName)) {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Household name must be unique',
+					path: ['householdConfigs', householdIndex, 'householdName'],
+				});
+			}
+			householdNames.add(household.householdName);
+
 			household.applianceConfigs.forEach((appliance, applianceIndex) => {
 				appliance.tasks.forEach((task, taskIndex) => {
 					if (task.taskId !== undefined) {
@@ -243,7 +289,7 @@ const householdDefaultValues: z.input<typeof householdConfigSchema> = {
 
 const applianceDefaultValues: z.input<typeof applianceConfigSchema> = {
 	applianceName: '',
-	householdName: '',
+	householdName: '', // not in form
 	tasks: [],
 };
 

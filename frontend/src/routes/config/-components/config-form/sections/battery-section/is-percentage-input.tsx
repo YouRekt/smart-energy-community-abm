@@ -1,5 +1,6 @@
 import {
 	Field,
+	FieldContent,
 	FieldDescription,
 	FieldError,
 	FieldLabel,
@@ -15,25 +16,22 @@ function IsPercentageInput() {
 			z.input<typeof batteryConfigSchema.shape.isPercentage>
 		>();
 
-	// For boolean fields, standard onChange might expect an event or boolean depending on library
-	// Switch usually provides check state change directly
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
 	return (
-		<Field className='flex flex-row items-center justify-between rounded-lg border p-4 shadow-sm'>
-			<div className='space-y-0.5'>
+		<Field orientation='horizontal' className='max-w-sm'>
+			<FieldContent>
 				<FieldLabel htmlFor={field.name}>Percentage Mode</FieldLabel>
 				<FieldDescription>
 					Define starting charge as a percentage of capacity.
 				</FieldDescription>
-			</div>
+			</FieldContent>
 			<Switch
 				id={field.name}
 				checked={field.state.value}
 				onCheckedChange={(checked) => field.handleChange(checked)}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }

@@ -1,4 +1,11 @@
-import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { NumberInput } from '@/components/number-input';
+import {
+	Field,
+	FieldContent,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useConfigFieldContext } from '@/routes/config/-components/config-form/form-context';
@@ -9,62 +16,63 @@ import {
 } from '@/routes/config/-components/config-form/schema';
 import { z } from 'zod';
 
-// Household Inputs
 export function HouseholdNameInput() {
 	const field =
 		useConfigFieldContext<
 			z.input<typeof householdConfigSchema.shape.householdName>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
+		<Field data-invalid={isInvalid}>
 			<FieldLabel>Household Name</FieldLabel>
 			<Input
 				value={field.state.value}
 				onChange={(e) => field.handleChange(e.target.value)}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
 
-// Appliance Inputs
 export function ApplianceNameInput() {
 	const field =
 		useConfigFieldContext<
 			z.input<typeof applianceConfigSchema.shape.applianceName>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel className='text-xs'>Appliance Name</FieldLabel>
+		<Field data-invalid={isInvalid}>
+			<FieldLabel>Appliance Name</FieldLabel>
 			<Input
-				className='h-8 text-sm'
 				value={field.state.value}
 				onChange={(e) => field.handleChange(e.target.value)}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>The name of the appliance.</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
 
-// Task Inputs
 export function TaskNameInput() {
 	const field =
 		useConfigFieldContext<
 			z.input<typeof applianceTaskSchema.shape.taskName>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel className='sr-only'>Task Name</FieldLabel>
+		<Field data-invalid={isInvalid}>
+			<FieldLabel>Task Name</FieldLabel>
 			<Input
-				className='h-7 text-xs'
-				placeholder='Task Name'
 				value={field.state.value}
 				onChange={(e) => field.handleChange(e.target.value)}
 			/>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -74,18 +82,31 @@ export function TaskHumanActivationChanceInput() {
 		useConfigFieldContext<
 			z.input<typeof applianceTaskSchema.shape.humanActivationChance>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel className='text-[10px] text-muted-foreground uppercase'>
-				Activation %
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>
+				Human Activation Chance
 			</FieldLabel>
-			<Input
-				className='h-7 text-xs'
-				type='number'
-				placeholder='Chance %'
+			<NumberInput
+				id={field.name}
+				min={0}
+				max={100}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						applianceTaskSchema.shape.humanActivationChance.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
+			<FieldDescription>
+				The % chance of the human activating the task.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -95,18 +116,26 @@ export function TaskDurationInput() {
 		useConfigFieldContext<
 			z.input<typeof applianceTaskSchema.shape.duration>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel className='text-[10px] text-muted-foreground uppercase'>
-				Duration
-			</FieldLabel>
-			<Input
-				className='h-7 text-xs'
-				type='number'
-				placeholder='Duration'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Duration</FieldLabel>
+			<NumberInput
+				id={field.name}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				min={1}
+				onChange={(e) =>
+					field.handleChange(
+						applianceTaskSchema.shape.duration.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
+			<FieldDescription>The duration of the task.</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -116,18 +145,27 @@ export function TaskEnergyPerTickInput() {
 		useConfigFieldContext<
 			z.input<typeof applianceTaskSchema.shape.energyPerTick>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel className='text-[10px] text-muted-foreground uppercase'>
-				Power
-			</FieldLabel>
-			<Input
-				className='h-7 text-xs'
-				type='number'
-				placeholder='Power'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Energy Per Tick (kW)</FieldLabel>
+			<NumberInput
+				id={field.name}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						applianceTaskSchema.shape.energyPerTick.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
+			<FieldDescription>
+				The energy per tick of the task.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -137,16 +175,21 @@ export function TaskPostponableInput() {
 		useConfigFieldContext<
 			z.input<typeof applianceTaskSchema.shape.postponable>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field className='flex flex-row items-center gap-2 border p-1 rounded'>
-			<FieldLabel className='text-[10px] uppercase mb-0'>
-				Postponable
-			</FieldLabel>
+		<Field orientation='horizontal' className='max-w-sm'>
+			<FieldContent>
+				<FieldLabel htmlFor={field.name}>Postponable</FieldLabel>
+				<FieldDescription>The task can be postponed.</FieldDescription>
+			</FieldContent>
 			<Switch
-				className='h-4 w-7'
+				id={field.name}
 				checked={field.state.value}
 				onCheckedChange={(checked) => field.handleChange(checked)}
 			/>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }

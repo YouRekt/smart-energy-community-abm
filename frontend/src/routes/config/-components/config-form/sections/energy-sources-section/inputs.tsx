@@ -1,4 +1,10 @@
-import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { NumberInput } from '@/components/number-input';
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useConfigFieldContext } from '@/routes/config/-components/config-form/form-context';
 import { energySourcesConfigSchema } from '@/routes/config/-components/config-form/schema';
@@ -9,16 +15,18 @@ export function EnergySourceAgentNameInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.agentName>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
+		<Field data-invalid={isInvalid}>
 			<FieldLabel>Agent Name</FieldLabel>
 			<Input
 				value={field.state.value}
 				onChange={(e) => field.handleChange(e.target.value)}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>The name of the energy source.</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -28,17 +36,27 @@ export function EnergySourcePeriodInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.period>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel>Period</FieldLabel>
-			<Input
-				type='number'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Period</FieldLabel>
+			<NumberInput
+				id={field.name}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						energySourcesConfigSchema.shape.period.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>
+				The period of the energy source in ticks.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -48,17 +66,28 @@ export function EnergySourceMaxOutputPowerInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.maxOutputPower>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel>Max Power</FieldLabel>
-			<Input
-				type='number'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Max Output Power (kW)</FieldLabel>
+			<NumberInput
+				id={field.name}
+				step={0.01}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						energySourcesConfigSchema.shape.maxOutputPower.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>
+				The max output power of the energy source.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -68,17 +97,27 @@ export function EnergySourcePeakTickInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.peakTick>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel>Peak Tick</FieldLabel>
-			<Input
-				type='number'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Peak Tick</FieldLabel>
+			<NumberInput
+				id={field.name}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						energySourcesConfigSchema.shape.peakTick.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>
+				The peak tick of the energy source.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -88,17 +127,28 @@ export function EnergySourceStdDevInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.stdDev>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel>Std Dev</FieldLabel>
-			<Input
-				type='number'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Standard Deviation</FieldLabel>
+			<NumberInput
+				id={field.name}
+				step={0.01}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						energySourcesConfigSchema.shape.stdDev.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>
+				The standard deviation of the energy source curve.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }
@@ -108,17 +158,29 @@ export function EnergySourceVariationInput() {
 		useConfigFieldContext<
 			z.input<typeof energySourcesConfigSchema.shape.variation>
 		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
 	return (
-		<Field>
-			<FieldLabel>Variation</FieldLabel>
-			<Input
-				type='number'
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Variation</FieldLabel>
+			<NumberInput
+				id={field.name}
+				min={0}
+				max={100}
 				value={field.state.value}
-				onChange={(e) => field.handleChange(Number(e.target.value))}
+				onChange={(e) =>
+					field.handleChange(
+						energySourcesConfigSchema.shape.variation.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
 			/>
-			{field.state.meta.errors.length > 0 && (
-				<FieldError errors={field.state.meta.errors} />
-			)}
+			<FieldDescription>
+				The variation (%) of the energy source curve.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
 }

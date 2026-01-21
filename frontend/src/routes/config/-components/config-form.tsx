@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-	Field,
-	FieldDescription,
-	FieldLegend,
-	FieldSeparator,
-	FieldSet,
-} from '@/components/ui/field';
+import { Field, FieldGroup, FieldSeparator } from '@/components/ui/field';
 
 import { useConfigForm } from '@/routes/config/-components/config-form/form-context';
 import {
@@ -37,50 +31,76 @@ function ConfigForm() {
 			toast.success('Config saved successfully');
 			console.log(result.data);
 		},
-		onSubmitInvalid: async () => {
-			toast.error('Please fill in all the fields');
+		onSubmitInvalid: async ({ value }) => {
+			const modifiedValue = {
+				...value,
+				householdConfigs: [
+					...value.householdConfigs.map((householdConfig) => {
+						return {
+							...householdConfig,
+							applianceConfigs:
+								householdConfig.applianceConfigs.map(
+									(applianceConfig) => {
+										return {
+											...applianceConfig,
+											householdName:
+												householdConfig.householdName,
+										};
+									},
+								),
+						};
+					}),
+				],
+			};
+
+			toast.error('Invalid configuration');
+			console.log(modifiedValue);
 		},
 	});
 
 	return (
-		<FieldSet>
-			<FieldLegend>Configuration</FieldLegend>
+		<form
+			id='config-form'
+			onSubmit={(e) => {
+				e.preventDefault();
+				form.handleSubmit();
+			}}>
+			<FieldGroup>
+				{/* <FieldLegend>Configuration</FieldLegend>
 			<FieldDescription>
 				Configure the simulation parameters.
-			</FieldDescription>
-			<form
-				id='config-form'
-				onSubmit={(e) => {
-					e.preventDefault();
-					form.handleSubmit();
-				}}>
-				<div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-					<div className='space-y-6'>
+			</FieldDescription> */}
+				<FieldGroup className='@3xl/field-group:flex-row'>
+					<FieldGroup className='flex-1'>
 						<StrategySection form={form} />
 						<FieldSeparator />
 						<BatterySection form={form} />
-						<FieldSeparator />
+					</FieldGroup>
+					<FieldSeparator className='@3xl:hidden' />
+					<FieldGroup className='flex-1'>
 						<PredictionModelSection form={form} />
-					</div>
-					<div className='space-y-6'>
-						<EnergySourcesSection form={form} />
-						<FieldSeparator />
-						<HouseholdsSection form={form} />
-					</div>
-				</div>
-			</form>
-			<Field orientation='horizontal'>
-				<Button
-					type='button'
-					variant='outline'
-					onClick={() => form.reset()}>
-					Reset
-				</Button>
-				<Button type='submit' form='config-form'>
-					Submit
-				</Button>
-			</Field>
-		</FieldSet>
+					</FieldGroup>
+				</FieldGroup>
+				<FieldSeparator />
+				<FieldGroup className='@4xl/field-group:flex-row'>
+					<EnergySourcesSection form={form} />
+					<FieldSeparator />
+					<HouseholdsSection form={form} />
+				</FieldGroup>
+				<FieldSeparator />
+				<Field orientation='horizontal'>
+					<Button
+						type='button'
+						variant='outline'
+						onClick={() => form.reset()}>
+						Reset
+					</Button>
+					<Button type='submit' form='config-form'>
+						Submit
+					</Button>
+				</Field>
+			</FieldGroup>
+		</form>
 	);
 }
 

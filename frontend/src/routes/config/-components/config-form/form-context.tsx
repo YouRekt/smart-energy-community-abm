@@ -38,18 +38,15 @@ const { useAppForm, withForm } = createFormHook({
 		MinBatteryChargeThresholdInput,
 		ProductionSafetyFactorInput,
 		WindowSizeInput,
-		// Battery
 		CapacityInput,
 		StartingChargeInput,
 		IsPercentageInput,
-		// Energy Sources
 		EnergySourceAgentNameInput,
 		EnergySourcePeriodInput,
 		EnergySourceMaxOutputPowerInput,
 		EnergySourcePeakTickInput,
 		EnergySourceStdDevInput,
 		EnergySourceVariationInput,
-		// Households
 		HouseholdNameInput,
 		ApplianceNameInput,
 		TaskNameInput,

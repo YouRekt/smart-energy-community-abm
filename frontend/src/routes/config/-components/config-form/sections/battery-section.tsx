@@ -16,19 +16,23 @@ const BatterySection = withConfigForm({
 				<FieldDescription>
 					Configure the community battery parameters.
 				</FieldDescription>
-				<FieldGroup>
-					<form.AppField
-						name='batteryConfig.capacity'
-						children={(field) => <field.CapacityInput />}
-					/>
-					<form.AppField
-						name='batteryConfig.startingCharge'
-						children={(field) => <field.StartingChargeInput />}
-					/>
-					<form.AppField
-						name='batteryConfig.isPercentage'
-						children={(field) => <field.IsPercentageInput />}
-					/>
+				<FieldGroup className='@3xl/field-group:flex-row'>
+					<FieldGroup className='flex-2 @xl/field-group:flex-row'>
+						<form.AppField
+							name='batteryConfig.capacity'
+							children={(field) => <field.CapacityInput />}
+						/>
+						<form.AppField
+							name='batteryConfig.startingCharge'
+							children={(field) => <field.StartingChargeInput />}
+						/>
+					</FieldGroup>
+					<FieldGroup className='flex-1'>
+						<form.AppField
+							name='batteryConfig.isPercentage'
+							children={(field) => <field.IsPercentageInput />}
+						/>
+					</FieldGroup>
 				</FieldGroup>
 			</FieldSet>
 		);

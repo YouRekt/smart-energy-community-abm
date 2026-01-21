@@ -35,8 +35,9 @@ public final class DataStoreKey {
     }
 
     public static final class Negotiation {
-        public static final String HOUSEHOLD_RESPONSE = "household-response";
         public static final String AGENT_LIST = "agent-list";
+        public static final String HOUSEHOLD_REQUESTS_MAP = "household-responses";
+        public static final String HOUSEHOLD_RESPONSE = "household-response";
         public static final String OVERLOADED_TICKS = "overloaded-ticks";
         public static final String ALLOCATION_REQUEST = "allocation-request";
         public static final String REQUESTED_ALLOCATIONS = "requested-allocations";
@@ -50,5 +51,6 @@ public final class DataStoreKey {
         public static final String APPLIANCE_CONFIRM_MESSAGES = "appliance-confirm-messages";
         public static final String CONFIRM_REPLY_BY_DELAY = "confirm-reply-by-delay";
         public static final String NEGOTIATION_RETRIES = "negotiation-retries";
+        public static final String REQUEST_AMOUNT = "request-amount";
     }
 }

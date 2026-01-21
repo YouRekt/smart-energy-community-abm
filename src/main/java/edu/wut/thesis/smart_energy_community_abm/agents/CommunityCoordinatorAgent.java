@@ -62,13 +62,15 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         addBehaviour(new SimulationTickBehaviour(this));
     }
 
-    public double computePriority(AID aid, AllocationEntry entry, long currentTick) {
-        double greenScore = greenScores.getOrDefault(aid, 0.5);
-        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
-        double totalEnergy = entry.requestedEnergy();
-
-        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
-        return strategy.computePriority(ctx);
+    // TODO: Implement using strategy
+    public Double computePriority(AID aid, Map<Long, Double> requestMap) {
+//        double greenScore = greenScores.getOrDefault(aid, 0.5);
+//        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
+//        double totalEnergy = entry.requestedEnergy();
+//
+//        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
+//        return strategy.computePriority(ctx);
+        return 0.0;
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {

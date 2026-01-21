@@ -9,16 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ConfigRouteImport } from './routes/config'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RunsIndexRouteImport } from './routes/runs/index'
+import { Route as ConfigIndexRouteImport } from './routes/config/index'
 import { Route as RunsRunIdRouteImport } from './routes/runs/$runId'
 
-const ConfigRoute = ConfigRouteImport.update({
-  id: '/config',
-  path: '/config',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -29,6 +24,11 @@ const RunsIndexRoute = RunsIndexRouteImport.update({
   path: '/runs/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfigIndexRoute = ConfigIndexRouteImport.update({
+  id: '/config/',
+  path: '/config/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RunsRunIdRoute = RunsRunIdRouteImport.update({
   id: '/runs/$runId',
   path: '/runs/$runId',
@@ -37,47 +37,40 @@ const RunsRunIdRoute = RunsRunIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/config': typeof ConfigRoute
   '/runs/$runId': typeof RunsRunIdRoute
+  '/config/': typeof ConfigIndexRoute
   '/runs/': typeof RunsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/config': typeof ConfigRoute
   '/runs/$runId': typeof RunsRunIdRoute
+  '/config': typeof ConfigIndexRoute
   '/runs': typeof RunsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/config': typeof ConfigRoute
   '/runs/$runId': typeof RunsRunIdRoute
+  '/config/': typeof ConfigIndexRoute
   '/runs/': typeof RunsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/config' | '/runs/$runId' | '/runs/'
+  fullPaths: '/' | '/runs/$runId' | '/config/' | '/runs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/config' | '/runs/$runId' | '/runs'
-  id: '__root__' | '/' | '/config' | '/runs/$runId' | '/runs/'
+  to: '/' | '/runs/$runId' | '/config' | '/runs'
+  id: '__root__' | '/' | '/runs/$runId' | '/config/' | '/runs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ConfigRoute: typeof ConfigRoute
   RunsRunIdRoute: typeof RunsRunIdRoute
+  ConfigIndexRoute: typeof ConfigIndexRoute
   RunsIndexRoute: typeof RunsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/config': {
-      id: '/config'
-      path: '/config'
-      fullPath: '/config'
-      preLoaderRoute: typeof ConfigRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -92,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/config/': {
+      id: '/config/'
+      path: '/config'
+      fullPath: '/config/'
+      preLoaderRoute: typeof ConfigIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/runs/$runId': {
       id: '/runs/$runId'
       path: '/runs/$runId'
@@ -104,8 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ConfigRoute: ConfigRoute,
   RunsRunIdRoute: RunsRunIdRoute,
+  ConfigIndexRoute: ConfigIndexRoute,
   RunsIndexRoute: RunsIndexRoute,
 }
 export const routeTree = rootRouteImport

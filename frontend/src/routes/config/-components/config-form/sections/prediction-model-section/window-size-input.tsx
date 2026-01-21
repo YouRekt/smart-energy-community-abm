@@ -1,0 +1,57 @@
+import { NumberInput } from '@/components/number-input';
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+} from '@/components/ui/field';
+import { useConfigFieldContext } from '@/routes/config/-components/config-form/form-context';
+import { predictionModelConfigSchema } from '@/routes/config/-components/config-form/schema';
+import { z } from 'zod';
+
+function WindowSizeInput() {
+	const field =
+		useConfigFieldContext<
+			z.input<typeof predictionModelConfigSchema.shape.windowSize>
+		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+	return (
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Window Size</FieldLabel>
+			<NumberInput
+				id={field.name}
+				value={field.state.value}
+				onChange={(e) =>
+					field.handleChange(() => {
+						const result =
+							predictionModelConfigSchema.shape.windowSize.safeParse(
+								e.target.value,
+							);
+
+						if (result.success) {
+							return result.data;
+						}
+
+						switch (result.error.issues[0].code) {
+							case 'too_big':
+								return 100;
+							case 'too_small':
+								return 0;
+							default:
+								return field.state.value;
+						}
+					})
+				}
+				min={0}
+			/>
+			<FieldDescription>
+				Size of the window used for prediction.
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
+		</Field>
+	);
+}
+
+export { WindowSizeInput };

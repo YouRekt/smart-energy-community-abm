@@ -1,0 +1,70 @@
+import {
+	CapacityInput,
+	IsPercentageInput,
+	StartingChargeInput,
+} from '@/routes/config/-components/config-form/sections/battery-section/index';
+import {
+	EnergySourceAgentNameInput,
+	EnergySourceMaxOutputPowerInput,
+	EnergySourcePeakTickInput,
+	EnergySourcePeriodInput,
+	EnergySourceStdDevInput,
+	EnergySourceVariationInput,
+} from '@/routes/config/-components/config-form/sections/energy-sources-section/index';
+import {
+	ApplianceNameInput,
+	HouseholdNameInput,
+	TaskDurationInput,
+	TaskEnergyPerTickInput,
+	TaskHumanActivationChanceInput,
+	TaskNameInput,
+	TaskPostponableInput,
+} from '@/routes/config/-components/config-form/sections/households-section/index';
+import {
+	MinBatteryChargeThresholdInput,
+	PredictionModelSelect,
+	ProductionSafetyFactorInput,
+	WindowSizeInput,
+} from '@/routes/config/-components/config-form/sections/prediction-model-section/index';
+import { StrategySelect } from '@/routes/config/-components/config-form/sections/strategy-section/strategy-select';
+import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
+
+const { fieldContext, formContext, useFieldContext } = createFormHookContexts();
+
+const { useAppForm, withForm } = createFormHook({
+	fieldComponents: {
+		StrategySelect,
+		PredictionModelSelect,
+		MinBatteryChargeThresholdInput,
+		ProductionSafetyFactorInput,
+		WindowSizeInput,
+		// Battery
+		CapacityInput,
+		StartingChargeInput,
+		IsPercentageInput,
+		// Energy Sources
+		EnergySourceAgentNameInput,
+		EnergySourcePeriodInput,
+		EnergySourceMaxOutputPowerInput,
+		EnergySourcePeakTickInput,
+		EnergySourceStdDevInput,
+		EnergySourceVariationInput,
+		// Households
+		HouseholdNameInput,
+		ApplianceNameInput,
+		TaskNameInput,
+		TaskHumanActivationChanceInput,
+		TaskDurationInput,
+		TaskEnergyPerTickInput,
+		TaskPostponableInput,
+	},
+	formComponents: {},
+	fieldContext,
+	formContext,
+});
+
+export {
+	useFieldContext as useConfigFieldContext,
+	useAppForm as useConfigForm,
+	withForm as withConfigForm,
+};

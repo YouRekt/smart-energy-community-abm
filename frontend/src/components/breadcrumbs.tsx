@@ -8,7 +8,7 @@ import {
 import { useMatches } from '@tanstack/react-router';
 import { Fragment } from 'react/jsx-runtime';
 
-const Breadcrumbs = () => {
+function Breadcrumbs() {
 	const matches = useMatches();
 
 	const breadcrumbs = matches.filter(
@@ -39,5 +39,6 @@ const Breadcrumbs = () => {
 			</BreadcrumbList>
 		</Breadcrumb>
 	);
-};
-export default Breadcrumbs;
+}
+
+export { Breadcrumbs };

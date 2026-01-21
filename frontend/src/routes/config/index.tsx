@@ -1,6 +1,7 @@
+import { ConfigForm } from '@/routes/config/-components/config-form';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/config')({
+export const Route = createFileRoute('/config/')({
 	staticData: {
 		title: 'Configuration',
 	},
@@ -8,5 +9,5 @@ export const Route = createFileRoute('/config')({
 });
 
 function RouteComponent() {
-	return <div>Hello "/config"!</div>;
+	return <ConfigForm />;
 }

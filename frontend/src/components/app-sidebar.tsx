@@ -15,12 +15,10 @@ import {
 } from '@/components/ui/sidebar';
 import { Link } from '@tanstack/react-router';
 
-// This is sample data.
 const data = {
 	navMain: [
 		{
 			title: 'Simulation',
-			url: '/',
 			items: [
 				{
 					title: 'Dashboard',
@@ -39,7 +37,7 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
@@ -85,3 +83,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 		</Sidebar>
 	);
 }
+
+export { AppSidebar };

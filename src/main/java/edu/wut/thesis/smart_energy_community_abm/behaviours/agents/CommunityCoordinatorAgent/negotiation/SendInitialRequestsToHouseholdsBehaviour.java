@@ -6,11 +6,11 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_AMOUNT;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.REQUEST_REPLY_BY;
 
 public final class SendInitialRequestsToHouseholdsBehaviour extends OneShotBehaviour {
-    private final static long REPLY_BY_DELAY = 100;
     private final CommunityCoordinatorAgent agent;
 
     public SendInitialRequestsToHouseholdsBehaviour(CommunityCoordinatorAgent agent) {

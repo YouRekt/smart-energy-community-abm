@@ -181,7 +181,7 @@ const householdConfigSchemaTransformed = z
 			applianceConfigs: data.applianceConfigs.map((appliance) => {
 				return {
 					...appliance,
-					hasHouseholdName: data.householdName,
+					householdName: data.householdName,
 				};
 			}),
 		};

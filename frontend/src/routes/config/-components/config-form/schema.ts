@@ -196,7 +196,7 @@ const formSchema = z
 					'Balanced',
 					'EnergyVolume',
 					'GreenScoreFirst',
-					'ReservationFirst',
+					'AdvancePlanningFirst',
 				],
 				{
 					message: 'Please select a valid strategy',
@@ -260,7 +260,7 @@ const formSchemaTransformed = z
 					'Balanced',
 					'EnergyVolume',
 					'GreenScoreFirst',
-					'ReservationFirst',
+					'AdvancePlanningFirst',
 				],
 				{
 					message: 'Please select a valid strategy',

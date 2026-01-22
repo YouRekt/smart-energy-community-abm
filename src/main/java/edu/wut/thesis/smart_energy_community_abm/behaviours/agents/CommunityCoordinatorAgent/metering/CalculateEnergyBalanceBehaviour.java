@@ -3,10 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoo
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
-import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
-
-import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.*;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
@@ -44,15 +41,9 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         getDataStore().put(AVAILABLE_ENERGY, availableEnergy);
         getDataStore().put(SHORTFALL, shortfall);
 
-        // TODO: If shortfall is not greater than 0 but close enough - as defined by current strategy - maybe use shouldTriggerPanic; maybe move this whole check to the negotiation shouldTriggerPanic method
-        if (shortfall > 0) {
-            Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
-            int householdsAffected = tickAllocations.size();
-
-            if (agent.shouldTriggerPanic(shortfall, currentCharge, householdsAffected)) {
-                result = TransitionKeys.Metering.HAS_PANIC;
-                agent.log("Energy panic triggered!", LogSeverity.WARN, agent);
-            }
+        if (agent.shouldTriggerPanic(shortfall, currentCharge)) {
+            result = TransitionKeys.Metering.HAS_PANIC;
+            agent.log("Energy panic triggered! Shortfall: " + shortfall, LogSeverity.WARN, this);
         }
     }
 

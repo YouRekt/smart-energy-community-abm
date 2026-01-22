@@ -99,6 +99,13 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         return strategy.computePostponementPriority(greenScore, cooperationScore, energyToFree);
     }
 
+    public Double computeGenericPriority(AID aid) {
+        double greenScore = greenScores.getOrDefault(aid, 0.0);
+        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
+
+        return strategy.computeGenericPriority(greenScore, cooperationScore);
+    }
+
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge) {
 
         return strategy.shouldTriggerPanic(shortfall, batteryCharge, batteryCapacity);

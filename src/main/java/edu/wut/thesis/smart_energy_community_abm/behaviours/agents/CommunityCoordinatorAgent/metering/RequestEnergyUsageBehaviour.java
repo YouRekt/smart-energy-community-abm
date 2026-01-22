@@ -22,8 +22,12 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
     public void action() {
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         Double availableGreenEnergy = (Double) getDataStore().get(AVAILABLE_ENERGY);
-        for (var householdAgent : agent.householdAgents) {
-            // TODO: Sort Households based on their priorities - strategies implementation
+        for (var householdAgent : agent.householdAgents.stream()
+                .sorted((x, y) ->
+                agent.computeGenericPriority(y)
+                .compareTo(agent.computeGenericPriority(x)))
+                .toList())
+        {
             double householdAllocated = agent.getAllocatedAtFor(agent.tick, householdAgent);
             double greenEnergyAllowed = Math.min(householdAllocated, availableGreenEnergy);
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);

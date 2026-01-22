@@ -11,6 +11,7 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.*;
@@ -22,16 +23,19 @@ public final class CollectInitialHouseholdResponsesBehaviour extends TimeoutMess
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<AID, Map<Long, Double>> householdRequests = new HashMap<>() {
     };
+    private List<AID> agentList;
 
     public CollectInitialHouseholdResponsesBehaviour(CommunityCoordinatorAgent agent) {
         super(agent, REQUEST_REPLY_BY);
         this.agent = agent;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onStart() {
         super.onStart();
         householdRequests.clear();
+        agentList = agent.householdAgents;
 
         Integer expected = (Integer) getDataStore().get(REQUEST_AMOUNT);
         if (expected != null && expected > 0) {
@@ -46,6 +50,7 @@ public final class CollectInitialHouseholdResponsesBehaviour extends TimeoutMess
         incrementReceivedCount();
         agent.log("Refusal by household " + msg.getSender().getLocalName() + " acknowledged", LogSeverity.DEBUG, this);
         getDataStore().put(REQUEST_AMOUNT, (Integer) getDataStore().get(REQUEST_AMOUNT) - 1);
+        agentList.remove(msg.getSender());
     }
 
     @Override
@@ -61,7 +66,8 @@ public final class CollectInitialHouseholdResponsesBehaviour extends TimeoutMess
 
     @Override
     public int onEnd() {
-        if (householdRequests.isEmpty()) {
+        getDataStore().put(AGENT_LIST, agentList);
+        if (householdRequests.isEmpty() || agentList.isEmpty()) {
             return FINISHED;
         } else {
             getDataStore().put(HOUSEHOLD_REQUESTS_MAP, householdRequests);

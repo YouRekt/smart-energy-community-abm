@@ -53,6 +53,7 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
                         new TypeReference<>() {
                         }
                 );
+                getDataStore().put(HOUSEHOLD_RESPONSE, null);
             }
 
             final long startTick = Collections.min(request.keySet());

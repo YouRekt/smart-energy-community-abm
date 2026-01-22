@@ -93,7 +93,7 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {
-        PanicContext ctx = new PanicContext(shortfall, batteryCharge, minChargeThreshold, householdsAffected);
+        PanicContext ctx = new PanicContext(shortfall, batteryCharge, minChargeThreshold);
         return strategy.shouldTriggerPanic(ctx);
     }
 

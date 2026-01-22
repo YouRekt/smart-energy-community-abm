@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys;
 import jade.core.AID;
@@ -44,7 +45,8 @@ public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
         getDataStore().put(SHORTFALL, shortfall);
 
         // TODO: If shortfall is not greater than 0 but close enough - as defined by current strategy - maybe use shouldTriggerPanic; maybe move this whole check to the negotiation shouldTriggerPanic method
-        if (shortfall > 0) {
+        PanicContext ctx = new PanicContext(shortfall, currentCharge, );
+        if (agent.strategy.shouldTriggerPanic()) {
             Map<AID, Double> tickAllocations = agent.allocations.getOrDefault(agent.tick, Map.of());
             int householdsAffected = tickAllocations.size();
 

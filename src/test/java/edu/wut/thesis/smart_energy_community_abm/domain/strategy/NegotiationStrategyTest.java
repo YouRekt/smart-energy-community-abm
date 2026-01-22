@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class NegotiationStrategyTest {
 
     private PanicContext createPanicContext(double shortfall, double batteryCharge, double minThreshold) {
-        return new PanicContext(shortfall, batteryCharge, minThreshold, 1);
+        return new PanicContext(shortfall, batteryCharge, minThreshold);
     }
 
     @Nested

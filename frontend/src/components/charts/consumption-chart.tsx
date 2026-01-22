@@ -20,11 +20,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const chartConfig = {
 	greenEnergy: {
-		label: 'Green Energy (kWh)',
+		label: 'Green Energy (kW)',
 		color: 'hsl(142, 76%, 36%)',
 	},
 	gridEnergy: {
-		label: 'Grid Energy (kWh)',
+		label: 'Grid Energy (kW)',
 		color: 'hsl(0, 84%, 60%)',
 	},
 } satisfies ChartConfig;

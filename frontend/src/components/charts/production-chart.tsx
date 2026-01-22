@@ -20,7 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const chartConfig = {
 	production: {
-		label: 'Production (kWh)',
+		label: 'Production (kW)',
 		color: 'hsl(47, 100%, 50%)',
 	},
 } satisfies ChartConfig;

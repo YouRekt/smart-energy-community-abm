@@ -2,11 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldSeparator } from '@/components/ui/field';
 
 import { useConfigureSimulation } from '@/hooks/useSimulation';
+import { ConfigImportDialog } from '@/routes/config/-components/config-form/config-import-dialog';
 import { exampleConfig } from '@/routes/config/-components/config-form/example-data';
 import { useConfigForm } from '@/routes/config/-components/config-form/form-context';
 import {
 	defaultValues,
-	formSchema,
+	formSchemaTransformed,
 } from '@/routes/config/-components/config-form/schema';
 import {
 	BatterySection,
@@ -24,10 +25,10 @@ function ConfigForm() {
 	const form = useConfigForm({
 		defaultValues,
 		validators: {
-			onSubmit: formSchema,
+			onSubmit: formSchemaTransformed,
 		},
 		onSubmit: async ({ value }) => {
-			const result = formSchema.safeParse(value);
+			const result = formSchemaTransformed.safeParse(value);
 			if (!result.success) {
 				toast.error(result.error.message);
 				return;
@@ -102,6 +103,11 @@ function ConfigForm() {
 						disabled={configureMutation.isPending}>
 						{configureMutation.isPending ? 'Saving...' : 'Submit'}
 					</Button>
+					<ConfigImportDialog
+						onImport={(config) => {
+							form.reset(config);
+						}}
+					/>
 					<Button
 						type='button'
 						variant='secondary'
@@ -112,7 +118,7 @@ function ConfigForm() {
 					<Button
 						type='button'
 						variant='outline'
-						onClick={() => form.reset()}>
+						onClick={() => form.reset(defaultValues)}>
 						Reset
 					</Button>
 				</Field>

@@ -36,7 +36,6 @@ function Dashboard() {
 
 	return (
 		<div className='space-y-6 overflow-auto'>
-			{/* Header */}
 			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
 				<div>
 					<h1 className='text-3xl font-bold tracking-tight'>
@@ -59,7 +58,6 @@ function Dashboard() {
 					</p>
 				</div>
 
-				{/* Window Size Selector */}
 				<div className='flex gap-2 flex-wrap'>
 					{WINDOW_SIZES.map((size) => (
 						<Button
@@ -75,7 +73,6 @@ function Dashboard() {
 				</div>
 			</div>
 
-			{/* Charts Grid */}
 			<div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
 				<ConsumptionChart
 					title='Community Consumption'
@@ -91,7 +88,6 @@ function Dashboard() {
 				/>
 			</div>
 
-			{/* Battery Chart - Full Width */}
 			<BatteryChart
 				title='Battery Charge Level'
 				description='Community battery storage state'

@@ -139,14 +139,7 @@ export function ConsumptionChart({
 							tickMargin={10}
 							tickFormatter={(value) => `${value.toFixed(1)}`}
 						/>
-						<ChartTooltip
-							content={
-								<ChartTooltipContent
-									labelKey='timestamp'
-									indicator='dot'
-								/>
-							}
-						/>
+						<ChartTooltip content={<ChartTooltipContent />} />
 						<Area
 							dataKey='gridEnergy'
 							type='monotone'

@@ -1,0 +1,661 @@
+{
+	"strategyName": "Balanced",
+	"predictionModelConfig": {
+		"name": "MovingAverage",
+		"minBatteryChargeThreshold": 20,
+		"productionSafetyFactor": 90,
+		"windowSize": 20
+	},
+	"batteryConfig": {
+		"capacity": 2500.0,
+		"startingCharge": 25,
+		"isPercentage": true
+	},
+	"energySourcesConfigs": [
+		{
+			"agentName": "Community_Solar_Farm_East",
+			"period": 144,
+			"maxOutputPower": 150.0,
+			"peakTick": 72,
+			"stdDev": 12.0,
+			"variation": 15
+		},
+		{
+			"agentName": "Community_Solar_Farm_West",
+			"period": 144,
+			"maxOutputPower": 120.0,
+			"peakTick": 80,
+			"stdDev": 15.0,
+			"variation": 20
+		}
+	],
+	"householdConfigs": [
+		{
+			"householdName": "Household_01",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_01",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 101
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_01",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 102
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_02",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_02",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 201
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_02",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 202
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_03",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_03",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 301
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_03",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 302
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_04",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_04",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 401
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_04",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 402
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_05",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_05",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 501
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_05",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 502
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_06",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_06",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 601
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_06",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 602
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_07",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_07",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 701
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_07",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 702
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_08",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_08",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 801
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_08",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 802
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_09",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_09",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 901
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_09",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 902
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_10",
+			"applianceConfigs": [
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_10",
+					"tasks": [
+						{
+							"taskName": "HeavyWash",
+							"humanActivationChance": 5,
+							"period": 144,
+							"postponable": true,
+							"duration": 9,
+							"energyPerTick": 1.2,
+							"taskId": 1001
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "Household_10",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 10,
+							"period": 144,
+							"postponable": true,
+							"duration": 12,
+							"energyPerTick": 0.8,
+							"taskId": 1002
+						}
+					]
+				}
+			]
+		},
+
+		{
+			"householdName": "Household_11",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "Household_11",
+					"tasks": [
+						{
+							"taskName": "ChargeVehicle",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 5.0,
+							"taskId": 1101
+						}
+					]
+				},
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_11",
+					"tasks": [
+						{
+							"taskName": "QuickWash",
+							"humanActivationChance": 10,
+							"period": 72,
+							"postponable": true,
+							"duration": 4,
+							"energyPerTick": 1.0,
+							"taskId": 1102
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_12",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "Household_12",
+					"tasks": [
+						{
+							"taskName": "ChargeVehicle",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 5.0,
+							"taskId": 1201
+						}
+					]
+				},
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_12",
+					"tasks": [
+						{
+							"taskName": "QuickWash",
+							"humanActivationChance": 10,
+							"period": 72,
+							"postponable": true,
+							"duration": 4,
+							"energyPerTick": 1.0,
+							"taskId": 1202
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_13",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "Household_13",
+					"tasks": [
+						{
+							"taskName": "ChargeVehicle",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 5.0,
+							"taskId": 1301
+						}
+					]
+				},
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_13",
+					"tasks": [
+						{
+							"taskName": "QuickWash",
+							"humanActivationChance": 10,
+							"period": 72,
+							"postponable": true,
+							"duration": 4,
+							"energyPerTick": 1.0,
+							"taskId": 1302
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_14",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "Household_14",
+					"tasks": [
+						{
+							"taskName": "ChargeVehicle",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 5.0,
+							"taskId": 1401
+						}
+					]
+				},
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_14",
+					"tasks": [
+						{
+							"taskName": "QuickWash",
+							"humanActivationChance": 10,
+							"period": 72,
+							"postponable": true,
+							"duration": 4,
+							"energyPerTick": 1.0,
+							"taskId": 1402
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_15",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "Household_15",
+					"tasks": [
+						{
+							"taskName": "ChargeVehicle",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 5.0,
+							"taskId": 1501
+						}
+					]
+				},
+				{
+					"applianceName": "Washer",
+					"householdName": "Household_15",
+					"tasks": [
+						{
+							"taskName": "QuickWash",
+							"humanActivationChance": 10,
+							"period": 72,
+							"postponable": true,
+							"duration": 4,
+							"energyPerTick": 1.0,
+							"taskId": 1502
+						}
+					]
+				}
+			]
+		},
+
+		{
+			"householdName": "Household_16",
+			"applianceConfigs": [
+				{
+					"applianceName": "GamingPC",
+					"householdName": "Household_16",
+					"tasks": [
+						{
+							"taskName": "GamingSession",
+							"humanActivationChance": 30,
+							"period": 72,
+							"postponable": false,
+							"duration": 12,
+							"energyPerTick": 0.4,
+							"taskId": 1601
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_17",
+			"applianceConfigs": [
+				{
+					"applianceName": "GamingPC",
+					"householdName": "Household_17",
+					"tasks": [
+						{
+							"taskName": "GamingSession",
+							"humanActivationChance": 30,
+							"period": 72,
+							"postponable": false,
+							"duration": 12,
+							"energyPerTick": 0.4,
+							"taskId": 1701
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_18",
+			"applianceConfigs": [
+				{
+					"applianceName": "HomeCinema",
+					"householdName": "Household_18",
+					"tasks": [
+						{
+							"taskName": "MovieMarathon",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 0.3,
+							"taskId": 1801
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_19",
+			"applianceConfigs": [
+				{
+					"applianceName": "HomeCinema",
+					"householdName": "Household_19",
+					"tasks": [
+						{
+							"taskName": "MovieMarathon",
+							"humanActivationChance": 20,
+							"period": 144,
+							"postponable": true,
+							"duration": 18,
+							"energyPerTick": 0.3,
+							"taskId": 1901
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "Household_20",
+			"applianceConfigs": [
+				{
+					"applianceName": "Dehumidifier",
+					"householdName": "Household_20",
+					"tasks": [
+						{
+							"taskName": "DryAir",
+							"humanActivationChance": 50,
+							"period": 36,
+							"postponable": true,
+							"duration": 6,
+							"energyPerTick": 0.6,
+							"taskId": 2001
+						}
+					]
+				}
+			]
+		}
+	]
+}

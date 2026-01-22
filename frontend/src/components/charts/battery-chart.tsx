@@ -118,14 +118,7 @@ export function BatteryChart({
 							tickMargin={10}
 							tickFormatter={(value) => `${value.toFixed(1)}`}
 						/>
-						<ChartTooltip
-							content={
-								<ChartTooltipContent
-									labelKey='tick'
-									indicator='dot'
-								/>
-							}
-						/>
+						<ChartTooltip content={<ChartTooltipContent />} />
 						<Area
 							dataKey='value'
 							name='charge'

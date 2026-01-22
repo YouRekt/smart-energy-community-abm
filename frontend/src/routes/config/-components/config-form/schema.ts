@@ -133,22 +133,29 @@ const applianceTaskSchema = z.object({
 	taskId: z.coerce.number<number>().int(),
 });
 
-const applianceTaskSchemaTransformed = applianceTaskSchema.transform((data) => {
-	return {
-		...data,
-		humanActivationChance: data.humanActivationChance / 100,
-	};
-});
-
 const applianceConfigSchema = z.object({
 	applianceName: z
 		.string()
 		.min(3, { message: 'Appliance name must be at least 3 characters' }),
 	householdName: z.string().optional(), // will be by a transform
-	tasks: z.array(applianceTaskSchemaTransformed).min(1, {
+	tasks: z.array(applianceTaskSchema).min(1, {
 		message: 'At least one task required',
 	}),
 });
+
+const applianceConfigSchemaTransformed = applianceConfigSchema.transform(
+	(data) => {
+		return {
+			...data,
+			tasks: data.tasks.map((task) => {
+				return {
+					...task,
+					humanActivationChance: task.humanActivationChance / 100,
+				};
+			}),
+		};
+	},
+);
 
 const householdConfigSchema = z.object({
 	householdName: z
@@ -159,8 +166,16 @@ const householdConfigSchema = z.object({
 	}),
 });
 
-const householdConfigSchemaTransformed = householdConfigSchema.transform(
-	(data) => {
+const householdConfigSchemaTransformed = z
+	.object({
+		householdName: z.string().min(3, {
+			message: 'Household name must be at least 3 characters',
+		}),
+		applianceConfigs: z.array(applianceConfigSchemaTransformed).min(1, {
+			message: 'At least one appliance required',
+		}),
+	})
+	.transform((data) => {
 		return {
 			...data,
 			applianceConfigs: data.applianceConfigs.map((appliance) => {
@@ -170,10 +185,72 @@ const householdConfigSchemaTransformed = householdConfigSchema.transform(
 				};
 			}),
 		};
-	},
-);
+	});
 
 const formSchema = z
+	.object({
+		strategyName: z
+			.enum(
+				[
+					'Balanced',
+					'EnergyVolume',
+					'GreenScoreFirst',
+					'ReservationFirst',
+				],
+				{
+					message: 'Please select a valid strategy',
+				},
+			)
+			.default('Balanced'),
+		predictionModelConfig: predictionModelConfigSchema,
+		batteryConfig: batteryConfigSchema,
+		energySourcesConfigs: z.array(energySourcesConfigSchema).min(1, {
+			message: 'At least one energy source required',
+		}),
+		householdConfigs: z.array(householdConfigSchema).min(1, {
+			message: 'At least one household required',
+		}),
+	})
+	.superRefine((data, ctx) => {
+		const taskIds = new Set<number>();
+		const householdNames = new Set<string>();
+		data.householdConfigs.forEach((household, householdIndex) => {
+			if (householdNames.has(household.householdName)) {
+				ctx.addIssue({
+					code: 'custom',
+					message: 'Household name must be unique',
+					path: ['householdConfigs', householdIndex, 'householdName'],
+				});
+			}
+			householdNames.add(household.householdName);
+
+			household.applianceConfigs.forEach((appliance, applianceIndex) => {
+				appliance.tasks.forEach((task, taskIndex) => {
+					if (task.taskId !== undefined) {
+						if (taskIds.has(task.taskId)) {
+							ctx.addIssue({
+								code: 'custom',
+								message: 'Task ID must be unique',
+								path: [
+									'householdConfigs',
+									householdIndex,
+									'applianceConfigs',
+									applianceIndex,
+									'tasks',
+									taskIndex,
+									'taskId',
+								],
+							});
+						} else {
+							taskIds.add(task.taskId);
+						}
+					}
+				});
+			});
+		});
+	});
+
+const formSchemaTransformed = z
 	.object({
 		strategyName: z
 			.enum(
@@ -238,7 +315,7 @@ const formSchema = z
 		});
 	});
 
-const defaultValues: z.input<typeof formSchema> = {
+const defaultValues: z.input<typeof formSchemaTransformed> = {
 	strategyName: 'Balanced',
 	predictionModelConfig: {
 		name: 'MovingAverage',
@@ -255,8 +332,9 @@ const defaultValues: z.input<typeof formSchema> = {
 	householdConfigs: [],
 };
 
-const strategyDefaultValues: z.input<typeof formSchema.shape.strategyName> =
-	'Balanced';
+const strategyDefaultValues: z.input<
+	typeof formSchemaTransformed.shape.strategyName
+> = 'Balanced';
 
 const predictionModelDefaultValues: z.input<
 	typeof predictionModelConfigSchema
@@ -314,6 +392,7 @@ export {
 	energySourceDefaultValues,
 	energySourcesConfigSchema,
 	formSchema,
+	formSchemaTransformed,
 	householdConfigSchema,
 	householdDefaultValues,
 	predictionModelConfigSchema,

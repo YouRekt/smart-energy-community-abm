@@ -9,6 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useHouseholdConsumption } from '@/hooks/useMetrics';
 import { useSimulationStore } from '@/store/useSimulationStore';
 import { Link, createFileRoute } from '@tanstack/react-router';
@@ -72,9 +73,9 @@ function HouseholdsPage() {
 	}
 
 	return (
-		<div className='space-y-6'>
+		<div className='flex flex-col h-full overflow-hidden space-y-4'>
 			{/* Header */}
-			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between shrink-0'>
 				<div className='flex items-center gap-4'>
 					<Link to='/'>
 						<Button variant='ghost' size='icon'>
@@ -110,101 +111,110 @@ function HouseholdsPage() {
 				</div>
 			</div>
 
-			<div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+			<div className='flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 overflow-hidden'>
 				{/* Household List */}
-				<Card className='lg:col-span-1'>
-					<CardHeader>
+				<Card className='lg:col-span-1 flex flex-col overflow-hidden'>
+					<CardHeader className='shrink-0'>
 						<CardTitle>Select Household</CardTitle>
 						<CardDescription>
 							Click a household to view its consumption
 						</CardDescription>
 					</CardHeader>
-					<CardContent className='p-0'>
-						<div className='divide-y'>
-							{households.map((household) => (
-								<button
-									key={household.householdName}
-									type='button'
-									onClick={() =>
-										setSelectedHousehold(
-											household.householdName,
-										)
-									}
-									className={`w-full flex items-center justify-between p-4 hover:bg-accent transition-colors text-left ${
-										selectedHousehold ===
-										household.householdName
-											? 'bg-accent'
-											: ''
-									}`}>
-									<div>
-										<p className='font-medium'>
-											{household.householdName}
-										</p>
-										<p className='text-sm text-muted-foreground'>
-											{household.appliances.length}{' '}
-											appliance
-											{household.appliances.length !== 1
-												? 's'
-												: ''}
-										</p>
-									</div>
-									<ChevronRight className='h-4 w-4 text-muted-foreground' />
-								</button>
-							))}
-						</div>
+					<CardContent className='p-0 flex-1 overflow-hidden'>
+						<ScrollArea className='h-full'>
+							<div className='divide-y'>
+								{households.map((household) => (
+									<button
+										key={household.householdName}
+										type='button'
+										onClick={() =>
+											setSelectedHousehold(
+												household.householdName,
+											)
+										}
+										className={`w-full flex items-center justify-between p-4 hover:bg-accent transition-colors text-left ${
+											selectedHousehold ===
+											household.householdName
+												? 'bg-accent'
+												: ''
+										}`}>
+										<div>
+											<p className='font-medium'>
+												{household.householdName}
+											</p>
+											<p className='text-sm text-muted-foreground'>
+												{household.appliances.length}{' '}
+												appliance
+												{household.appliances.length !==
+												1
+													? 's'
+													: ''}
+											</p>
+										</div>
+										<ChevronRight className='h-4 w-4 text-muted-foreground' />
+									</button>
+								))}
+							</div>
+						</ScrollArea>
 					</CardContent>
 				</Card>
 
 				{/* Consumption Chart */}
-				<div className='lg:col-span-2'>
+				<div className='lg:col-span-2 flex flex-col gap-6 overflow-hidden'>
 					{selectedHousehold ? (
-						<div className='space-y-6'>
-							<ConsumptionChart
-								title={`${selectedHousehold} Consumption`}
-								description='Energy consumption breakdown'
-								data={householdData}
-								isLoading={isLoading}
-							/>
+						<div className='flex flex-col h-full gap-6 overflow-hidden'>
+							<div className='shrink-0'>
+								<ConsumptionChart
+									title={`${selectedHousehold} Consumption`}
+									description='Energy consumption breakdown'
+									data={householdData}
+									isLoading={isLoading}
+								/>
+							</div>
 
 							{/* Appliances for this household */}
-							<Card>
-								<CardHeader>
+							<Card className='flex flex-col flex-1 overflow-hidden'>
+								<CardHeader className='shrink-0'>
 									<CardTitle>Appliances</CardTitle>
 									<CardDescription>
 										Drill down to individual appliances
 									</CardDescription>
 								</CardHeader>
-								<CardContent className='p-0'>
-									<div className='divide-y'>
-										{households
-											.find(
-												(h) =>
-													h.householdName ===
-													selectedHousehold,
-											)
-											?.appliances.map((appliance) => (
-												<Link
-													key={
-														appliance.applianceName
-													}
-													to='/households/$householdName/$applianceName'
-													params={{
-														householdName:
-															selectedHousehold,
-														applianceName:
-															appliance.applianceName,
-													}}>
-													<div className='flex items-center justify-between p-4 hover:bg-accent transition-colors'>
-														<p className='font-medium'>
-															{
+								<CardContent className='p-0 flex-1 overflow-hidden'>
+									<ScrollArea className='h-full'>
+										<div className='divide-y'>
+											{households
+												.find(
+													(h) =>
+														h.householdName ===
+														selectedHousehold,
+												)
+												?.appliances.map(
+													(appliance) => (
+														<Link
+															key={
 																appliance.applianceName
 															}
-														</p>
-														<ChevronRight className='h-4 w-4 text-muted-foreground' />
-													</div>
-												</Link>
-											))}
-									</div>
+															to='/households/$householdName/$applianceName'
+															params={{
+																householdName:
+																	selectedHousehold,
+																applianceName:
+																	appliance.applianceName,
+															}}>
+															<div className='flex items-center justify-between p-4 hover:bg-accent transition-colors'>
+																<p className='font-medium'>
+																	{
+																		appliance.applianceName
+																	}
+																</p>
+																<ChevronRight className='h-4 w-4 text-muted-foreground' />
+															</div>
+														</Link>
+													),
+												)}
+										</div>
+									</ScrollArea>
 								</CardContent>
 							</Card>
 						</div>

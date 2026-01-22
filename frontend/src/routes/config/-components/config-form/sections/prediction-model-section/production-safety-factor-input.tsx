@@ -56,7 +56,10 @@ function ProductionSafetyFactorInput() {
 				min={0}
 				max={100}
 			/>
-			<FieldDescription>Production safety factor.</FieldDescription>
+			<FieldDescription>
+				Multiplier applied to predicted production for conservative
+				estimates.
+			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);

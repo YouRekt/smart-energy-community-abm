@@ -47,7 +47,8 @@ function WindowSizeInput() {
 				min={0}
 			/>
 			<FieldDescription>
-				Size of the window used for prediction.
+				Number of past simulation ticks used to calculate the moving
+				average for energy production prediction.
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>

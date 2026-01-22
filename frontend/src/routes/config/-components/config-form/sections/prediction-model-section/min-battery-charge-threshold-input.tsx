@@ -57,7 +57,8 @@ function MinBatteryChargeThresholdInput() {
 				max={100}
 			/>
 			<FieldDescription>
-				Minimum battery charge threshold.
+				Percentage of battery capacity reserved as an emergency buffer
+				that won't be allocated for normal usage.
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>

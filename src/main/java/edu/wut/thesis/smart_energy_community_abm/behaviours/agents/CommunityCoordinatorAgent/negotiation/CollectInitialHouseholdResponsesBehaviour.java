@@ -66,7 +66,7 @@ public final class CollectInitialHouseholdResponsesBehaviour extends TimeoutMess
         } else {
             getDataStore().put(HOUSEHOLD_REQUESTS_MAP, householdRequests);
             getDataStore().put(AGENT_LIST, new ArrayList<>(householdRequests.entrySet().stream()
-                    .sorted((e, f) -> agent.computePriority(f.getKey(), f.getValue()).compareTo(agent.computePriority(e.getKey(), e.getValue())))
+                    .sorted((e, f) -> agent.computeNegotiationPriority(f.getKey(), f.getValue()).compareTo(agent.computeNegotiationPriority(e.getKey(), e.getValue())))
                     .map(Map.Entry::getKey)
                     .toList()));
             return INFORM;

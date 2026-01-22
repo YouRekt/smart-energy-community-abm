@@ -23,7 +23,6 @@ public final class ProcessEnergyUsageBehaviour extends TimeoutMessageHandlerBeha
     @Override
     public void onStart() {
         super.onStart();
-        // TODO: Use these values after this behaviour concludes for updating cooperation scores
         greenEnergyUsed = 0.0;
         externalEnergyUsed = 0.0;
         setExpectedResponses(agent.householdAgents.size());
@@ -43,9 +42,14 @@ public final class ProcessEnergyUsageBehaviour extends TimeoutMessageHandlerBeha
         } else {
             try {
                 String[] parts = msg.getContent().split(",");
-                // TODO: Add a DTO object for these values
-                greenEnergyUsed += Double.parseDouble(parts[0]);
-                externalEnergyUsed += Double.parseDouble(parts[1]);
+                double green = Double.parseDouble(parts[0]);
+                double external = Double.parseDouble(parts[1]);
+
+                greenEnergyUsed += green;
+                externalEnergyUsed += external;
+
+                agent.updateGreenEnergyScore(msg.getSender(), green, external);
+
                 incrementReceivedCount();
             } catch (RuntimeException e) {
                 agent.log("Error parsing usage: " + msg.getContent(), LogSeverity.ERROR, this);

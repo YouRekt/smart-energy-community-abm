@@ -1,13 +1,13 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
-import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
-
 public interface NegotiationStrategy {
     String getName();
 
-    double computeNegotiationPriority(double greenScore, double cooperationScore, long firstTaskTick, long requestSpan);
+    double computeNegotiationPriority(double greenScore, double cooperationScore, long leadTime, long requestDuration);
 
     double computePostponementPriority(double greenScore, double cooperationScore, double energyToFree);
 
-    boolean shouldTriggerPanic(PanicContext ctx);
+    double computeGenericPriority(double greenScore, double cooperationScore);
+
+    boolean shouldTriggerPanic(double shortfall, double batteryCharge, double batteryCapacity);
 }

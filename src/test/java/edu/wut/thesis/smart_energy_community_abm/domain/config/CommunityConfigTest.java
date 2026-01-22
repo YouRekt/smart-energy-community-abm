@@ -108,7 +108,7 @@ class CommunityConfigTest {
     @DisplayName("getAgentParams should return correct agent class and 4 arguments")
     void testGetAgentParams() {
         // Given
-        String strategyName = "ReservationFirst";
+        String strategyName = "AdvancePlanningFirst";
         CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, strategyName, validPredictionConfig, 0L);
 
         // When

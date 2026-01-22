@@ -39,7 +39,6 @@ public final class HandlePostponeRepliesBehaviour extends OneShotBehaviour {
         ACLMessage cfp = (ACLMessage) getDataStore().get(PANIC_CFP);
         ACLMessage reply = cfp.createReply();
 
-        // TODO: Implement a cleaner way of handling this (if there are no tasks skip the sending behaviours?)
         if (postponeAgreements == null || postponeAgreements.isEmpty()) {
             reply.setPerformative(ACLMessage.REFUSE);
             refused = true;

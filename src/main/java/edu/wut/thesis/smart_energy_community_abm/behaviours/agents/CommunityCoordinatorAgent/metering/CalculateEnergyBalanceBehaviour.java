@@ -8,7 +8,6 @@ import jade.core.behaviours.OneShotBehaviour;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.*;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.TransitionKeys.Metering.NO_PANIC;
 
-// TODO: Make sure ALL FIELDS ARE RESET by calling onStart()
 public final class CalculateEnergyBalanceBehaviour extends OneShotBehaviour {
     private final CommunityCoordinatorAgent agent;
     private int result = NO_PANIC;

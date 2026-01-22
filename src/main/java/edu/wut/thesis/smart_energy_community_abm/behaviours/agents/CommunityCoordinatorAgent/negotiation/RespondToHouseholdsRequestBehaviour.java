@@ -56,6 +56,15 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
                 getDataStore().put(HOUSEHOLD_RESPONSE, null);
             }
 
+            if ("Naive".equals(agent.strategy.getName())) {
+                request.forEach((key, value) -> agent.addAllocation(key, currentHousehold, value));
+
+                reply.addReceiver(currentHousehold);
+                reply.setPerformative(ACLMessage.CONFIRM);
+                agent.send(reply);
+                return;
+            }
+
             final long startTick = Collections.min(request.keySet());
             final long endTick = Collections.max(request.keySet());
             final LongFunction<Double> energyPerTick = (tick) -> agent.getAllocatedAt(tick) + request.getOrDefault(tick, 0.0);

@@ -9,13 +9,12 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.*;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_MSG_COUNT;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.SHORTFALL;
 
 public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
-    private static final int REPLY_BY_DELAY = 300;
-
     private final CommunityCoordinatorAgent agent;
 
     public ProcessPostponeResponsesBehaviour(CommunityCoordinatorAgent agent) {

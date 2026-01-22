@@ -14,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.*;
 
 public final class FinalizeAllocationNegotiationBehaviour extends OneShotBehaviour {
-    private static final long REPLY_BY_DELAY = 500;
-
     private final HouseholdCoordinatorAgent agent;
 
     public FinalizeAllocationNegotiationBehaviour(HouseholdCoordinatorAgent agent) {
@@ -44,7 +43,7 @@ public final class FinalizeAllocationNegotiationBehaviour extends OneShotBehavio
             }));
 
             final ObjectMapper mapper = new ObjectMapper();
-            Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
+            Date replyBy = new Date(System.currentTimeMillis() + (long) (REPLY_BY_DELAY * 0.7));
             getDataStore().put(CONFIRM_REPLY_BY_DELAY, replyBy);
 
             for (var entry : requestedAllocations.entrySet()) {

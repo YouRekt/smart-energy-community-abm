@@ -68,7 +68,6 @@ public final class CollectProposalResultBehaviour extends BaseMessageHandlerBeha
         List<AID> proposals = (List<AID>) getDataStore().get(POSTPONE_AGREEMENTS);
         proposals.forEach(rejectClearTaskRequest::addReceiver);
         agent.send(rejectClearTaskRequest);
-        // TODO: Make sure appliance responds back and then we proceed?
 
         agent.log("Community Coordinator rejected proposal", LogSeverity.DEBUG, this);
     }

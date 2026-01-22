@@ -6,6 +6,7 @@ public final class NegotiationStrategyFactory {
             case "GreenScoreFirst" -> new GreenScoreFirstStrategy();
             case "AdvancePlanningFirstFirst" -> new AdvancePlanningFirstStrategy();
             case "EnergyVolume" -> new EnergyVolumeStrategy();
+            case "Naive" -> new NaiveStrategy();
             default -> new BalancedStrategy();
         };
     }

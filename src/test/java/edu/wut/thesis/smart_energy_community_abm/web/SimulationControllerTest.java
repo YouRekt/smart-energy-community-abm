@@ -96,7 +96,7 @@ class SimulationControllerTest {
                 List.of(source),
                 List.of(house),
                 "Balanced",
-                predictionConfig
-        );
+                predictionConfig,
+                0L);
     }
 }

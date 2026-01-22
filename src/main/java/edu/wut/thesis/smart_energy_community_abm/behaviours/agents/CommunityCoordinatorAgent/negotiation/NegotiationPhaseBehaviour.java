@@ -16,6 +16,7 @@ public final class NegotiationPhaseBehaviour extends PhaseBehaviour {
                         agent.log(String.format("--- Phase 3 [Negotiation]: Tick %d ---", agent.tick), LogSeverity.INFO, this);
                     }
                 },
+                new SendInitialRequestsToHouseholdsBehaviour(agent),
                 new RequestAllocationReservationsBehaviour(agent, getDataStore()),
                 new OneShotBehaviour(agent) {
                     public void action() {

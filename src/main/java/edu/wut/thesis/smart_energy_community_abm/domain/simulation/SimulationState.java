@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 @RequiredArgsConstructor
@@ -14,10 +13,11 @@ public class SimulationState {
 
     private SimulationRun currentRun;
 
-    public void startNewRun() {
+    public void startNewRun(long randomSeed) {
         this.currentRun = SimulationRun.builder()
                 .startTime(LocalDateTime.now())
                 .status(SimulationRun.RunStatus.RUNNING)
+                .randomSeed(randomSeed)
                 .build();
 
         runRepository.save(this.currentRun);
@@ -37,5 +37,9 @@ public class SimulationState {
 
     public Long getCurrentRunId() {
         return currentRun != null ? currentRun.getId() : null;
+    }
+
+    public long getCurrentRunRandomSeed() {
+        return currentRun != null ? currentRun.getRandomSeed() : 0;
     }
 }

@@ -2,6 +2,7 @@ package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.config.SpringContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
+import edu.wut.thesis.smart_energy_community_abm.domain.simulation.SimulationState;
 import edu.wut.thesis.smart_energy_community_abm.domain.timeseries.Metric;
 import edu.wut.thesis.smart_energy_community_abm.persistence.MetricsRepository;
 import jade.core.Agent;
@@ -9,17 +10,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public abstract class BaseAgent extends Agent {
     private final static Logger logger = LoggerFactory.getLogger(BaseAgent.class);
+
     public long tick = 0;
+
+    protected Random rand;
+
     private MetricsRepository metricsRepository;
 
     @Override
     protected void setup() {
         super.setup();
 
+        SimulationState simulationState = SpringContext.getBean(SimulationState.class);
         metricsRepository = SpringContext.getBean(MetricsRepository.class);
+
+        rand = new Random(simulationState.getCurrentRunRandomSeed());
     }
 
     protected void pushMetric(String name, double value) {

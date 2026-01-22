@@ -11,7 +11,8 @@ public record CommunityConfig(
         List<GreenEnergySourceConfig> energySourcesConfigs,
         List<HouseholdConfig> householdConfigs,
         String strategyName,
-        PredictionModelConfig predictionModelConfig
+        PredictionModelConfig predictionModelConfig,
+        Long seed
 ) implements AgentConfig {
 
     public CommunityConfig {

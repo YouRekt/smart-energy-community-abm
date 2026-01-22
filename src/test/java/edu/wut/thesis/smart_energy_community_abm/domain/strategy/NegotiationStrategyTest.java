@@ -1,8 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,11 +10,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NegotiationStrategyTest {
-    // Helper to create a standard context
-    private PriorityContext createPriorityContext(long currentTick, long requestTimestamp, double greenScore, double cooperationScore, double totalEnergy) {
-        AllocationEntry entry = new AllocationEntry(totalEnergy, requestTimestamp, currentTick, 1);
-        return new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
-    }
 
     private PanicContext createPanicContext(double shortfall, double batteryCharge, double minThreshold) {
         return new PanicContext(shortfall, batteryCharge, minThreshold, 1);
@@ -28,24 +21,19 @@ class NegotiationStrategyTest {
         private final NegotiationStrategy strategy = new BalancedStrategy();
 
         @Test
-        @DisplayName("Should compute priority using balanced weights (0.3 Green, 0.5 Reservation, 0.2 Cooperation)")
+        @DisplayName("Should compute priority using balanced weights (0.5 Green, 0.5 Cooperation)")
         void testComputePriority() {
             // Given
-            long currentTick = 100;
-            long requestTimestamp = 100; // age = 0, reservationBonus = 1 - e^0 = 0
-            double greenScore = 0.0;     // weight = 1.0 - 0.0 = 1.0
-            double cooperationScore = 1.0;
+            double greenScore = 0.2;
+            double cooperationScore = 0.8;
+            long tick = 100; // Irrelevant for Balanced
+            long span = 10;  // Irrelevant for Balanced
 
             // When
-            PriorityContext ctx = createPriorityContext(currentTick, requestTimestamp, greenScore, cooperationScore, 10.0);
-            double priority = strategy.computePriority(ctx);
+            double priority = strategy.computeNegotiationPriority(greenScore, cooperationScore, tick, span);
 
             // Then
-            // Calculation:
-            // Green Part: (1.0 - 0.0) * 0.3 = 0.3
-            // Reservation Part: (1.0 - exp(0)) * 0.5 = 0.0
-            // Cooperation Part: 1.0 * 0.2 = 0.2
-            // Total: 0.5
+            // Calculation: (0.2 * 0.5) + (0.8 * 0.5) = 0.1 + 0.4 = 0.5
             assertEquals(0.5, priority, 0.0001);
         }
 
@@ -68,20 +56,20 @@ class NegotiationStrategyTest {
         private final NegotiationStrategy strategy = new GreenScoreFirstStrategy();
 
         @Test
-        @DisplayName("Should heavily weigh green score (0.6)")
+        @DisplayName("Should heavily weigh green score (0.8 Green, 0.2 Cooperation)")
         void testComputePriority() {
             // Given
-            long currentTick = 100;
-            long requestTimestamp = 100; // age 0 -> bonus 0
-            double greenScore = 0.0;     // low green score -> high weight (1 - 0)
+            double greenScore = 1.0;
             double cooperationScore = 0.0;
+            long tick = 100; // Irrelevant
+            long span = 10;  // Irrelevant
 
-            PriorityContext ctx = createPriorityContext(currentTick, requestTimestamp, greenScore, cooperationScore, 10.0);
-            double priority = strategy.computePriority(ctx);
+            // When
+            double priority = strategy.computeNegotiationPriority(greenScore, cooperationScore, tick, span);
 
-            // Green Part: 1.0 * 0.6 = 0.6
-            // Others 0
-            assertEquals(0.6, priority, 0.0001);
+            // Then
+            // Calculation: (1.0 * 0.8) + (0.0 * 0.2) = 0.8
+            assertEquals(0.8, priority, 0.0001);
         }
 
         @Test
@@ -103,22 +91,23 @@ class NegotiationStrategyTest {
         private final NegotiationStrategy strategy = new ReservationFirstStrategy();
 
         @Test
-        @DisplayName("Should prioritize early reservations (Decay=30.0, Weight=0.7)")
+        @DisplayName("Should weigh cooperation highly and include tick urgency (0.2 Green, 0.7 Coop, 0.1 Tick)")
         void testComputePriority() {
             // Given
-            long currentTick = 130;
-            long requestTimestamp = 100; // age = 30
-            // Bonus = 1 - exp(-30/30) = 1 - e^-1 ~= 1 - 0.3679 = 0.6321
-            double greenScore = 1.0;     // weight 0
-            double cooperationScore = 0.0;
+            double greenScore = 0.5;
+            double cooperationScore = 1.0;
+            long firstTaskTick = 0; // Tick 0 results in max tick factor
+            long span = 10;
 
-            PriorityContext ctx = createPriorityContext(currentTick, requestTimestamp, greenScore, cooperationScore, 10.0);
-            double priority = strategy.computePriority(ctx);
+            // When
+            double priority = strategy.computeNegotiationPriority(greenScore, cooperationScore, firstTaskTick, span);
 
-            double expectedReservationBonus = 1.0 - Math.exp(-1.0);
-            double expectedValue = expectedReservationBonus * 0.7;
-
-            assertEquals(expectedValue, priority, 0.0001);
+            // Calculation:
+            // Green: 0.5 * 0.2 = 0.1
+            // Coop:  1.0 * 0.7 = 0.7
+            // Tick:  1.0 / (1.0 + ln(1 + 0)) = 1.0 -> 1.0 * 0.1 = 0.1
+            // Total: 0.9
+            assertEquals(0.9, priority, 0.0001);
         }
 
         @Test
@@ -141,26 +130,24 @@ class NegotiationStrategyTest {
 
         @ParameterizedTest
         @CsvSource({
-                "0.0,  1.0",   // Small energy -> high factor
-                "100.0, 0.59"  // Large energy (approx) -> lower factor. 1 / (1 + ln(1 + 100/100)) = 1 / (1 + ln 2) ~= 1/1.693
+                "0,  1.0",    // Small span (0) -> Factor 1.0
+                "10, 0.5"     // Span equals scale (10) -> Factor 0.5
         })
-        @DisplayName("Should penalize high energy requests")
-        void testEnergyFactor(double energy, double expectedFactorRange) {
+        @DisplayName("Should penalize large request spans (Volume proxy)")
+        void testSpanFactor(long span, double expectedSpanFactor) {
             // Given
-            long currentTick = 100;
-            long requestTimestamp = 100;
-            double greenScore = 1.0; // 0 weight
+            double greenScore = 0.0;
             double cooperationScore = 0.0;
+            long tick = 100;
 
-            PriorityContext ctx = createPriorityContext(currentTick, requestTimestamp, greenScore, cooperationScore, energy);
-            double priority = strategy.computePriority(ctx);
+            // When
+            double priority = strategy.computeNegotiationPriority(greenScore, cooperationScore, tick, span);
 
-            // Energy Weight is 0.2
-            // Formula: 1.0 / (1.0 + Math.log1p(energy / 100.0))
-            double expectedFactor = 1.0 / (1.0 + Math.log1p(energy / 100.0));
-            double expectedPriority = expectedFactor * 0.2;
+            // Formula weights: Green 0.3, Coop 0.3, Span 0.4
+            // Since scores are 0, priority = spanFactor * 0.4
+            double expectedPriority = expectedSpanFactor * 0.4;
 
-            assertEquals(expectedPriority, priority, 0.01);
+            assertEquals(expectedPriority, priority, 0.0001);
         }
 
         @Test

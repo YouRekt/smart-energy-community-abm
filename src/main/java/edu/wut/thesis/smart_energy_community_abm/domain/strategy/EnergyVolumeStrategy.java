@@ -1,15 +1,14 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 
 public final class EnergyVolumeStrategy implements NegotiationStrategy {
-    private static final double GREENSCORE_WEIGHT = 0.25;
-    private static final double RESERVATION_WEIGHT = 0.4;
-    private static final double COOPERATION_WEIGHT = 0.15;
-    private static final double ENERGY_WEIGHT = 0.2;
-    private static final double RESERVATION_DECAY = 50.0;
-    private static final double ENERGY_SCALE = 100.0;
+    private static final double GREENSCORE_WEIGHT = 0.3;
+    private static final double COOPERATION_WEIGHT = 0.3;
+    private static final double SPAN_WEIGHT = 0.4;
+    private static final double ENERGY_WEIGHT = 0.4;
+    private static final double SPAN_SCALE = 10.0;
+    private static final double ENERGY_SCALE = 500.0; // Scale factor for normalization (e.g., 500 Watts)
     private static final double BUFFER_PERCENTAGE = 0.8;
 
     @Override
@@ -18,24 +17,25 @@ public final class EnergyVolumeStrategy implements NegotiationStrategy {
     }
 
     @Override
-    public double computePriority(PriorityContext ctx) {
-        double greenScoreWeight = 1.0 - ctx.greenScore();
-        double cooperationWeight = ctx.cooperationScore();
+    public double computeNegotiationPriority(double greenScore, double cooperationScore, long firstTaskTick, long requestSpan) {
+        double spanFactor = 1.0 / (1.0 + (requestSpan / SPAN_SCALE));
 
-        long reservationAge = ctx.currentTick() - ctx.entry().requestTimestamp();
-        double reservationBonus = 1.0 - Math.exp(-reservationAge / RESERVATION_DECAY);
+        return (greenScore * GREENSCORE_WEIGHT)
+                + (cooperationScore * COOPERATION_WEIGHT)
+                + (spanFactor * SPAN_WEIGHT);
+    }
 
-        double energyFactor = 1.0 / (1.0 + Math.log1p(ctx.totalEnergyRequested() / ENERGY_SCALE));
+    @Override
+    public double computePostponementPriority(double greenScore, double cooperationScore, double energyToFree) {
+        double volumeFactor = 1.0 / (1.0 + (energyToFree / ENERGY_SCALE));
 
-        return (greenScoreWeight * GREENSCORE_WEIGHT)
-                + (reservationBonus * RESERVATION_WEIGHT)
-                + (cooperationWeight * COOPERATION_WEIGHT)
-                + (energyFactor * ENERGY_WEIGHT);
+        return (greenScore * GREENSCORE_WEIGHT)
+                + (cooperationScore * COOPERATION_WEIGHT)
+                + (volumeFactor * ENERGY_WEIGHT);
     }
 
     @Override
     public boolean shouldTriggerPanic(PanicContext ctx) {
-        // Trigger earlier to maximize gap-filling opportunities
         double usableBuffer = ctx.batteryCharge() * (1.0 - ctx.minChargeThreshold());
         return ctx.shortfall() > usableBuffer * BUFFER_PERCENTAGE;
     }

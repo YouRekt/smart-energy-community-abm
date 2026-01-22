@@ -1,13 +1,11 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
 
 public final class ReservationFirstStrategy implements NegotiationStrategy {
-    private static final double GREENSCORE_WEIGHT = 0.15;
-    private static final double RESERVATION_WEIGHT = 0.7;
-    private static final double COOPERATION_WEIGHT = 0.15;
-    private static final double RESERVATION_DECAY = 30.0;  // faster saturation rewards early planners more
+    private static final double GREENSCORE_WEIGHT = 0.2;
+    private static final double COOPERATION_WEIGHT = 0.8;
+    private static final double TICK_WEIGHT = 0.1;
     private static final double BUFFER_PERCENTAGE = 1.1;
 
     @Override
@@ -16,21 +14,21 @@ public final class ReservationFirstStrategy implements NegotiationStrategy {
     }
 
     @Override
-    public double computePriority(PriorityContext ctx) {
-        double greenScoreWeight = 1.0 - ctx.greenScore();
-        double cooperationWeight = ctx.cooperationScore();
+    public double computeNegotiationPriority(double greenScore, double cooperationScore, long firstTaskTick, long requestSpan) {
+        double tickFactor = 1.0 / (1.0 + Math.log1p(firstTaskTick % 1000));
 
-        long reservationAge = ctx.currentTick() - ctx.entry().requestTimestamp();
-        double reservationBonus = 1.0 - Math.exp(-reservationAge / RESERVATION_DECAY);
+        return (greenScore * GREENSCORE_WEIGHT)
+                + (cooperationScore * 0.7)
+                + (tickFactor * TICK_WEIGHT);
+    }
 
-        return (greenScoreWeight * GREENSCORE_WEIGHT)
-                + (reservationBonus * RESERVATION_WEIGHT)
-                + (cooperationWeight * COOPERATION_WEIGHT);
+    @Override
+    public double computePostponementPriority(double greenScore, double cooperationScore, double energyToFree) {
+        return (greenScore * GREENSCORE_WEIGHT) + (cooperationScore * COOPERATION_WEIGHT);
     }
 
     @Override
     public boolean shouldTriggerPanic(PanicContext ctx) {
-        // Trust that planned loads will fit
         double usableBuffer = ctx.batteryCharge() * (1.0 - ctx.minChargeThreshold());
         return ctx.shortfall() > usableBuffer * BUFFER_PERCENTAGE;
     }

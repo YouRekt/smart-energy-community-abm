@@ -1,27 +1,26 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.config.SpringContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.AllocationEntry;
-import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
-import edu.wut.thesis.smart_energy_community_abm.domain.PriorityContext;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModel;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.MovingAveragePredictionModel;
-import edu.wut.thesis.smart_energy_community_abm.domain.simulation.SimulationState;
 import edu.wut.thesis.smart_energy_community_abm.domain.strategy.NegotiationStrategy;
 import jade.core.AID;
 
 import java.util.*;
 import java.util.function.LongFunction;
 
+// TODO: Perhaps add more robust logging, that will show when agents are postponing their tasks, negotiating etc.? Just for more data
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public static final int MAX_NEGOTIATION_RETRIES = 5;
-    private SimulationState simulationState;
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
+
+    // Scores are normalized 0.0 to 1.0
     public final Map<AID, Double> greenScores = new HashMap<>();
     public final Map<AID, Double> cooperationScores = new HashMap<>();
+
     public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
     public AID batteryAgent;
     public Double minChargeThreshold = 0.2;
@@ -36,8 +35,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     @Override
     protected void setup() {
         super.setup();
-
-        simulationState = SpringContext.getBean(SimulationState.class);
 
         final Object[] args = getArguments();
 
@@ -66,13 +63,32 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         addBehaviour(new SimulationTickBehaviour(this));
     }
 
-    public double computePriority(AID aid, AllocationEntry entry, long currentTick) {
-        double greenScore = greenScores.getOrDefault(aid, 0.5);
-        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
-        double totalEnergy = entry.requestedEnergy();
+    public Double computeNegotiationPriority(AID aid, Map<Long, Double> requestMap) {
+        if (requestMap == null || requestMap.isEmpty()) {
+            return 0.0;
+        }
 
-        PriorityContext ctx = new PriorityContext(entry, currentTick, greenScore, cooperationScore, totalEnergy);
-        return strategy.computePriority(ctx);
+        double greenScore = greenScores.getOrDefault(aid, 0.0);
+        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
+
+        long firstTaskTick = Long.MAX_VALUE;
+        long lastTaskTick = Long.MIN_VALUE;
+
+        for (Long tick : requestMap.keySet()) {
+            if (tick < firstTaskTick) firstTaskTick = tick;
+            if (tick > lastTaskTick) lastTaskTick = tick;
+        }
+
+        long requestSpan = (lastTaskTick - firstTaskTick);
+
+        return strategy.computeNegotiationPriority(greenScore, cooperationScore, firstTaskTick, requestSpan);
+    }
+
+    public Double computePostponementPriority(AID aid, double energyToFree) {
+        double greenScore = greenScores.getOrDefault(aid, 0.0);
+        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
+
+        return strategy.computePostponementPriority(greenScore, cooperationScore, energyToFree);
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {
@@ -111,12 +127,43 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
             allocations.remove(tick);
     }
 
+    /**
+     * Updates the green energy score using an Exponential Moving Average (EMA).
+     * New Score = (0.8 * OldScore) + (0.2 * CurrentRatio)
+     */
+    public void updateGreenEnergyScore(AID householdId, double greenUsed, double externalUsed) {
+        double total = greenUsed + externalUsed;
+        double ratio = (total > 0) ? (greenUsed / total) : 0.0;
+
+        double currentScore = greenScores.getOrDefault(householdId, 0.0); // Default to 0 initially
+
+        // EMA smoothing factor (0.2 means the new reading has 20% weight)
+        double alpha = 0.2;
+        double newScore = (1.0 - alpha) * currentScore + (alpha * ratio);
+
+        greenScores.put(householdId, newScore);
+    }
+
+    /**
+     * General cooperation update (small steps).
+     */
     public void updateCooperationScore(AID householdId, boolean accepted) {
         double current = cooperationScores.getOrDefault(householdId, 0.5);
         double updated = accepted
                 ? Math.min(1.0, current + 0.05)
                 : Math.max(0.0, current - 0.03);
         cooperationScores.put(householdId, updated);
+    }
+
+    /**
+     * Significant reward for postponing a task during a panic.
+     * Adds +0.2 to the score, capped at 1.0.
+     */
+    public void rewardPostponement(AID householdId) {
+        double current = cooperationScores.getOrDefault(householdId, 0.5);
+        double updated = Math.min(1.0, current + 0.2);
+        cooperationScores.put(householdId, updated);
+        log("Rewarded agent " + householdId.getLocalName() + " for postponement. New CoopScore: " + updated, LogSeverity.DEBUG, this);
     }
 
     public double getPredictedMaxAmount(long tick) {
@@ -126,7 +173,6 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     }
 
     public void logCurrentAverageProduction() {
-        // TODO: Remove when app is final
         double avg = ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();
         log("Current average production " + avg, LogSeverity.DEBUG, this);
     }

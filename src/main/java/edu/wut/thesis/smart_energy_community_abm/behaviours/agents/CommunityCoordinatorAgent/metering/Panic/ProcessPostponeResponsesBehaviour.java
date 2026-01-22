@@ -7,8 +7,7 @@ import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_MSG_COUNT;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.ACCEPT_PROPOSAL_REPLY_BY;
@@ -28,31 +27,36 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
     @SuppressWarnings("unchecked")
     public void action() {
         Map<AID, Double> responses = (Map<AID, Double>) getDataStore().get(DataStoreKey.Metering.Panic.POSTPONE_RESPONSES);
-        Double shortfall = (Double) getDataStore().get(SHORTFALL);
+        Double shortfallRaw = (Double) getDataStore().get(SHORTFALL);
+        double shortfall = (shortfallRaw != null) ? shortfallRaw : 0.0;
 
-        Double freedEnergy = 0.0;
-
-        // TODO: Choose households based on priority
+        double freedEnergy = 0.0;
 
         ACLMessage acceptedProposals = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         ACLMessage rejectedProposals = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 
         int acceptedProposalsCount = 0;
-        boolean isShortfallSaturated = false;
 
-        if (responses != null) {
-            for (var entry : responses.entrySet()) {
-                if (isShortfallSaturated) {
+        if (responses != null && !responses.isEmpty()) {
+            List<Map.Entry<AID, Double>> candidates = new ArrayList<>(responses.entrySet());
+
+            candidates.sort(Comparator.comparingDouble(entry ->
+                    agent.computePostponementPriority(entry.getKey(), entry.getValue())
+            ));
+
+            for (Map.Entry<AID, Double> entry : candidates) {
+                if (freedEnergy < shortfall) {
+                    freedEnergy += entry.getValue();
+                    acceptedProposals.addReceiver(entry.getKey());
+                    acceptedProposalsCount++;
+                    
+                    agent.rewardPostponement(entry.getKey());
+
+                    agent.log("Postponing agent " + entry.getKey().getLocalName() +
+                            " (Energy: " + entry.getValue() + ") to address shortfall.", LogSeverity.DEBUG, this);
+                } else {
                     rejectedProposals.addReceiver(entry.getKey());
-                    continue;
                 }
-
-                freedEnergy += entry.getValue();
-                acceptedProposals.addReceiver(entry.getKey());
-                acceptedProposalsCount++;
-
-                if (shortfall <= freedEnergy)
-                    isShortfallSaturated = true;
             }
         }
 

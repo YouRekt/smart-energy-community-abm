@@ -12,6 +12,7 @@ import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final static int MAX_FUTURE_TICKS = 200;
+
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
     private final List<ApplianceTask> tasks = new ArrayList<>();  // from config
@@ -41,8 +42,6 @@ public final class ApplianceAgent extends BaseAgent {
         }
 
         tasks.addAll(configTasks);
-        // TODO: Add seed to config
-        Random rand = new Random();
         tasks.forEach(task -> taskSchedule.put(task, rand.nextLong(MAX_FUTURE_TICKS)));
 //        tasks.forEach(task -> taskSchedule.put(task, 4L));
 
@@ -72,7 +71,7 @@ public final class ApplianceAgent extends BaseAgent {
         }
 
         // 3. If not strictly due, check random human activation
-        return Math.random() < task.humanActivationChance();
+        return rand.nextDouble() < task.humanActivationChance();
     }
 
     public boolean isRunning() {

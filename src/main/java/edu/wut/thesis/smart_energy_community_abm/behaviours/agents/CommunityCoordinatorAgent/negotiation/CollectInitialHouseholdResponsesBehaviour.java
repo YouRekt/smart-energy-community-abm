@@ -30,7 +30,6 @@ public final class CollectInitialHouseholdResponsesBehaviour extends TimeoutMess
         this.agent = agent;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onStart() {
         super.onStart();

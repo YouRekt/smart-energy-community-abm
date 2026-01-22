@@ -146,6 +146,7 @@ export function ConsumptionChart({
 							fill='url(#fillGrid)'
 							stroke='var(--color-gridEnergy)'
 							stackId='a'
+							animationDuration={100}
 						/>
 						<Area
 							dataKey='greenEnergy'
@@ -153,6 +154,7 @@ export function ConsumptionChart({
 							fill='url(#fillGreen)'
 							stroke='var(--color-greenEnergy)'
 							stackId='a'
+							animationDuration={100}
 						/>
 						<ChartLegend content={<ChartLegendContent />} />
 					</AreaChart>

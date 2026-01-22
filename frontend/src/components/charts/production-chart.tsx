@@ -125,6 +125,7 @@ export function ProductionChart({
 							type='monotone'
 							fill='url(#fillProduction)'
 							stroke='var(--color-production)'
+							animationDuration={100}
 						/>
 						<ChartLegend content={<ChartLegendContent />} />
 					</AreaChart>

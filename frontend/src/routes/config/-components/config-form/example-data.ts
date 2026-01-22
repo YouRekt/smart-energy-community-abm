@@ -1,6 +1,7 @@
 import type { defaultValues } from '@/routes/config/-components/config-form/schema';
 
 const exampleConfig: typeof defaultValues = {
+	seed: 12345,
 	strategyName: 'Balanced',
 	predictionModelConfig: {
 		name: 'MovingAverage',

@@ -3,6 +3,7 @@ package edu.wut.thesis.smart_energy_community_abm.web;
 import edu.wut.thesis.smart_energy_community_abm.application.SimulationService;
 import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;
 import edu.wut.thesis.smart_energy_community_abm.domain.simulation.SimulationState;
+import edu.wut.thesis.smart_energy_community_abm.domain.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +25,10 @@ public final class SimulationController {
     private final AtomicLong randomSeed = new AtomicLong(0L);
 
     @PostMapping("/start")
-    public ResponseEntity<String> startSimulation() {
+    public ResponseEntity<ApiResponse> startSimulation() {
         if (!isConfigured.get()) {
             return ResponseEntity.badRequest()
-                    .body("Error: Configuration missing. Please upload a config before starting.");
+                    .body(new ApiResponse("Error: Configuration missing. Please upload a config before starting."));
         }
 
         // Finish a run if one is already in progress
@@ -36,22 +37,22 @@ public final class SimulationController {
         simulationState.startNewRun(randomSeed.get());
 
         jadeService.startSimulation();
-        return ResponseEntity.ok("Started Run ID: " + simulationState.getCurrentRunId());
+        return ResponseEntity.ok(new ApiResponse("Simulation started", simulationState.getCurrentRunId()));
     }
 
     @PostMapping("/stop")
-    public ResponseEntity<String> stopSimulation() {
+    public ResponseEntity<ApiResponse> stopSimulation() {
         simulationState.finishRun();
 
         jadeService.stopSimulation();
 
-        return ResponseEntity.ok("Simulation Stopped.");
+        return ResponseEntity.ok(new ApiResponse("Simulation stopped"));
     }
 
     @PostMapping("/config")
-    public ResponseEntity<String> config(@RequestBody CommunityConfig communityConfig) {
+    public ResponseEntity<ApiResponse> config(@RequestBody CommunityConfig communityConfig) {
         if (communityConfig == null) {
-            return ResponseEntity.badRequest().body("Invalid configuration: request body is missing or malformed.");
+            return ResponseEntity.badRequest().body(new ApiResponse("Invalid configuration: request body is missing or malformed."));
         }
 
         try {
@@ -60,10 +61,11 @@ public final class SimulationController {
             isConfigured.set(true);
             randomSeed.set(communityConfig.seed());
 
-            return ResponseEntity.ok("Simulation configured");
+            return ResponseEntity.ok(new ApiResponse("Simulation configured"));
         } catch (Exception e) {
             isConfigured.set(false);
-            return ResponseEntity.internalServerError().body("Configuration failed: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(new ApiResponse("Configuration failed: " + e.getMessage()));
         }
     }
 }
+

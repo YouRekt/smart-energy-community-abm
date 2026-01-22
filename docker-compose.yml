@@ -1,45 +1,67 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: app
-    depends_on:
-      - timescaledb
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://timescaledb:5432/timescaledb?autoReconnect=true
-      - SPRING_DATASOURCE_USERNAME=user
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
-      - TERM=xterm-color
-    ports:
-      - "8080:8080"
-      - "7778:7778"
-      - "1099:1099"
-    networks:
-      - smart-energy-network
-    volumes:
-      - ./logs:/logs
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: app
+        restart: on-failure
+        depends_on:
+            timescaledb:
+                condition: service_healthy
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://timescaledb:5432/timescaledb?autoReconnect=true
+            - SPRING_DATASOURCE_USERNAME=user
+            - SPRING_DATASOURCE_PASSWORD=password
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+            - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+            - TERM=xterm-color
+        ports:
+            - '8080:8080'
+            - '7778:7778'
+            - '1099:1099'
+        networks:
+            - smart-energy-network
+        volumes:
+            - ./logs:/logs
 
-  timescaledb:
-    image: timescale/timescaledb:latest-pg17
-    container_name: timescaledb
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/pgdata
-    environment:
-      - PGDATA=/var/lib/pgdata
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
-      - POSTGRES_DB=timescaledb
-    networks:
-      - smart-energy-network
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        container_name: frontend
+        environment:
+            - NODE_ENV=production
+        ports:
+            - '5173:80'
+        depends_on:
+            - app
+        networks:
+            - smart-energy-network
+
+    timescaledb:
+        image: timescale/timescaledb:latest-pg17
+        container_name: timescaledb
+        ports:
+            - '5432'
+        volumes:
+            - pgdata:/var/lib/pgdata
+        environment:
+            - PGDATA=/var/lib/pgdata
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_USER=user
+            - POSTGRES_DB=timescaledb
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U user -d timescaledb']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+        networks:
+            - smart-energy-network
 
 networks:
-  smart-energy-network:
-    driver: bridge
+    smart-energy-network:
+        driver: bridge
 
 volumes:
-  pgdata:
+    pgdata:

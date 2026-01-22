@@ -1,4 +1,5 @@
 {
+	"seed": 123,
 	"strategyName": "Balanced",
 	"predictionModelConfig": {
 		"name": "MovingAverage",

@@ -16,11 +16,17 @@ const StrategySection = withConfigForm({
 				<FieldDescription>
 					Choose the strategy for the simulation.
 				</FieldDescription>
-				<FieldGroup>
+				<FieldGroup className='@2xl/field-group:flex-row'>
 					<form.AppField
 						name='strategyName'
 						children={(field) => {
 							return <field.StrategySelect />;
+						}}
+					/>
+					<form.AppField
+						name='seed'
+						children={(field) => {
+							return <field.SeedInput />;
 						}}
 					/>
 				</FieldGroup>

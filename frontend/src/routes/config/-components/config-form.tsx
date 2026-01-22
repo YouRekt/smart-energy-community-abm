@@ -78,7 +78,7 @@ function ConfigForm() {
 				e.preventDefault();
 				form.handleSubmit();
 			}}>
-			<FieldGroup>
+			<FieldGroup className='overflow-hidden'>
 				<FieldGroup className='@3xl/field-group:flex-row'>
 					<FieldGroup className='flex-1'>
 						<StrategySection form={form} />

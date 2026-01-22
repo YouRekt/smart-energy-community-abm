@@ -27,6 +27,7 @@ import {
 	ProductionSafetyFactorInput,
 	WindowSizeInput,
 } from '@/routes/config/-components/config-form/sections/prediction-model-section/index';
+import SeedInput from '@/routes/config/-components/config-form/sections/strategy-section/seed-input';
 import { StrategySelect } from '@/routes/config/-components/config-form/sections/strategy-section/strategy-select';
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 
@@ -56,6 +57,7 @@ const { useAppForm, withForm } = createFormHook({
 		TaskPeriodInput,
 		TaskEnergyPerTickInput,
 		TaskPostponableInput,
+		SeedInput,
 	},
 	formComponents: {},
 	fieldContext,

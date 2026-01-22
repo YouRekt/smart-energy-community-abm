@@ -189,6 +189,7 @@ const householdConfigSchemaTransformed = z
 
 const formSchema = z
 	.object({
+		seed: z.coerce.number<number>().int(),
 		strategyName: z
 			.enum(
 				[
@@ -252,6 +253,7 @@ const formSchema = z
 
 const formSchemaTransformed = z
 	.object({
+		seed: z.coerce.number<number>().int(),
 		strategyName: z
 			.enum(
 				[
@@ -316,6 +318,7 @@ const formSchemaTransformed = z
 	});
 
 const defaultValues: z.input<typeof formSchemaTransformed> = {
+	seed: 0,
 	strategyName: 'Balanced',
 	predictionModelConfig: {
 		name: 'MovingAverage',

@@ -18,6 +18,7 @@ import {
 	TaskEnergyPerTickInput,
 	TaskHumanActivationChanceInput,
 	TaskNameInput,
+	TaskPeriodInput,
 	TaskPostponableInput,
 } from '@/routes/config/-components/config-form/sections/households-section/index';
 import {
@@ -52,6 +53,7 @@ const { useAppForm, withForm } = createFormHook({
 		TaskNameInput,
 		TaskHumanActivationChanceInput,
 		TaskDurationInput,
+		TaskPeriodInput,
 		TaskEnergyPerTickInput,
 		TaskPostponableInput,
 	},

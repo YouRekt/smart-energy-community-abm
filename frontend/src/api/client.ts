@@ -2,12 +2,18 @@ export const client = async <T>(
 	endpoint: string,
 	options?: RequestInit,
 ): Promise<T> => {
+	const method = options?.method?.toUpperCase() || 'GET';
+	const headers: HeadersInit = { ...options?.headers };
+
+	// Only set Content-Type for requests with a body (not GET/HEAD)
+	if (method !== 'GET' && method !== 'HEAD') {
+		(headers as Record<string, string>)['Content-Type'] =
+			'application/json';
+	}
+
 	const response = await fetch(`/api${endpoint}`, {
 		...options,
-		headers: {
-			'Content-Type': 'application/json',
-			...options?.headers,
-		},
+		headers,
 	});
 
 	if (!response.ok) {

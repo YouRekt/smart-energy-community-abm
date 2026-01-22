@@ -1,8 +1,6 @@
 export interface MetricPoint {
-	timestamp: number;
-	time: string;
+	tick: number;
 	value: number;
-	name: string;
 }
 
 export interface StackedMetric {
@@ -11,9 +9,10 @@ export interface StackedMetric {
 	gridEnergy: number;
 }
 
+// API returns 'green' and 'grid' arrays with {tick, value} objects
 export interface StackedMetricResponse {
-	greenEnergy: MetricPoint[];
-	gridEnergy: MetricPoint[];
+	green: MetricPoint[];
+	grid: MetricPoint[];
 }
 
 export interface SimulationRun {
@@ -21,4 +20,9 @@ export interface SimulationRun {
 	startTime: string;
 	endTime?: string;
 	status: 'RUNNING' | 'COMPLETED' | 'FAILED';
+}
+
+export interface ApiResponse {
+	message: string;
+	runId?: number | null;
 }

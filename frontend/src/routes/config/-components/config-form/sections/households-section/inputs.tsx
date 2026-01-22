@@ -140,6 +140,37 @@ export function TaskDurationInput() {
 	);
 }
 
+export function TaskPeriodInput() {
+	const field =
+		useConfigFieldContext<
+			z.input<typeof applianceTaskSchema.shape.period>
+		>();
+
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+	return (
+		<Field data-invalid={isInvalid}>
+			<FieldLabel htmlFor={field.name}>Period</FieldLabel>
+			<NumberInput
+				id={field.name}
+				value={field.state.value}
+				min={0}
+				onChange={(e) =>
+					field.handleChange(
+						applianceTaskSchema.shape.period.safeParse(
+							e.target.value,
+						).data ?? field.state.value,
+					)
+				}
+			/>
+			<FieldDescription>
+				The period of the task (in ticks).
+			</FieldDescription>
+			{isInvalid && <FieldError errors={field.state.meta.errors} />}
+		</Field>
+	);
+}
+
 export function TaskEnergyPerTickInput() {
 	const field =
 		useConfigFieldContext<

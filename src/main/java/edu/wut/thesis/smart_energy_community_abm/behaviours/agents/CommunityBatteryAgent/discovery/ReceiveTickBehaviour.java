@@ -19,6 +19,7 @@ public final class ReceiveTickBehaviour extends BaseMessageHandlerBehaviour {
     @Override
     protected void handleInform(ACLMessage msg) {
         receivedTick = true;
+        agent.tick = Long.parseLong(msg.getContent());
         final ACLMessage reply = msg.createReply(ACLMessage.CONFIRM);
         reply.setOntology(CommunityBatteryAgent.class.getSimpleName());
         reply.setContent("I'm responsive!");

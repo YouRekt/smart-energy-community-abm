@@ -307,50 +307,62 @@ const HouseholdsSection = withConfigForm({
 																																			</CardHeader>
 																																			<CardContent>
 																																				<FieldGroup>
-																																					<form.AppField
-																																						name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].taskName`}
-																																						children={(
-																																							f,
-																																						) => (
-																																							<f.TaskNameInput />
-																																						)}
-																																					/>
-																																					<FieldGroup className='flex-row'>
-																																						<FieldGroup className='flex-row flex-3'>
-																																							<form.AppField
-																																								name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].energyPerTick`}
-																																								children={(
-																																									f,
-																																								) => (
-																																									<f.TaskEnergyPerTickInput />
-																																								)}
-																																							/>
-																																							<form.AppField
-																																								name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].duration`}
-																																								children={(
-																																									f,
-																																								) => (
-																																									<f.TaskDurationInput />
-																																								)}
-																																							/>
-																																							<form.AppField
-																																								name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].humanActivationChance`}
-																																								children={(
-																																									f,
-																																								) => (
-																																									<f.TaskHumanActivationChanceInput />
-																																								)}
-																																							/>
-																																						</FieldGroup>
-																																						<FieldGroup className='flex-1'>
-																																							<form.AppField
-																																								name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].postponable`}
-																																								children={(
-																																									f,
-																																								) => (
-																																									<f.TaskPostponableInput />
-																																								)}
-																																							/>
+																																					<FieldGroup className='@xl/field-group:flex-row'>
+																																						<form.AppField
+																																							name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].taskName`}
+																																							children={(
+																																								f,
+																																							) => (
+																																								<f.TaskNameInput />
+																																							)}
+																																						/>
+																																						<form.AppField
+																																							name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].postponable`}
+																																							children={(
+																																								f,
+																																							) => (
+																																								<f.TaskPostponableInput />
+																																							)}
+																																						/>
+																																					</FieldGroup>
+																																					<FieldGroup className='@xl/field-group:flex-row'>
+																																						<FieldGroup>
+																																							<FieldGroup className='@xl/field-group:flex-row'>
+																																								<form.AppField
+																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].energyPerTick`}
+																																									children={(
+																																										f,
+																																									) => (
+																																										<f.TaskEnergyPerTickInput />
+																																									)}
+																																								/>
+																																								<form.AppField
+																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].duration`}
+																																									children={(
+																																										f,
+																																									) => (
+																																										<f.TaskDurationInput />
+																																									)}
+																																								/>
+																																							</FieldGroup>
+																																							<FieldGroup className='@xl/field-group:flex-row'>
+																																								<form.AppField
+																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].period`}
+																																									children={(
+																																										f,
+																																									) => (
+																																										<f.TaskPeriodInput />
+																																									)}
+																																								/>
+																																								<form.AppField
+																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].humanActivationChance`}
+																																									children={(
+																																										f,
+																																									) => (
+																																										<f.TaskHumanActivationChanceInput />
+																																									)}
+																																								/>
+																																							</FieldGroup>
 																																						</FieldGroup>
 																																					</FieldGroup>
 																																				</FieldGroup>

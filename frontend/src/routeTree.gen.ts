@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RunsIndexRouteImport } from './routes/runs/index'
+import { Route as HouseholdsIndexRouteImport } from './routes/households/index'
 import { Route as ConfigIndexRouteImport } from './routes/config/index'
 import { Route as RunsRunIdRouteImport } from './routes/runs/$runId'
+import { Route as HouseholdsHouseholdNameApplianceNameRouteImport } from './routes/households/$householdName.$applianceName'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const RunsIndexRoute = RunsIndexRouteImport.update({
   id: '/runs/',
   path: '/runs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HouseholdsIndexRoute = HouseholdsIndexRouteImport.update({
+  id: '/households/',
+  path: '/households/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfigIndexRoute = ConfigIndexRouteImport.update({
@@ -34,39 +41,72 @@ const RunsRunIdRoute = RunsRunIdRouteImport.update({
   path: '/runs/$runId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HouseholdsHouseholdNameApplianceNameRoute =
+  HouseholdsHouseholdNameApplianceNameRouteImport.update({
+    id: '/households/$householdName/$applianceName',
+    path: '/households/$householdName/$applianceName',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/runs/$runId': typeof RunsRunIdRoute
   '/config/': typeof ConfigIndexRoute
+  '/households/': typeof HouseholdsIndexRoute
   '/runs/': typeof RunsIndexRoute
+  '/households/$householdName/$applianceName': typeof HouseholdsHouseholdNameApplianceNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/runs/$runId': typeof RunsRunIdRoute
   '/config': typeof ConfigIndexRoute
+  '/households': typeof HouseholdsIndexRoute
   '/runs': typeof RunsIndexRoute
+  '/households/$householdName/$applianceName': typeof HouseholdsHouseholdNameApplianceNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/runs/$runId': typeof RunsRunIdRoute
   '/config/': typeof ConfigIndexRoute
+  '/households/': typeof HouseholdsIndexRoute
   '/runs/': typeof RunsIndexRoute
+  '/households/$householdName/$applianceName': typeof HouseholdsHouseholdNameApplianceNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/runs/$runId' | '/config/' | '/runs/'
+  fullPaths:
+    | '/'
+    | '/runs/$runId'
+    | '/config/'
+    | '/households/'
+    | '/runs/'
+    | '/households/$householdName/$applianceName'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/runs/$runId' | '/config' | '/runs'
-  id: '__root__' | '/' | '/runs/$runId' | '/config/' | '/runs/'
+  to:
+    | '/'
+    | '/runs/$runId'
+    | '/config'
+    | '/households'
+    | '/runs'
+    | '/households/$householdName/$applianceName'
+  id:
+    | '__root__'
+    | '/'
+    | '/runs/$runId'
+    | '/config/'
+    | '/households/'
+    | '/runs/'
+    | '/households/$householdName/$applianceName'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RunsRunIdRoute: typeof RunsRunIdRoute
   ConfigIndexRoute: typeof ConfigIndexRoute
+  HouseholdsIndexRoute: typeof HouseholdsIndexRoute
   RunsIndexRoute: typeof RunsIndexRoute
+  HouseholdsHouseholdNameApplianceNameRoute: typeof HouseholdsHouseholdNameApplianceNameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/households/': {
+      id: '/households/'
+      path: '/households'
+      fullPath: '/households/'
+      preLoaderRoute: typeof HouseholdsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/config/': {
       id: '/config/'
       path: '/config'
@@ -99,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RunsRunIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/households/$householdName/$applianceName': {
+      id: '/households/$householdName/$applianceName'
+      path: '/households/$householdName/$applianceName'
+      fullPath: '/households/$householdName/$applianceName'
+      preLoaderRoute: typeof HouseholdsHouseholdNameApplianceNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -106,7 +160,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RunsRunIdRoute: RunsRunIdRoute,
   ConfigIndexRoute: ConfigIndexRoute,
+  HouseholdsIndexRoute: HouseholdsIndexRoute,
   RunsIndexRoute: RunsIndexRoute,
+  HouseholdsHouseholdNameApplianceNameRoute:
+    HouseholdsHouseholdNameApplianceNameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

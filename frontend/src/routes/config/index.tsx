@@ -9,5 +9,9 @@ export const Route = createFileRoute('/config/')({
 });
 
 function RouteComponent() {
-	return <ConfigForm />;
+	return (
+		<div className='@2xl:overflow-hidden'>
+			<ConfigForm />
+		</div>
+	);
 }

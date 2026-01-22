@@ -22,7 +22,6 @@ public final class ProcessBatteryResponseBehaviour extends BaseMessageHandlerBeh
         receivedMessage = true;
         double externalEnergyUsed = Double.parseDouble(msg.getContent());
         if (externalEnergyUsed > 0.0) {
-            // TODO: Implement pulling from external grid
             agent.log("Battery reported a deficit, we have to pull energy from grid", LogSeverity.ERROR, this);
         }
     }

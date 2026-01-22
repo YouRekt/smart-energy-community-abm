@@ -12,9 +12,7 @@ import java.util.*;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.Panic.POSTPONE_RESPONSES;
 
 public final class CollectPostponeResponsesBehaviour extends TimeoutMessageHandlerBehaviour {
-
     private final CommunityCoordinatorAgent agent;
-
     private final Map<AID, Double> responses = new HashMap<>();
 
     public CollectPostponeResponsesBehaviour(CommunityCoordinatorAgent agent) {

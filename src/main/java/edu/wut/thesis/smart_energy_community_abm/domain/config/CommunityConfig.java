@@ -40,6 +40,7 @@ public record CommunityConfig(
                 new Object[]{
                         householdConfigs.size(),
                         energySourcesConfigs.size(),
+                        batteryConfig.capacity(),
                         NegotiationStrategyFactory.create(strategyName),
                         EnergyPredictionModelFactory.create(
                                 predictionModelConfig.name(),

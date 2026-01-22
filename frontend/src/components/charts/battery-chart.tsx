@@ -125,6 +125,7 @@ export function BatteryChart({
 							type='monotone'
 							fill='url(#fillCharge)'
 							stroke='var(--color-charge)'
+							animationDuration={100}
 						/>
 						<ChartLegend content={<ChartLegendContent />} />
 					</AreaChart>

@@ -6,11 +6,10 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.REQUEST_REPLY_BY;
 
 public final class RequestEnergyStatusBehaviour extends OneShotBehaviour {
-    private static final long REPLY_BY_DELAY = 500;
-
     private final CommunityCoordinatorAgent agent;
 
     public RequestEnergyStatusBehaviour(CommunityCoordinatorAgent agent) {

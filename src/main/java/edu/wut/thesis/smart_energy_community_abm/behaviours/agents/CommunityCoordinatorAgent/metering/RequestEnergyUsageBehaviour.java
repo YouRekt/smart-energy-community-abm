@@ -6,12 +6,11 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.AVAILABLE_ENERGY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Metering.REQUEST_REPLY_BY;
 
 public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
-    private static final long REPLY_BY_DELAY = 500;
-
     private final CommunityCoordinatorAgent agent;
 
     public RequestEnergyUsageBehaviour(CommunityCoordinatorAgent agent) {
@@ -23,8 +22,12 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
     public void action() {
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         Double availableGreenEnergy = (Double) getDataStore().get(AVAILABLE_ENERGY);
-        for (var householdAgent : agent.householdAgents) {
-            // TODO: Sort Households based on their priorities - strategies implementation
+        for (var householdAgent : agent.householdAgents.stream()
+                .sorted((x, y) ->
+                agent.computeGenericPriority(y)
+                .compareTo(agent.computeGenericPriority(x)))
+                .toList())
+        {
             double householdAllocated = agent.getAllocatedAtFor(agent.tick, householdAgent);
             double greenEnergyAllowed = Math.min(householdAllocated, availableGreenEnergy);
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);

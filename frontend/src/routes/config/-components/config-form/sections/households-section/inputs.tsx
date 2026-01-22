@@ -190,6 +190,7 @@ export function TaskEnergyPerTickInput() {
 			<NumberInput
 				id={field.name}
 				value={field.state.value}
+				step={0.01}
 				min={0}
 				addon={{
 					align: 'end',

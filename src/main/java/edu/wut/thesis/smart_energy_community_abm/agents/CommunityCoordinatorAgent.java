@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.agents;
 
 import edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.SimulationTickBehaviour;
-import edu.wut.thesis.smart_energy_community_abm.domain.PanicContext;
 import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.EnergyPredictionModel;
 import edu.wut.thesis.smart_energy_community_abm.domain.prediction.MovingAveragePredictionModel;
@@ -13,6 +12,7 @@ import java.util.function.LongFunction;
 
 // TODO: Perhaps add more robust logging, that will show when agents are postponing their tasks, negotiating etc.? Just for more data
 public final class CommunityCoordinatorAgent extends BaseAgent {
+    public static final int REPLY_BY_DELAY = 250;
     public static final int MAX_NEGOTIATION_RETRIES = 5;
     public final List<AID> householdAgents = new ArrayList<>();
     public final List<AID> energyAgents = new ArrayList<>();
@@ -23,12 +23,12 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
 
     public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
     public AID batteryAgent;
-    public Double minChargeThreshold = 0.2;
     public Integer householdCount;
     public Integer energySourceCount;
     public double runningAvgProduction = 0.0;
     public long productionSampleCount = 0;
     public NegotiationStrategy strategy;
+    private Double batteryCapacity;
 
     private EnergyPredictionModel predictionModel;
 
@@ -52,11 +52,18 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
             throw new RuntimeException("Energy Agent count is missing");
         }
 
-        strategy = (NegotiationStrategy) args[2];
+        batteryCapacity = (Double) args[2];
+
+        if (batteryCapacity == null) {
+            log("Battery Capacity is missing", LogSeverity.ERROR, this);
+            throw new RuntimeException("Battery Capacity is missing");
+        }
+
+        strategy = (NegotiationStrategy) args[3];
 
         log("Using Negotiation Strategy: " + strategy.getName(), LogSeverity.INFO, this);
 
-        predictionModel = (EnergyPredictionModel) args[3];
+        predictionModel = (EnergyPredictionModel) args[4];
 
         log("Using Prediction Model: " + predictionModel.getName(), LogSeverity.INFO, this);
 
@@ -79,9 +86,10 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
             if (tick > lastTaskTick) lastTaskTick = tick;
         }
 
-        long requestSpan = (lastTaskTick - firstTaskTick);
+        long leadTime = Math.max(0, firstTaskTick - tick);
+        long requestDuration = (lastTaskTick - firstTaskTick) + 1;
 
-        return strategy.computeNegotiationPriority(greenScore, cooperationScore, firstTaskTick, requestSpan);
+        return strategy.computeNegotiationPriority(greenScore, cooperationScore, leadTime, requestDuration);
     }
 
     public Double computePostponementPriority(AID aid, double energyToFree) {
@@ -91,9 +99,16 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         return strategy.computePostponementPriority(greenScore, cooperationScore, energyToFree);
     }
 
-    public boolean shouldTriggerPanic(double shortfall, double batteryCharge, int householdsAffected) {
-        PanicContext ctx = new PanicContext(shortfall, batteryCharge, minChargeThreshold, householdsAffected);
-        return strategy.shouldTriggerPanic(ctx);
+    public Double computeGenericPriority(AID aid) {
+        double greenScore = greenScores.getOrDefault(aid, 0.0);
+        double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
+
+        return strategy.computeGenericPriority(greenScore, cooperationScore);
+    }
+
+    public boolean shouldTriggerPanic(double shortfall, double batteryCharge) {
+
+        return strategy.shouldTriggerPanic(shortfall, batteryCharge, batteryCapacity);
     }
 
     public double getAllocatedAt(long tick) {
@@ -127,41 +142,29 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
             allocations.remove(tick);
     }
 
-    /**
-     * Updates the green energy score using an Exponential Moving Average (EMA).
-     * New Score = (0.8 * OldScore) + (0.2 * CurrentRatio)
-     */
-    public void updateGreenEnergyScore(AID householdId, double greenUsed, double externalUsed) {
-        double total = greenUsed + externalUsed;
+    public void updateGreenEnergyScore(AID householdId, double greenUsed, double gridUsed) {
+        double total = greenUsed + gridUsed;
         double ratio = (total > 0) ? (greenUsed / total) : 0.0;
 
-        double currentScore = greenScores.getOrDefault(householdId, 0.0); // Default to 0 initially
+        double currentScore = greenScores.getOrDefault(householdId, 0.0);
 
-        // EMA smoothing factor (0.2 means the new reading has 20% weight)
         double alpha = 0.2;
         double newScore = (1.0 - alpha) * currentScore + (alpha * ratio);
 
         greenScores.put(householdId, newScore);
     }
 
-    /**
-     * General cooperation update (small steps).
-     */
     public void updateCooperationScore(AID householdId, boolean accepted) {
         double current = cooperationScores.getOrDefault(householdId, 0.5);
         double updated = accepted
                 ? Math.min(1.0, current + 0.05)
-                : Math.max(0.0, current - 0.03);
+                : Math.max(0.0, current - 0.05);
         cooperationScores.put(householdId, updated);
     }
 
-    /**
-     * Significant reward for postponing a task during a panic.
-     * Adds +0.2 to the score, capped at 1.0.
-     */
     public void rewardPostponement(AID householdId) {
         double current = cooperationScores.getOrDefault(householdId, 0.5);
-        double updated = Math.min(1.0, current + 0.2);
+        double updated = Math.min(1.0, current + 0.1);
         cooperationScores.put(householdId, updated);
         log("Rewarded agent " + householdId.getLocalName() + " for postponement. New CoopScore: " + updated, LogSeverity.DEBUG, this);
     }

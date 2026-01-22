@@ -9,8 +9,6 @@ import { useConfigFieldContext } from '@/routes/config/-components/config-form/f
 import { batteryConfigSchema } from '@/routes/config/-components/config-form/schema';
 import { z } from 'zod';
 
-// TODO: Use https://tanstack.com/form/latest/docs/framework/react/guides/form-composition#reusing-groups-of-fields-in-multiple-forms
-// for capacity input + is percentage
 
 function CapacityInput() {
 	const field =

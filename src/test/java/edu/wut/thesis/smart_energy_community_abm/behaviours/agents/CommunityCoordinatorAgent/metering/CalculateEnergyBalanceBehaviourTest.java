@@ -78,7 +78,7 @@ class CalculateEnergyBalanceBehaviourTest {
 
         // Mock Strategy: shouldTriggerPanic -> FALSE
         // (e.g., maybe battery has enough buffer or shortfall is tiny)
-        doReturn(false).when(spyAgent).shouldTriggerPanic(anyDouble(), anyDouble(), anyInt());
+        doReturn(false).when(spyAgent).shouldTriggerPanic(anyDouble(), anyDouble());
 
         // When
         behaviour.action();
@@ -109,7 +109,7 @@ class CalculateEnergyBalanceBehaviourTest {
         doReturn(30.0).when(spyAgent).getAllocatedAt(tick);
 
         // Mock Strategy: shouldTriggerPanic -> TRUE
-        doReturn(true).when(spyAgent).shouldTriggerPanic(eq(30.0), eq(0.0), eq(2));
+        doReturn(true).when(spyAgent).shouldTriggerPanic(eq(30.0), eq(0.0));
 
         // When
         behaviour.action();

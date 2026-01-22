@@ -10,12 +10,10 @@ import jade.lang.acl.ACLMessage;
 
 import java.util.Date;
 
+import static edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent.REPLY_BY_DELAY;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Discovery.HEALTH_REPLY_BY;
 
 public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
-    // TODO: Replace this with a dynamic value based on the CommunityCoordinator's replyBy time (ex. 70%)
-    private static final int REPLY_BY_DELAY = 300;
-
     private final AID topic;
     private final HouseholdCoordinatorAgent agent;
 
@@ -38,7 +36,7 @@ public final class ApplianceTickRelayBehaviour extends OneShotBehaviour {
         msg.addReceiver(topic);
         msg.setContent(Long.toString(agent.tick));
 
-        Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
+        Date replyBy = new Date(System.currentTimeMillis() + (long) (REPLY_BY_DELAY * 0.7));
 
         msg.setReplyByDate(replyBy);
         getDataStore().put(HEALTH_REPLY_BY, replyBy);

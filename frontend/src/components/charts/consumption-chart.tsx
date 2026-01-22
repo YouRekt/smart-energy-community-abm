@@ -20,11 +20,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const chartConfig = {
 	greenEnergy: {
-		label: 'Green Energy (kWh)',
+		label: 'Green Energy (kW)',
 		color: 'hsl(142, 76%, 36%)',
 	},
 	gridEnergy: {
-		label: 'Grid Energy (kWh)',
+		label: 'Grid Energy (kW)',
 		color: 'hsl(0, 84%, 60%)',
 	},
 } satisfies ChartConfig;
@@ -146,6 +146,7 @@ export function ConsumptionChart({
 							fill='url(#fillGrid)'
 							stroke='var(--color-gridEnergy)'
 							stackId='a'
+							animationDuration={100}
 						/>
 						<Area
 							dataKey='greenEnergy'
@@ -153,6 +154,7 @@ export function ConsumptionChart({
 							fill='url(#fillGreen)'
 							stroke='var(--color-greenEnergy)'
 							stackId='a'
+							animationDuration={100}
 						/>
 						<ChartLegend content={<ChartLegendContent />} />
 					</AreaChart>

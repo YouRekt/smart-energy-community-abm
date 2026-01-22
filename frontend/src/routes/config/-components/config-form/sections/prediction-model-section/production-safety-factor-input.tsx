@@ -27,6 +27,11 @@ function ProductionSafetyFactorInput() {
 			<NumberInput
 				id={field.name}
 				value={field.state.value}
+				step={0.01}
+				addon={{
+					align: 'end',
+					content: '%',
+				}}
 				onChange={(e) =>
 					field.handleChange(() => {
 						const result =

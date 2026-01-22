@@ -22,11 +22,15 @@ function CapacityInput() {
 
 	return (
 		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name}>Capacity (kWh)</FieldLabel>
+			<FieldLabel htmlFor={field.name}>Capacity</FieldLabel>
 			<NumberInput
 				id={field.name}
 				step={0.01}
 				value={field.state.value}
+				addon={{
+					align: 'end',
+					content: 'kWh',
+				}}
 				onChange={(e) =>
 					field.handleChange(
 						batteryConfigSchema.shape.capacity.safeParse(

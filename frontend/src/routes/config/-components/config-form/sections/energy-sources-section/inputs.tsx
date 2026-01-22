@@ -45,6 +45,7 @@ export function EnergySourcePeriodInput() {
 			<NumberInput
 				id={field.name}
 				value={field.state.value}
+				min={0}
 				onChange={(e) =>
 					field.handleChange(
 						energySourcesConfigSchema.shape.period.safeParse(
@@ -71,11 +72,16 @@ export function EnergySourceMaxOutputPowerInput() {
 
 	return (
 		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name}>Max Output Power (kW)</FieldLabel>
+			<FieldLabel htmlFor={field.name}>Max Output Power</FieldLabel>
 			<NumberInput
 				id={field.name}
 				step={0.01}
 				value={field.state.value}
+				min={0}
+				addon={{
+					align: 'end',
+					content: 'kW',
+				}}
 				onChange={(e) =>
 					field.handleChange(
 						energySourcesConfigSchema.shape.maxOutputPower.safeParse(
@@ -166,8 +172,13 @@ export function EnergySourceVariationInput() {
 			<FieldLabel htmlFor={field.name}>Variation</FieldLabel>
 			<NumberInput
 				id={field.name}
+				step={0.01}
 				min={0}
 				max={100}
+				addon={{
+					align: 'end',
+					content: '%',
+				}}
 				value={field.state.value}
 				onChange={(e) =>
 					field.handleChange(

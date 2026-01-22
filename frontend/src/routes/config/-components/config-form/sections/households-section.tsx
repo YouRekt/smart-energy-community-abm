@@ -62,334 +62,345 @@ const HouseholdsSection = withConfigForm({
 								<ScrollArea className='h-125 pr-4'>
 									<FieldGroup>
 										{field.state.value.map((_, i) => (
-											<FieldSet
-												key={i}
-												className='border p-4 rounded-md'>
-												<div className='flex items-center justify-between'>
-													<div>
-														<FieldLegend>
-															Household {i + 1}
-														</FieldLegend>
-														<FieldDescription>
-															Configure household.
-														</FieldDescription>
-													</div>
-													<Button
-														type='button'
-														variant='ghost'
-														size='icon'
-														onClick={() =>
-															field.removeValue(i)
-														}>
-														<Trash2 className='text-destructive size-4' />
-													</Button>
-												</div>
-												<form.AppField
-													name={`householdConfigs[${i}].householdName`}
-													children={(subField) => (
-														<subField.HouseholdNameInput />
-													)}
-												/>
-
-												<FieldSet>
-													<form.AppField
-														name={`householdConfigs[${i}].applianceConfigs`}
-														mode='array'
-														children={(
-															applianceField,
-														) => {
-															const isInvalid =
-																applianceField
-																	.state.meta
-																	.isTouched &&
-																!applianceField
-																	.state.meta
-																	.isValid;
-															return (
-																<Field
-																	data-invalid={
-																		isInvalid
-																	}>
-																	<div className='flex items-center justify-between'>
-																		<div>
-																			<FieldLegend>
-																				Appliances
-																			</FieldLegend>
-																			<FieldDescription>
-																				Configure
-																				appliances.
-																			</FieldDescription>
-																			{isInvalid && (
-																				<FieldError
-																					errors={
-																						applianceField
-																							.state
-																							.meta
-																							.errors
-																					}
-																				/>
-																			)}
-																		</div>
-																		<Button
-																			type='button'
-																			variant='ghost'
-																			size='sm'
-																			onClick={() =>
-																				form.pushFieldValue(
-																					`householdConfigs[${i}].applianceConfigs`,
-																					applianceDefaultValues,
-																				)
-																			}>
-																			<Plus className='size-3 mr-1' />
-																			Add
-																			Appliance
-																		</Button>
-																	</div>
-																	<FieldGroup>
-																		{applianceField.state.value.map(
-																			(
-																				_,
-																				j,
-																			) => (
-																				<FieldSet
-																					key={
-																						j
-																					}>
-																					<Card>
-																						<CardHeader className='flex items-center justify-between'>
-																							<div>
-																								<FieldLegend>
-																									Appliance{' '}
-																									{j +
-																										1}
-																								</FieldLegend>
-																								<FieldDescription>
-																									Configure
-																									the
-																									appliance.
-																								</FieldDescription>
-																							</div>
-																							<Button
-																								type='button'
-																								variant='ghost'
-																								size='icon'
-																								onClick={() =>
-																									applianceField.removeValue(
-																										j,
-																									)
+											<FieldSet key={i}>
+												<Card className='bg-background rounded-b-[62px]'>
+													<CardHeader className='flex items-center justify-between'>
+														<div>
+															<FieldLegend>
+																Household{' '}
+																{i + 1}
+															</FieldLegend>
+															<FieldDescription>
+																Configure
+																household.
+															</FieldDescription>
+														</div>
+														<Button
+															type='button'
+															variant='ghost'
+															size='icon'
+															onClick={() =>
+																field.removeValue(
+																	i,
+																)
+															}>
+															<Trash2 className='text-destructive size-4' />
+														</Button>
+													</CardHeader>
+													<CardContent>
+														<FieldGroup>
+															<form.AppField
+																name={`householdConfigs[${i}].householdName`}
+																children={(
+																	subField,
+																) => (
+																	<subField.HouseholdNameInput />
+																)}
+															/>
+															<FieldSet>
+																<form.AppField
+																	name={`householdConfigs[${i}].applianceConfigs`}
+																	mode='array'
+																	children={(
+																		applianceField,
+																	) => {
+																		const isInvalid =
+																			applianceField
+																				.state
+																				.meta
+																				.isTouched &&
+																			!applianceField
+																				.state
+																				.meta
+																				.isValid;
+																		return (
+																			<Field
+																				data-invalid={
+																					isInvalid
+																				}>
+																				<div className='flex items-center justify-between'>
+																					<div>
+																						<FieldLegend>
+																							Appliances
+																						</FieldLegend>
+																						<FieldDescription>
+																							Configure
+																							appliances.
+																						</FieldDescription>
+																						{isInvalid && (
+																							<FieldError
+																								errors={
+																									applianceField
+																										.state
+																										.meta
+																										.errors
+																								}
+																							/>
+																						)}
+																					</div>
+																					<Button
+																						type='button'
+																						variant='ghost'
+																						size='sm'
+																						onClick={() =>
+																							form.pushFieldValue(
+																								`householdConfigs[${i}].applianceConfigs`,
+																								applianceDefaultValues,
+																							)
+																						}>
+																						<Plus className='size-3 mr-1' />
+																						Add
+																						Appliance
+																					</Button>
+																				</div>
+																				<FieldGroup>
+																					{applianceField.state.value.map(
+																						(
+																							_,
+																							j,
+																						) => (
+																							<FieldSet
+																								key={
+																									j
 																								}>
-																								<Trash2 className='text-destructive size-4' />
-																							</Button>
-																						</CardHeader>
-																						<CardContent>
-																							<FieldGroup>
-																								<form.AppField
-																									name={`householdConfigs[${i}].applianceConfigs[${j}].applianceName`}
-																									children={(
-																										subField,
-																									) => (
-																										<subField.ApplianceNameInput />
-																									)}
-																								/>
+																								<Card className='rounded-b-[38px]'>
+																									<CardHeader className='flex items-center justify-between'>
+																										<div>
+																											<FieldLegend>
+																												Appliance{' '}
+																												{j +
+																													1}
+																											</FieldLegend>
+																											<FieldDescription>
+																												Configure
+																												the
+																												appliance.
+																											</FieldDescription>
+																										</div>
+																										<Button
+																											type='button'
+																											variant='ghost'
+																											size='icon'
+																											onClick={() =>
+																												applianceField.removeValue(
+																													j,
+																												)
+																											}>
+																											<Trash2 className='text-destructive size-4' />
+																										</Button>
+																									</CardHeader>
+																									<CardContent>
+																										<FieldGroup>
+																											<form.AppField
+																												name={`householdConfigs[${i}].applianceConfigs[${j}].applianceName`}
+																												children={(
+																													subField,
+																												) => (
+																													<subField.ApplianceNameInput />
+																												)}
+																											/>
 
-																								<FieldSet>
-																									<form.AppField
-																										name={`householdConfigs[${i}].applianceConfigs[${j}].tasks`}
-																										mode='array'
-																										children={(
-																											taskField,
-																										) => {
-																											const isInvalid =
-																												taskField
-																													.state
-																													.meta
-																													.isTouched &&
-																												!taskField
-																													.state
-																													.meta
-																													.isValid;
+																											<FieldSet>
+																												<form.AppField
+																													name={`householdConfigs[${i}].applianceConfigs[${j}].tasks`}
+																													mode='array'
+																													children={(
+																														taskField,
+																													) => {
+																														const isInvalid =
+																															taskField
+																																.state
+																																.meta
+																																.isTouched &&
+																															!taskField
+																																.state
+																																.meta
+																																.isValid;
 
-																											return (
-																												<Field
-																													data-invalid={
-																														isInvalid
-																													}>
-																													<div className='flex items-center justify-between'>
-																														<div>
-																															<FieldLegend>
-																																Tasks
-																															</FieldLegend>
-																															<FieldDescription>
-																																Define
-																																the
-																																tasks.
-																															</FieldDescription>
-																															{isInvalid && (
-																																<FieldError
-																																	errors={
-																																		taskField
-																																			.state
-																																			.meta
-																																			.errors
-																																	}
-																																/>
-																															)}
-																														</div>
-																														<Button
-																															type='button'
-																															variant='ghost'
-																															size='sm'
-																															onClick={() =>
-																																form.pushFieldValue(
-																																	`householdConfigs[${i}].applianceConfigs[${j}].tasks`,
-																																	{
-																																		...applianceTaskDefaultValues,
-																																		taskId:
-																																			i *
-																																				100 +
-																																			j *
-																																				10 +
-																																			form
-																																				.state
-																																				.values
-																																				.householdConfigs[
-																																				i
-																																			]
-																																				.applianceConfigs[
-																																				j
-																																			]
-																																				.tasks
-																																				.length,
-																																	},
-																																)
-																															}>
-																															<Plus className='size-3 mr-1' />
-																															Add
-																															Task
-																														</Button>
-																													</div>
-																													<FieldGroup>
-																														{taskField.state.value.map(
-																															(
-																																_,
-																																k,
-																															) => (
-																																<FieldGroup
-																																	key={
-																																		k
-																																	}>
-																																	<FieldSet>
-																																		<Card className='bg-muted'>
-																																			<CardHeader className='flex items-center justify-between'>
-																																				<div>
-																																					<FieldLegend>
-																																						Task{' '}
-																																						{k +
-																																							1}
-																																					</FieldLegend>
-																																					<FieldDescription>
-																																						Define
-																																						the
-																																						task.
-																																					</FieldDescription>
-																																				</div>
-																																				<Button
-																																					type='button'
-																																					variant='ghost'
-																																					size='icon'
-																																					onClick={() =>
-																																						taskField.removeValue(
-																																							k,
-																																						)
-																																					}>
-																																					<Trash2 className='text-destructive size-4' />
-																																				</Button>
-																																			</CardHeader>
-																																			<CardContent>
-																																				<FieldGroup>
-																																					<FieldGroup className='@xl/field-group:flex-row'>
-																																						<form.AppField
-																																							name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].taskName`}
-																																							children={(
-																																								f,
-																																							) => (
-																																								<f.TaskNameInput />
-																																							)}
-																																						/>
-																																						<form.AppField
-																																							name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].postponable`}
-																																							children={(
-																																								f,
-																																							) => (
-																																								<f.TaskPostponableInput />
-																																							)}
-																																						/>
-																																					</FieldGroup>
-																																					<FieldGroup className='@xl/field-group:flex-row'>
-																																						<FieldGroup>
-																																							<FieldGroup className='@xl/field-group:flex-row'>
-																																								<form.AppField
-																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].energyPerTick`}
-																																									children={(
-																																										f,
-																																									) => (
-																																										<f.TaskEnergyPerTickInput />
-																																									)}
-																																								/>
-																																								<form.AppField
-																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].duration`}
-																																									children={(
-																																										f,
-																																									) => (
-																																										<f.TaskDurationInput />
-																																									)}
-																																								/>
+																														return (
+																															<Field
+																																data-invalid={
+																																	isInvalid
+																																}>
+																																<div className='flex items-center justify-between'>
+																																	<div>
+																																		<FieldLegend>
+																																			Tasks
+																																		</FieldLegend>
+																																		<FieldDescription>
+																																			Define
+																																			the
+																																			tasks.
+																																		</FieldDescription>
+																																		{isInvalid && (
+																																			<FieldError
+																																				errors={
+																																					taskField
+																																						.state
+																																						.meta
+																																						.errors
+																																				}
+																																			/>
+																																		)}
+																																	</div>
+																																	<Button
+																																		type='button'
+																																		variant='ghost'
+																																		size='sm'
+																																		onClick={() =>
+																																			form.pushFieldValue(
+																																				`householdConfigs[${i}].applianceConfigs[${j}].tasks`,
+																																				{
+																																					...applianceTaskDefaultValues,
+																																					taskId:
+																																						i *
+																																							100 +
+																																						j *
+																																							10 +
+																																						form
+																																							.state
+																																							.values
+																																							.householdConfigs[
+																																							i
+																																						]
+																																							.applianceConfigs[
+																																							j
+																																						]
+																																							.tasks
+																																							.length,
+																																				},
+																																			)
+																																		}>
+																																		<Plus className='size-3 mr-1' />
+																																		Add
+																																		Task
+																																	</Button>
+																																</div>
+																																<FieldGroup>
+																																	{taskField.state.value.map(
+																																		(
+																																			_,
+																																			k,
+																																		) => (
+																																			<FieldGroup
+																																				key={
+																																					k
+																																				}>
+																																				<FieldSet>
+																																					<Card className='bg-muted'>
+																																						<CardHeader className='flex items-center justify-between'>
+																																							<div>
+																																								<FieldLegend>
+																																									Task{' '}
+																																									{k +
+																																										1}
+																																								</FieldLegend>
+																																								<FieldDescription>
+																																									Define
+																																									the
+																																									task.
+																																								</FieldDescription>
+																																							</div>
+																																							<Button
+																																								type='button'
+																																								variant='ghost'
+																																								size='icon'
+																																								onClick={() =>
+																																									taskField.removeValue(
+																																										k,
+																																									)
+																																								}>
+																																								<Trash2 className='text-destructive size-4' />
+																																							</Button>
+																																						</CardHeader>
+																																						<CardContent>
+																																							<FieldGroup>
+																																								<FieldGroup className='@xl/field-group:flex-row'>
+																																									<form.AppField
+																																										name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].taskName`}
+																																										children={(
+																																											f,
+																																										) => (
+																																											<f.TaskNameInput />
+																																										)}
+																																									/>
+																																									<form.AppField
+																																										name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].postponable`}
+																																										children={(
+																																											f,
+																																										) => (
+																																											<f.TaskPostponableInput />
+																																										)}
+																																									/>
+																																								</FieldGroup>
+																																								<FieldGroup className='@xl/field-group:flex-row'>
+																																									<FieldGroup>
+																																										<FieldGroup className='@xl/field-group:flex-row'>
+																																											<form.AppField
+																																												name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].energyPerTick`}
+																																												children={(
+																																													f,
+																																												) => (
+																																													<f.TaskEnergyPerTickInput />
+																																												)}
+																																											/>
+																																											<form.AppField
+																																												name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].duration`}
+																																												children={(
+																																													f,
+																																												) => (
+																																													<f.TaskDurationInput />
+																																												)}
+																																											/>
+																																										</FieldGroup>
+																																										<FieldGroup className='@xl/field-group:flex-row'>
+																																											<form.AppField
+																																												name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].period`}
+																																												children={(
+																																													f,
+																																												) => (
+																																													<f.TaskPeriodInput />
+																																												)}
+																																											/>
+																																											<form.AppField
+																																												name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].humanActivationChance`}
+																																												children={(
+																																													f,
+																																												) => (
+																																													<f.TaskHumanActivationChanceInput />
+																																												)}
+																																											/>
+																																										</FieldGroup>
+																																									</FieldGroup>
+																																								</FieldGroup>
 																																							</FieldGroup>
-																																							<FieldGroup className='@xl/field-group:flex-row'>
-																																								<form.AppField
-																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].period`}
-																																									children={(
-																																										f,
-																																									) => (
-																																										<f.TaskPeriodInput />
-																																									)}
-																																								/>
-																																								<form.AppField
-																																									name={`householdConfigs[${i}].applianceConfigs[${j}].tasks[${k}].humanActivationChance`}
-																																									children={(
-																																										f,
-																																									) => (
-																																										<f.TaskHumanActivationChanceInput />
-																																									)}
-																																								/>
-																																							</FieldGroup>
-																																						</FieldGroup>
-																																					</FieldGroup>
-																																				</FieldGroup>
-																																			</CardContent>
-																																		</Card>
-																																	</FieldSet>
+																																						</CardContent>
+																																					</Card>
+																																				</FieldSet>
+																																			</FieldGroup>
+																																		),
+																																	)}
 																																</FieldGroup>
-																															),
-																														)}
-																													</FieldGroup>
-																												</Field>
-																											);
-																										}}
-																									/>
-																								</FieldSet>
-																							</FieldGroup>
-																						</CardContent>
-																					</Card>
-																				</FieldSet>
-																			),
-																		)}
-																	</FieldGroup>
-																</Field>
-															);
-														}}
-													/>
-												</FieldSet>
+																															</Field>
+																														);
+																													}}
+																												/>
+																											</FieldSet>
+																										</FieldGroup>
+																									</CardContent>
+																								</Card>
+																							</FieldSet>
+																						),
+																					)}
+																				</FieldGroup>
+																			</Field>
+																		);
+																	}}
+																/>
+															</FieldSet>
+														</FieldGroup>
+													</CardContent>
+												</Card>
 											</FieldSet>
 										))}
 									</FieldGroup>

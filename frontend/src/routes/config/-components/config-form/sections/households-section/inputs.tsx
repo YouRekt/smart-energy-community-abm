@@ -94,6 +94,11 @@ export function TaskHumanActivationChanceInput() {
 				id={field.name}
 				min={0}
 				max={100}
+				step={0.01}
+				addon={{
+					align: 'end',
+					content: '%',
+				}}
 				value={field.state.value}
 				onChange={(e) =>
 					field.handleChange(
@@ -181,10 +186,15 @@ export function TaskEnergyPerTickInput() {
 
 	return (
 		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name}>Energy Per Tick (kW)</FieldLabel>
+			<FieldLabel htmlFor={field.name}>Energy Per Tick</FieldLabel>
 			<NumberInput
 				id={field.name}
 				value={field.state.value}
+				min={0}
+				addon={{
+					align: 'end',
+					content: 'kW',
+				}}
 				onChange={(e) =>
 					field.handleChange(
 						applianceTaskSchema.shape.energyPerTick.safeParse(

@@ -1,3 +1,4 @@
+import { IsPercentageProvider } from '@/components/is-percentage-provider';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldSeparator } from '@/components/ui/field';
 
@@ -83,7 +84,9 @@ function ConfigForm() {
 					<FieldGroup className='flex-1'>
 						<StrategySection form={form} />
 						<FieldSeparator />
-						<BatterySection form={form} />
+						<IsPercentageProvider>
+							<BatterySection form={form} />
+						</IsPercentageProvider>
 					</FieldGroup>
 					<FieldSeparator className='@3xl:hidden' />
 					<FieldGroup className='flex-1'>

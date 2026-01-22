@@ -27,7 +27,6 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
             // TODO: Sort Households based on their priorities - strategies implementation
             double householdAllocated = agent.getAllocatedAtFor(agent.tick, householdAgent);
             double greenEnergyAllowed = Math.min(householdAllocated, availableGreenEnergy);
-            availableGreenEnergy = Math.max(availableGreenEnergy - greenEnergyAllowed, 0);
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
             msg.setReplyByDate(replyBy);
             msg.addReceiver(householdAgent);

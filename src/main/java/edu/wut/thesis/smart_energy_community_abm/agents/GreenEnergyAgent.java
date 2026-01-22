@@ -6,10 +6,7 @@ import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper;
 import jade.core.ServiceException;
 
-import java.util.Random;
-
 public final class GreenEnergyAgent extends BaseAgent {
-    private final Random random = new Random();
     private Long period;
     private Double maxOutputPower;
     private Long peakTick;
@@ -78,7 +75,7 @@ public final class GreenEnergyAgent extends BaseAgent {
 
         // Add ±10% random variation
         if (shouldAddRandomNoise) {
-            final double noise = 1.0 + (random.nextGaussian() * variation);
+            final double noise = 1.0 + (rand.nextGaussian() * variation);
             production *= Math.max(0, noise);
         }
 

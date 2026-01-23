@@ -84,7 +84,12 @@ export function BatteryChart({
 				<ChartContainer
 					config={chartConfig}
 					className='h-[250px] w-full'>
-					<AreaChart accessibilityLayer data={data}>
+					<AreaChart
+						accessibilityLayer
+						data={data.map((point) => ({
+							...point,
+							value: point.value / 3600,
+						}))}>
 						<defs>
 							<linearGradient
 								id='fillCharge'

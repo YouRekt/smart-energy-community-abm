@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 const predictionModelConfigSchema = z.object({
 	name: z
-		.enum(['MovingAverage'], {
+		.enum(['MovingAverage', 'Disabled'], {
 			message: 'Please select a valid prediction model',
 		})
 		.default('MovingAverage'),
@@ -73,13 +73,13 @@ const batteryConfigSchema = z
 	});
 
 const batteryConfigSchemaTransformed = batteryConfigSchema.transform((data) => {
-	if (data.isPercentage) {
-		return {
-			...data,
-			startingCharge: data.startingCharge / 100,
-		};
-	}
-	return data;
+	return {
+		...data,
+		capacity: data.capacity * 3600,
+		startingCharge: data.isPercentage
+			? data.startingCharge / 100
+			: data.startingCharge * 3600,
+	};
 });
 
 const energySourcesConfigSchema = z.object({
@@ -110,6 +110,7 @@ const energySourcesConfigSchemaTransformed =
 	energySourcesConfigSchema.transform((data) => {
 		return {
 			...data,
+			maxOutputPower: data.maxOutputPower / 1000,
 			variation: data.variation / 100,
 		};
 	});
@@ -151,6 +152,7 @@ const applianceConfigSchemaTransformed = applianceConfigSchema.transform(
 				return {
 					...task,
 					humanActivationChance: task.humanActivationChance / 100,
+					energyPerTick: task.energyPerTick / 1000,
 				};
 			}),
 		};
@@ -197,6 +199,7 @@ const formSchema = z
 					'EnergyVolume',
 					'GreenScoreFirst',
 					'AdvancePlanningFirst',
+					'Naive',
 				],
 				{
 					message: 'Please select a valid strategy',
@@ -261,6 +264,7 @@ const formSchemaTransformed = z
 					'EnergyVolume',
 					'GreenScoreFirst',
 					'AdvancePlanningFirst',
+					'Naive',
 				],
 				{
 					message: 'Please select a valid strategy',

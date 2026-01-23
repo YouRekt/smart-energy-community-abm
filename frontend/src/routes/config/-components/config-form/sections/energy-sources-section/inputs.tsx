@@ -80,7 +80,7 @@ export function EnergySourceMaxOutputPowerInput() {
 				min={0}
 				addon={{
 					align: 'end',
-					content: 'kW',
+					content: 'W',
 				}}
 				onChange={(e) =>
 					field.handleChange(

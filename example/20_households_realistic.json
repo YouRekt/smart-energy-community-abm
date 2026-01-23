@@ -1,0 +1,525 @@
+{
+	"seed": 42,
+	"strategyName": "Balanced",
+	"predictionModelConfig": {
+		"name": "MovingAverage",
+		"minBatteryChargeThreshold": 20,
+		"productionSafetyFactor": 90,
+		"windowSize": 3600
+	},
+	"batteryConfig": {
+		"capacity": 500.0,
+		"startingCharge": 50,
+		"isPercentage": true
+	},
+	"energySourcesConfigs": [
+		{
+			"agentName": "Community_Solar_Farm",
+			"period": 86400,
+			"maxOutputPower": 300000.0,
+			"peakTick": 43200,
+			"stdDev": 7200.0,
+			"variation": 15
+		},
+		{
+			"agentName": "Wind_Turbine_Hilltop",
+			"period": 86400,
+			"maxOutputPower": 100000.0,
+			"peakTick": 64800,
+			"stdDev": 14400.0,
+			"variation": 30
+		}
+	],
+	"householdConfigs": [
+		{
+			"householdName": "HH_01_EV_Commuter",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "HH_01_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "Charge_Level2",
+							"humanActivationChance": 80,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 7000.0,
+							"taskId": 101
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_02_EV_Commuter",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "HH_02_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "Charge_Level2",
+							"humanActivationChance": 80,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 7000.0,
+							"taskId": 201
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_03_EV_Commuter",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "HH_03_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "Charge_Level2",
+							"humanActivationChance": 80,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 7000.0,
+							"taskId": 301
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_04_EV_Commuter",
+			"applianceConfigs": [
+				{
+					"applianceName": "EV_Charger",
+					"householdName": "HH_04_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "Charge_Level2",
+							"humanActivationChance": 80,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 7000.0,
+							"taskId": 401
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_05_Family_Large",
+			"applianceConfigs": [
+				{
+					"applianceName": "HeatPump_HVAC",
+					"householdName": "HH_05_Family_Large",
+					"tasks": [
+						{
+							"taskName": "HeatingCycle",
+							"humanActivationChance": 100,
+							"period": 3600,
+							"postponable": false,
+							"duration": 900,
+							"energyPerTick": 3500.0,
+							"taskId": 501
+						}
+					]
+				},
+				{
+					"applianceName": "ElectricOven",
+					"householdName": "HH_05_Family_Large",
+					"tasks": [
+						{
+							"taskName": "RoastDinner",
+							"humanActivationChance": 40,
+							"period": 86400,
+							"postponable": false,
+							"duration": 5400,
+							"energyPerTick": 2400.0,
+							"taskId": 502
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_06_Family_Large",
+			"applianceConfigs": [
+				{
+					"applianceName": "HeatPump_HVAC",
+					"householdName": "HH_06_Family_Large",
+					"tasks": [
+						{
+							"taskName": "HeatingCycle",
+							"humanActivationChance": 100,
+							"period": 3600,
+							"postponable": false,
+							"duration": 900,
+							"energyPerTick": 3500.0,
+							"taskId": 601
+						}
+					]
+				},
+				{
+					"applianceName": "InductionHob",
+					"householdName": "HH_06_Family_Large",
+					"tasks": [
+						{
+							"taskName": "Cooking",
+							"humanActivationChance": 60,
+							"period": 43200,
+							"postponable": false,
+							"duration": 1800,
+							"energyPerTick": 3000.0,
+							"taskId": 602
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_07_Family_Standard",
+			"applianceConfigs": [
+				{
+					"applianceName": "WashingMachine",
+					"householdName": "HH_07_Family_Standard",
+					"tasks": [
+						{
+							"taskName": "HotWash",
+							"humanActivationChance": 50,
+							"period": 86400,
+							"postponable": true,
+							"duration": 5400,
+							"energyPerTick": 2200.0,
+							"taskId": 701
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_08_Family_Standard",
+			"applianceConfigs": [
+				{
+					"applianceName": "TumbleDryer",
+					"householdName": "HH_08_Family_Standard",
+					"tasks": [
+						{
+							"taskName": "DryClothes",
+							"humanActivationChance": 50,
+							"period": 86400,
+							"postponable": true,
+							"duration": 3600,
+							"energyPerTick": 3000.0,
+							"taskId": 801
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_09_Remote_Worker",
+			"applianceConfigs": [
+				{
+					"applianceName": "WorkPC",
+					"householdName": "HH_09_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "WorkSession",
+							"humanActivationChance": 90,
+							"period": 86400,
+							"postponable": false,
+							"duration": 28800,
+							"energyPerTick": 400.0,
+							"taskId": 901
+						}
+					]
+				},
+				{
+					"applianceName": "Kettle",
+					"householdName": "HH_09_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "BoilWater",
+							"humanActivationChance": 80,
+							"period": 7200,
+							"postponable": true,
+							"duration": 180,
+							"energyPerTick": 2000.0,
+							"taskId": 902
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_10_Remote_Worker",
+			"applianceConfigs": [
+				{
+					"applianceName": "WorkPC",
+					"householdName": "HH_10_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "WorkSession",
+							"humanActivationChance": 90,
+							"period": 86400,
+							"postponable": false,
+							"duration": 28800,
+							"energyPerTick": 400.0,
+							"taskId": 1001
+						}
+					]
+				},
+				{
+					"applianceName": "SpaceHeater",
+					"householdName": "HH_10_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "WarmOffice",
+							"humanActivationChance": 60,
+							"period": 14400,
+							"postponable": true,
+							"duration": 3600,
+							"energyPerTick": 1500.0,
+							"taskId": 1002
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_11_Remote_Worker",
+			"applianceConfigs": [
+				{
+					"applianceName": "WorkPC",
+					"householdName": "HH_11_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "WorkSession",
+							"humanActivationChance": 90,
+							"period": 86400,
+							"postponable": false,
+							"duration": 28800,
+							"energyPerTick": 400.0,
+							"taskId": 1101
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_12_Remote_Worker",
+			"applianceConfigs": [
+				{
+					"applianceName": "WorkPC",
+					"householdName": "HH_12_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "WorkSession",
+							"humanActivationChance": 90,
+							"period": 86400,
+							"postponable": false,
+							"duration": 28800,
+							"energyPerTick": 400.0,
+							"taskId": 1201
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_13_Retired",
+			"applianceConfigs": [
+				{
+					"applianceName": "TV_System",
+					"householdName": "HH_13_Retired",
+					"tasks": [
+						{
+							"taskName": "WatchTV",
+							"humanActivationChance": 70,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 150.0,
+							"taskId": 1301
+						}
+					]
+				},
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "HH_13_Retired",
+					"tasks": [
+						{
+							"taskName": "EcoCycle",
+							"humanActivationChance": 50,
+							"period": 86400,
+							"postponable": true,
+							"duration": 7200,
+							"energyPerTick": 1800.0,
+							"taskId": 1302
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_14_Retired",
+			"applianceConfigs": [
+				{
+					"applianceName": "TV_System",
+					"householdName": "HH_14_Retired",
+					"tasks": [
+						{
+							"taskName": "WatchTV",
+							"humanActivationChance": 70,
+							"period": 86400,
+							"postponable": true,
+							"duration": 14400,
+							"energyPerTick": 150.0,
+							"taskId": 1401
+						}
+					]
+				},
+				{
+					"applianceName": "Toaster",
+					"householdName": "HH_14_Retired",
+					"tasks": [
+						{
+							"taskName": "Breakfast",
+							"humanActivationChance": 80,
+							"period": 21600,
+							"postponable": false,
+							"duration": 120,
+							"energyPerTick": 900.0,
+							"taskId": 1402
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_15_Gamer_Apartment",
+			"applianceConfigs": [
+				{
+					"applianceName": "GamingRig",
+					"householdName": "HH_15_Gamer_Apartment",
+					"tasks": [
+						{
+							"taskName": "GamingSession",
+							"humanActivationChance": 60,
+							"period": 86400,
+							"postponable": false,
+							"duration": 18000,
+							"energyPerTick": 500.0,
+							"taskId": 1501
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_16_Gamer_Apartment",
+			"applianceConfigs": [
+				{
+					"applianceName": "GamingRig",
+					"householdName": "HH_16_Gamer_Apartment",
+					"tasks": [
+						{
+							"taskName": "GamingSession",
+							"humanActivationChance": 60,
+							"period": 86400,
+							"postponable": false,
+							"duration": 18000,
+							"energyPerTick": 500.0,
+							"taskId": 1601
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_17_Studio",
+			"applianceConfigs": [
+				{
+					"applianceName": "Microwave",
+					"householdName": "HH_17_Studio",
+					"tasks": [
+						{
+							"taskName": "ReheatFood",
+							"humanActivationChance": 90,
+							"period": 43200,
+							"postponable": false,
+							"duration": 300,
+							"energyPerTick": 1200.0,
+							"taskId": 1701
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_18_Studio",
+			"applianceConfigs": [
+				{
+					"applianceName": "AirFryer",
+					"householdName": "HH_18_Studio",
+					"tasks": [
+						{
+							"taskName": "CookDinner",
+							"humanActivationChance": 70,
+							"period": 86400,
+							"postponable": false,
+							"duration": 1200,
+							"energyPerTick": 1500.0,
+							"taskId": 1801
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_19_Efficiency",
+			"applianceConfigs": [
+				{
+					"applianceName": "Laptop",
+					"householdName": "HH_19_Efficiency",
+					"tasks": [
+						{
+							"taskName": "WorkBrowsing",
+							"humanActivationChance": 90,
+							"period": 86400,
+							"postponable": true,
+							"duration": 10800,
+							"energyPerTick": 60.0,
+							"taskId": 1901
+						}
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_20_Efficiency",
+			"applianceConfigs": [
+				{
+					"applianceName": "LED_Lights",
+					"householdName": "HH_20_Efficiency",
+					"tasks": [
+						{
+							"taskName": "EveningLight",
+							"humanActivationChance": 95,
+							"period": 86400,
+							"postponable": false,
+							"duration": 21600,
+							"energyPerTick": 10.0,
+							"taskId": 2001
+						}
+					]
+				}
+			]
+		}
+	]
+}

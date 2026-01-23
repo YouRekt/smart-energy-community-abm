@@ -25,7 +25,7 @@ public record BatteryConfig(
     public AgentParams getAgentParams() {
         return new AgentParams(CommunityBatteryAgent.class.getSimpleName(), CommunityBatteryAgent.class, new Object[]{
                 capacity,
-                isPercentage ? startingCharge : startingCharge * capacity,
+                isPercentage ? startingCharge * capacity : startingCharge,
         });
     }
 }

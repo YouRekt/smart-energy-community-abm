@@ -17,6 +17,9 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatTickToDate } from '@/lib/format-tick';
+import { getTickMultiplier } from '@/lib/utils';
+import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	production: {
@@ -38,6 +41,10 @@ export function ProductionChart({
 	data,
 	isLoading,
 }: ProductionChartProps) {
+	const tickConfig = useSimulationStore((state) => state.tickConfig);
+
+	const tickMultiplier = getTickMultiplier(tickConfig);
+
 	if (isLoading) {
 		return (
 			<Card>
@@ -83,15 +90,23 @@ export function ProductionChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'>
-					<AreaChart accessibilityLayer data={data}>
+					className='h-[250px] w-full'
+				>
+					<AreaChart
+						accessibilityLayer
+						data={data.map((point) => ({
+							...point,
+							value: point.value / tickMultiplier,
+						}))}
+					>
 						<defs>
 							<linearGradient
 								id='fillProduction'
 								x1='0'
 								y1='0'
 								x2='0'
-								y2='1'>
+								y2='1'
+							>
 								<stop
 									offset='5%'
 									stopColor='var(--color-production)'
@@ -110,7 +125,9 @@ export function ProductionChart({
 							tickLine={false}
 							axisLine={false}
 							tickMargin={10}
-							tickFormatter={(value) => `${value}`}
+							tickFormatter={(value) =>
+								formatTickToDate(value, tickConfig)
+							}
 						/>
 						<YAxis
 							tickLine={false}

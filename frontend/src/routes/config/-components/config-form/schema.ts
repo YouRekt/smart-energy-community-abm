@@ -24,6 +24,19 @@ const predictionModelConfigSchema = z.object({
 		.positive({ message: 'Window size must be positive' }),
 });
 
+const tickConfigSchema = z.object({
+	tickUnit: z
+		.enum(['second', 'minute', 'hour', 'day'], {
+			message: 'Please select a valid time unit',
+		})
+		.default('second'),
+	tickAmount: z.coerce
+		.number<number>()
+		.int({ message: 'Tick amount must be an integer' })
+		.positive({ message: 'Tick amount must be positive' })
+		.default(1),
+});
+
 const predictionModelConfigSchemaTransformed =
 	predictionModelConfigSchema.transform((data) => {
 		return {
@@ -206,6 +219,7 @@ const formSchema = z
 				},
 			)
 			.default('Balanced'),
+		tickConfig: tickConfigSchema,
 		predictionModelConfig: predictionModelConfigSchema,
 		batteryConfig: batteryConfigSchema,
 		energySourcesConfigs: z.array(energySourcesConfigSchema).min(1, {
@@ -271,6 +285,7 @@ const formSchemaTransformed = z
 				},
 			)
 			.default('Balanced'),
+		tickConfig: tickConfigSchema,
 		predictionModelConfig: predictionModelConfigSchemaTransformed,
 		batteryConfig: batteryConfigSchemaTransformed,
 		energySourcesConfigs: z
@@ -319,6 +334,60 @@ const formSchemaTransformed = z
 				});
 			});
 		});
+	})
+	.transform((data) => {
+		let tickMultiplier = 1;
+
+		switch (data.tickConfig.tickUnit) {
+			default:
+			case 'second':
+				tickMultiplier = 1;
+				break;
+			case 'minute':
+				tickMultiplier = 60;
+				break;
+			case 'hour':
+				tickMultiplier = 60 * 60;
+				break;
+			case 'day':
+				tickMultiplier = 60 * 60 * 24;
+				break;
+		}
+
+		const secondsPerTick = data.tickConfig.tickAmount * tickMultiplier;
+
+		return {
+			...data,
+			energySourcesConfigs: data.energySourcesConfigs.map(
+				(energySource) => {
+					return {
+						...energySource,
+						maxOutputPower: Math.round(
+							energySource.maxOutputPower * secondsPerTick,
+						),
+					};
+				},
+			),
+			householdConfigs: data.householdConfigs.map((household) => {
+				return {
+					...household,
+					applianceConfigs: household.applianceConfigs.map(
+						(appliance) => {
+							return {
+								...appliance,
+								tasks: appliance.tasks.map((task) => {
+									return {
+										...task,
+										energyPerTick:
+											task.energyPerTick * secondsPerTick,
+									};
+								}),
+							};
+						},
+					),
+				};
+			}),
+		};
 	});
 
 const defaultValues: z.input<typeof formSchemaTransformed> = {
@@ -330,6 +399,10 @@ const defaultValues: z.input<typeof formSchemaTransformed> = {
 		productionSafetyFactor: 0,
 		windowSize: 0,
 	},
+	tickConfig: {
+		tickUnit: 'second',
+		tickAmount: 1,
+	},
 	batteryConfig: {
 		capacity: 0,
 		startingCharge: 0,
@@ -339,9 +412,8 @@ const defaultValues: z.input<typeof formSchemaTransformed> = {
 	householdConfigs: [],
 };
 
-const strategyDefaultValues: z.input<
-	typeof formSchemaTransformed.shape.strategyName
-> = 'Balanced';
+const strategyDefaultValues: z.input<typeof formSchema.shape.strategyName> =
+	'Balanced';
 
 const predictionModelDefaultValues: z.input<
 	typeof predictionModelConfigSchema
@@ -405,4 +477,5 @@ export {
 	predictionModelConfigSchema,
 	predictionModelDefaultValues,
 	strategyDefaultValues,
+	tickConfigSchema,
 };

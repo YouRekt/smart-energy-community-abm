@@ -17,6 +17,9 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatTickToDate } from '@/lib/format-tick';
+import { getTickMultiplier } from '@/lib/utils';
+import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	greenEnergy: {
@@ -42,6 +45,10 @@ export function ConsumptionChart({
 	data,
 	isLoading,
 }: ConsumptionChartProps) {
+	const tickConfig = useSimulationStore((state) => state.tickConfig);
+
+	const tickMultiplier = getTickMultiplier(tickConfig);
+
 	if (isLoading) {
 		return (
 			<Card>
@@ -87,15 +94,24 @@ export function ConsumptionChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'>
-					<AreaChart accessibilityLayer data={data}>
+					className='h-[250px] w-full'
+				>
+					<AreaChart
+						accessibilityLayer
+						data={data.map((point) => ({
+							...point,
+							greenEnergy: point.greenEnergy / tickMultiplier,
+							gridEnergy: point.gridEnergy / tickMultiplier,
+						}))}
+					>
 						<defs>
 							<linearGradient
 								id='fillGreen'
 								x1='0'
 								y1='0'
 								x2='0'
-								y2='1'>
+								y2='1'
+							>
 								<stop
 									offset='5%'
 									stopColor='var(--color-greenEnergy)'
@@ -112,7 +128,8 @@ export function ConsumptionChart({
 								x1='0'
 								y1='0'
 								x2='0'
-								y2='1'>
+								y2='1'
+							>
 								<stop
 									offset='5%'
 									stopColor='var(--color-gridEnergy)'
@@ -131,7 +148,9 @@ export function ConsumptionChart({
 							tickLine={false}
 							axisLine={false}
 							tickMargin={10}
-							tickFormatter={(value) => `${value}`}
+							tickFormatter={(value) =>
+								formatTickToDate(value, tickConfig)
+							}
 						/>
 						<YAxis
 							tickLine={false}

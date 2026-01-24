@@ -17,6 +17,8 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatTickToDate } from '@/lib/format-tick';
+import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	charge: {
@@ -38,6 +40,8 @@ export function BatteryChart({
 	data,
 	isLoading,
 }: BatteryChartProps) {
+	const tickConfig = useSimulationStore((state) => state.tickConfig);
+
 	if (isLoading) {
 		return (
 			<Card>
@@ -83,20 +87,23 @@ export function BatteryChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'>
+					className='h-[250px] w-full'
+				>
 					<AreaChart
 						accessibilityLayer
 						data={data.map((point) => ({
 							...point,
 							value: point.value / 3600,
-						}))}>
+						}))}
+					>
 						<defs>
 							<linearGradient
 								id='fillCharge'
 								x1='0'
 								y1='0'
 								x2='0'
-								y2='1'>
+								y2='1'
+							>
 								<stop
 									offset='5%'
 									stopColor='var(--color-charge)'
@@ -115,7 +122,9 @@ export function BatteryChart({
 							tickLine={false}
 							axisLine={false}
 							tickMargin={10}
-							tickFormatter={(value) => `${value}`}
+							tickFormatter={(value) =>
+								formatTickToDate(value, tickConfig)
+							}
 						/>
 						<YAxis
 							tickLine={false}

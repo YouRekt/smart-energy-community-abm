@@ -54,7 +54,8 @@ const HouseholdsSection = withConfigForm({
 												'householdConfigs',
 												householdDefaultValues,
 											)
-										}>
+										}
+									>
 										<Plus className='mr-2 h-4 w-4' />
 										Add Household
 									</Button>
@@ -83,7 +84,8 @@ const HouseholdsSection = withConfigForm({
 																field.removeValue(
 																	i,
 																)
-															}>
+															}
+														>
 															<Trash2 className='text-destructive size-4' />
 														</Button>
 													</CardHeader>
@@ -117,7 +119,8 @@ const HouseholdsSection = withConfigForm({
 																			<Field
 																				data-invalid={
 																					isInvalid
-																				}>
+																				}
+																			>
 																				<div className='flex items-center justify-between'>
 																					<div>
 																						<FieldLegend>
@@ -147,7 +150,8 @@ const HouseholdsSection = withConfigForm({
 																								`householdConfigs[${i}].applianceConfigs`,
 																								applianceDefaultValues,
 																							)
-																						}>
+																						}
+																					>
 																						<Plus className='size-3 mr-1' />
 																						Add
 																						Appliance
@@ -162,7 +166,8 @@ const HouseholdsSection = withConfigForm({
 																							<FieldSet
 																								key={
 																									j
-																								}>
+																								}
+																							>
 																								<Card className='rounded-b-[38px]'>
 																									<CardHeader className='flex items-center justify-between'>
 																										<div>
@@ -185,7 +190,8 @@ const HouseholdsSection = withConfigForm({
 																												applianceField.removeValue(
 																													j,
 																												)
-																											}>
+																											}
+																										>
 																											<Trash2 className='text-destructive size-4' />
 																										</Button>
 																									</CardHeader>
@@ -221,7 +227,8 @@ const HouseholdsSection = withConfigForm({
 																															<Field
 																																data-invalid={
 																																	isInvalid
-																																}>
+																																}
+																															>
 																																<div className='flex items-center justify-between'>
 																																	<div>
 																																		<FieldLegend>
@@ -270,7 +277,8 @@ const HouseholdsSection = withConfigForm({
 																																							.length,
 																																				},
 																																			)
-																																		}>
+																																		}
+																																	>
 																																		<Plus className='size-3 mr-1' />
 																																		Add
 																																		Task
@@ -285,7 +293,8 @@ const HouseholdsSection = withConfigForm({
 																																			<FieldGroup
 																																				key={
 																																					k
-																																				}>
+																																				}
+																																			>
 																																				<FieldSet>
 																																					<Card className='bg-muted'>
 																																						<CardHeader className='flex items-center justify-between'>
@@ -309,7 +318,8 @@ const HouseholdsSection = withConfigForm({
 																																									taskField.removeValue(
 																																										k,
 																																									)
-																																								}>
+																																								}
+																																							>
 																																								<Trash2 className='text-destructive size-4' />
 																																							</Button>
 																																						</CardHeader>

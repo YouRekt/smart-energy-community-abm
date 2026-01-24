@@ -69,7 +69,8 @@ export function useStopSimulation() {
  * Hook to configure the simulation
  */
 export function useConfigureSimulation() {
-	const { setConfigured, setHouseholds } = useSimulationStore();
+	const { setConfigured, setHouseholds, setTickConfig } =
+		useSimulationStore();
 
 	return useMutation({
 		mutationFn: async (config: z.infer<typeof formSchema>) => {
@@ -85,6 +86,7 @@ export function useConfigureSimulation() {
 
 			// Store in state first
 			setHouseholds(households);
+			setTickConfig(config.tickConfig);
 
 			// Then send to API
 			return simulationApi.configure(config);

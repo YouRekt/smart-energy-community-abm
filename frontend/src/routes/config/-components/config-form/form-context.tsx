@@ -29,6 +29,7 @@ import {
 } from '@/routes/config/-components/config-form/sections/prediction-model-section/index';
 import SeedInput from '@/routes/config/-components/config-form/sections/strategy-section/seed-input';
 import { StrategySelect } from '@/routes/config/-components/config-form/sections/strategy-section/strategy-select';
+import TickInput from '@/routes/config/-components/config-form/sections/strategy-section/tick-input';
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
 
 const { fieldContext, formContext, useFieldContext } = createFormHookContexts();
@@ -36,6 +37,7 @@ const { fieldContext, formContext, useFieldContext } = createFormHookContexts();
 const { useAppForm, withForm } = createFormHook({
 	fieldComponents: {
 		StrategySelect,
+		TickInput,
 		PredictionModelSelect,
 		MinBatteryChargeThresholdInput,
 		ProductionSafetyFactorInput,

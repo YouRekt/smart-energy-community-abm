@@ -31,6 +31,7 @@ public final class RequestApplianceEnergyUsageBehaviour extends OneShotBehaviour
             msg.setReplyByDate(replyBy);
             msg.addReceiver(applianceAgent);
             msg.setContent(Double.toString(greenEnergyAllowed));
+            availableGreenEnergy -= greenEnergyAllowed;
             agent.send(msg);
         }
         getDataStore().put(REQUEST_REPLY_BY, replyBy);

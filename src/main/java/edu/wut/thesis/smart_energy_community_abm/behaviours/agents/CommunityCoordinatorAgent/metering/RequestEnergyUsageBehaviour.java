@@ -1,6 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.behaviours.agents.CommunityCoordinatorAgent.metering;
 
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -22,6 +23,7 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
     public void action() {
         Date replyBy = new Date(System.currentTimeMillis() + REPLY_BY_DELAY);
         Double availableGreenEnergy = (Double) getDataStore().get(AVAILABLE_ENERGY);
+        agent.log("Available green energy for tick " + agent.tick + " is " + availableGreenEnergy, LogSeverity.DEBUG, this);
         for (var householdAgent : agent.householdAgents.stream()
                 .sorted((x, y) ->
                 agent.computeGenericPriority(y)
@@ -34,6 +36,7 @@ public final class RequestEnergyUsageBehaviour extends OneShotBehaviour {
             msg.setReplyByDate(replyBy);
             msg.addReceiver(householdAgent);
             msg.setContent(Double.toString(greenEnergyAllowed));
+            availableGreenEnergy -= greenEnergyAllowed;
             agent.send(msg);
         }
         getDataStore().put(REQUEST_REPLY_BY, replyBy);

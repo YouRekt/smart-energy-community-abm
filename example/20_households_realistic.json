@@ -1,32 +1,36 @@
 {
 	"seed": 42,
+	"tickConfig": {
+		"tickUnit": "minute",
+		"tickAmount": 15
+	},
 	"strategyName": "Balanced",
 	"predictionModelConfig": {
 		"name": "MovingAverage",
 		"minBatteryChargeThreshold": 20,
 		"productionSafetyFactor": 90,
-		"windowSize": 3600
+		"windowSize": 60
 	},
 	"batteryConfig": {
-		"capacity": 500.0,
+		"capacity": 250.0,
 		"startingCharge": 50,
 		"isPercentage": true
 	},
 	"energySourcesConfigs": [
 		{
 			"agentName": "Community_Solar_Farm",
-			"period": 86400,
-			"maxOutputPower": 300000.0,
-			"peakTick": 43200,
-			"stdDev": 7200.0,
+			"period": 1440,
+			"maxOutputPower": 80000.0,
+			"peakTick": 720,
+			"stdDev": 120.0,
 			"variation": 15
 		},
 		{
-			"agentName": "Wind_Turbine_Hilltop",
-			"period": 86400,
-			"maxOutputPower": 100000.0,
-			"peakTick": 64800,
-			"stdDev": 14400.0,
+			"agentName": "Small_Wind_Turbine",
+			"period": 1440,
+			"maxOutputPower": 30000.0,
+			"peakTick": 1080,
+			"stdDev": 240.0,
 			"variation": 30
 		}
 	],
@@ -35,15 +39,30 @@
 			"householdName": "HH_01_EV_Commuter",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_01_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 400.0,
+							"taskId": 100
+						}
+					]
+				},
+				{
 					"applianceName": "EV_Charger",
 					"householdName": "HH_01_EV_Commuter",
 					"tasks": [
 						{
 							"taskName": "Charge_Level2",
-							"humanActivationChance": 80,
-							"period": 86400,
+							"humanActivationChance": 90,
+							"period": 1440,
 							"postponable": true,
-							"duration": 14400,
+							"duration": 240,
 							"energyPerTick": 7000.0,
 							"taskId": 101
 						}
@@ -55,15 +74,30 @@
 			"householdName": "HH_02_EV_Commuter",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_02_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 400.0,
+							"taskId": 200
+						}
+					]
+				},
+				{
 					"applianceName": "EV_Charger",
 					"householdName": "HH_02_EV_Commuter",
 					"tasks": [
 						{
 							"taskName": "Charge_Level2",
-							"humanActivationChance": 80,
-							"period": 86400,
+							"humanActivationChance": 90,
+							"period": 1440,
 							"postponable": true,
-							"duration": 14400,
+							"duration": 240,
 							"energyPerTick": 7000.0,
 							"taskId": 201
 						}
@@ -75,15 +109,30 @@
 			"householdName": "HH_03_EV_Commuter",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_03_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 400.0,
+							"taskId": 300
+						}
+					]
+				},
+				{
 					"applianceName": "EV_Charger",
 					"householdName": "HH_03_EV_Commuter",
 					"tasks": [
 						{
 							"taskName": "Charge_Level2",
-							"humanActivationChance": 80,
-							"period": 86400,
+							"humanActivationChance": 90,
+							"period": 1440,
 							"postponable": true,
-							"duration": 14400,
+							"duration": 240,
 							"energyPerTick": 7000.0,
 							"taskId": 301
 						}
@@ -95,15 +144,30 @@
 			"householdName": "HH_04_EV_Commuter",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_04_EV_Commuter",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 400.0,
+							"taskId": 400
+						}
+					]
+				},
+				{
 					"applianceName": "EV_Charger",
 					"householdName": "HH_04_EV_Commuter",
 					"tasks": [
 						{
 							"taskName": "Charge_Level2",
-							"humanActivationChance": 80,
-							"period": 86400,
+							"humanActivationChance": 90,
+							"period": 1440,
 							"postponable": true,
-							"duration": 14400,
+							"duration": 240,
 							"energyPerTick": 7000.0,
 							"taskId": 401
 						}
@@ -115,30 +179,45 @@
 			"householdName": "HH_05_Family_Large",
 			"applianceConfigs": [
 				{
-					"applianceName": "HeatPump_HVAC",
+					"applianceName": "Baseload_Devices",
 					"householdName": "HH_05_Family_Large",
 					"tasks": [
 						{
-							"taskName": "HeatingCycle",
+							"taskName": "AlwaysOn",
 							"humanActivationChance": 100,
-							"period": 3600,
+							"period": 1440,
 							"postponable": false,
-							"duration": 900,
+							"duration": 1440,
+							"energyPerTick": 500.0,
+							"taskId": 500
+						}
+					]
+				},
+				{
+					"applianceName": "HeatPump",
+					"householdName": "HH_05_Family_Large",
+					"tasks": [
+						{
+							"taskName": "Heating",
+							"humanActivationChance": 100,
+							"period": 60,
+							"postponable": false,
+							"duration": 15,
 							"energyPerTick": 3500.0,
 							"taskId": 501
 						}
 					]
 				},
 				{
-					"applianceName": "ElectricOven",
+					"applianceName": "Oven",
 					"householdName": "HH_05_Family_Large",
 					"tasks": [
 						{
-							"taskName": "RoastDinner",
-							"humanActivationChance": 40,
-							"period": 86400,
+							"taskName": "Dinner",
+							"humanActivationChance": 60,
+							"period": 1440,
 							"postponable": false,
-							"duration": 5400,
+							"duration": 90,
 							"energyPerTick": 2400.0,
 							"taskId": 502
 						}
@@ -150,30 +229,45 @@
 			"householdName": "HH_06_Family_Large",
 			"applianceConfigs": [
 				{
-					"applianceName": "HeatPump_HVAC",
+					"applianceName": "Baseload_Devices",
 					"householdName": "HH_06_Family_Large",
 					"tasks": [
 						{
-							"taskName": "HeatingCycle",
+							"taskName": "AlwaysOn",
 							"humanActivationChance": 100,
-							"period": 3600,
+							"period": 1440,
 							"postponable": false,
-							"duration": 900,
+							"duration": 1440,
+							"energyPerTick": 500.0,
+							"taskId": 600
+						}
+					]
+				},
+				{
+					"applianceName": "HeatPump",
+					"householdName": "HH_06_Family_Large",
+					"tasks": [
+						{
+							"taskName": "Heating",
+							"humanActivationChance": 100,
+							"period": 60,
+							"postponable": false,
+							"duration": 15,
 							"energyPerTick": 3500.0,
 							"taskId": 601
 						}
 					]
 				},
 				{
-					"applianceName": "InductionHob",
+					"applianceName": "Stove",
 					"householdName": "HH_06_Family_Large",
 					"tasks": [
 						{
 							"taskName": "Cooking",
-							"humanActivationChance": 60,
-							"period": 43200,
+							"humanActivationChance": 70,
+							"period": 1440,
 							"postponable": false,
-							"duration": 1800,
+							"duration": 45,
 							"energyPerTick": 3000.0,
 							"taskId": 602
 						}
@@ -185,15 +279,30 @@
 			"householdName": "HH_07_Family_Standard",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_07_Family_Standard",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 350.0,
+							"taskId": 700
+						}
+					]
+				},
+				{
 					"applianceName": "WashingMachine",
 					"householdName": "HH_07_Family_Standard",
 					"tasks": [
 						{
-							"taskName": "HotWash",
+							"taskName": "DailyWash",
 							"humanActivationChance": 50,
-							"period": 86400,
+							"period": 1440,
 							"postponable": true,
-							"duration": 5400,
+							"duration": 90,
 							"energyPerTick": 2200.0,
 							"taskId": 701
 						}
@@ -205,15 +314,30 @@
 			"householdName": "HH_08_Family_Standard",
 			"applianceConfigs": [
 				{
-					"applianceName": "TumbleDryer",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_08_Family_Standard",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 350.0,
+							"taskId": 800
+						}
+					]
+				},
+				{
+					"applianceName": "Dryer",
 					"householdName": "HH_08_Family_Standard",
 					"tasks": [
 						{
 							"taskName": "DryClothes",
 							"humanActivationChance": 50,
-							"period": 86400,
+							"period": 1440,
 							"postponable": true,
-							"duration": 3600,
+							"duration": 60,
 							"energyPerTick": 3000.0,
 							"taskId": 801
 						}
@@ -225,32 +349,32 @@
 			"householdName": "HH_09_Remote_Worker",
 			"applianceConfigs": [
 				{
-					"applianceName": "WorkPC",
+					"applianceName": "Baseload_Devices",
 					"householdName": "HH_09_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "WorkSession",
-							"humanActivationChance": 90,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 28800,
-							"energyPerTick": 400.0,
-							"taskId": 901
+							"duration": 1440,
+							"energyPerTick": 300.0,
+							"taskId": 900
 						}
 					]
 				},
 				{
-					"applianceName": "Kettle",
+					"applianceName": "WorkPC",
 					"householdName": "HH_09_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "BoilWater",
-							"humanActivationChance": 80,
-							"period": 7200,
-							"postponable": true,
-							"duration": 180,
-							"energyPerTick": 2000.0,
-							"taskId": 902
+							"taskName": "WorkDay",
+							"humanActivationChance": 95,
+							"period": 1440,
+							"postponable": false,
+							"duration": 480,
+							"energyPerTick": 400.0,
+							"taskId": 901
 						}
 					]
 				}
@@ -260,30 +384,45 @@
 			"householdName": "HH_10_Remote_Worker",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_10_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 300.0,
+							"taskId": 1000
+						}
+					]
+				},
+				{
 					"applianceName": "WorkPC",
 					"householdName": "HH_10_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "WorkSession",
-							"humanActivationChance": 90,
-							"period": 86400,
+							"taskName": "WorkDay",
+							"humanActivationChance": 95,
+							"period": 1440,
 							"postponable": false,
-							"duration": 28800,
+							"duration": 480,
 							"energyPerTick": 400.0,
 							"taskId": 1001
 						}
 					]
 				},
 				{
-					"applianceName": "SpaceHeater",
+					"applianceName": "Heater",
 					"householdName": "HH_10_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "WarmOffice",
+							"taskName": "OfficeWarmth",
 							"humanActivationChance": 60,
-							"period": 14400,
+							"period": 240,
 							"postponable": true,
-							"duration": 3600,
+							"duration": 60,
 							"energyPerTick": 1500.0,
 							"taskId": 1002
 						}
@@ -295,15 +434,30 @@
 			"householdName": "HH_11_Remote_Worker",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_11_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 300.0,
+							"taskId": 1100
+						}
+					]
+				},
+				{
 					"applianceName": "WorkPC",
 					"householdName": "HH_11_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "WorkSession",
-							"humanActivationChance": 90,
-							"period": 86400,
+							"taskName": "WorkDay",
+							"humanActivationChance": 95,
+							"period": 1440,
 							"postponable": false,
-							"duration": 28800,
+							"duration": 480,
 							"energyPerTick": 400.0,
 							"taskId": 1101
 						}
@@ -315,15 +469,30 @@
 			"householdName": "HH_12_Remote_Worker",
 			"applianceConfigs": [
 				{
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_12_Remote_Worker",
+					"tasks": [
+						{
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 300.0,
+							"taskId": 1200
+						}
+					]
+				},
+				{
 					"applianceName": "WorkPC",
 					"householdName": "HH_12_Remote_Worker",
 					"tasks": [
 						{
-							"taskName": "WorkSession",
-							"humanActivationChance": 90,
-							"period": 86400,
+							"taskName": "WorkDay",
+							"humanActivationChance": 95,
+							"period": 1440,
 							"postponable": false,
-							"duration": 28800,
+							"duration": 480,
 							"energyPerTick": 400.0,
 							"taskId": 1201
 						}
@@ -335,15 +504,30 @@
 			"householdName": "HH_13_Retired",
 			"applianceConfigs": [
 				{
-					"applianceName": "TV_System",
+					"applianceName": "Baseload_Devices",
 					"householdName": "HH_13_Retired",
 					"tasks": [
 						{
-							"taskName": "WatchTV",
-							"humanActivationChance": 70,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 250.0,
+							"taskId": 1300
+						}
+					]
+				},
+				{
+					"applianceName": "Television",
+					"householdName": "HH_13_Retired",
+					"tasks": [
+						{
+							"taskName": "EveningTV",
+							"humanActivationChance": 80,
+							"period": 1440,
 							"postponable": true,
-							"duration": 14400,
+							"duration": 240,
 							"energyPerTick": 150.0,
 							"taskId": 1301
 						}
@@ -356,9 +540,9 @@
 						{
 							"taskName": "EcoCycle",
 							"humanActivationChance": 50,
-							"period": 86400,
+							"period": 1440,
 							"postponable": true,
-							"duration": 7200,
+							"duration": 120,
 							"energyPerTick": 1800.0,
 							"taskId": 1302
 						}
@@ -370,50 +554,65 @@
 			"householdName": "HH_14_Retired",
 			"applianceConfigs": [
 				{
-					"applianceName": "TV_System",
+					"applianceName": "Baseload_Devices",
 					"householdName": "HH_14_Retired",
 					"tasks": [
 						{
-							"taskName": "WatchTV",
-							"humanActivationChance": 70,
-							"period": 86400,
-							"postponable": true,
-							"duration": 14400,
-							"energyPerTick": 150.0,
-							"taskId": 1401
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 250.0,
+							"taskId": 1400
 						}
 					]
 				},
 				{
-					"applianceName": "Toaster",
+					"applianceName": "Television",
 					"householdName": "HH_14_Retired",
 					"tasks": [
 						{
-							"taskName": "Breakfast",
+							"taskName": "EveningTV",
 							"humanActivationChance": 80,
-							"period": 21600,
-							"postponable": false,
-							"duration": 120,
-							"energyPerTick": 900.0,
-							"taskId": 1402
+							"period": 1440,
+							"postponable": true,
+							"duration": 240,
+							"energyPerTick": 150.0,
+							"taskId": 1401
 						}
 					]
 				}
 			]
 		},
 		{
-			"householdName": "HH_15_Gamer_Apartment",
+			"householdName": "HH_15_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "GamingRig",
-					"householdName": "HH_15_Gamer_Apartment",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_15_Apartment",
 					"tasks": [
 						{
-							"taskName": "GamingSession",
-							"humanActivationChance": 60,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 18000,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 1500
+						}
+					]
+				},
+				{
+					"applianceName": "GamingPC",
+					"householdName": "HH_15_Apartment",
+					"tasks": [
+						{
+							"taskName": "Gaming",
+							"humanActivationChance": 60,
+							"period": 1440,
+							"postponable": false,
+							"duration": 240,
 							"energyPerTick": 500.0,
 							"taskId": 1501
 						}
@@ -422,18 +621,33 @@
 			]
 		},
 		{
-			"householdName": "HH_16_Gamer_Apartment",
+			"householdName": "HH_16_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "GamingRig",
-					"householdName": "HH_16_Gamer_Apartment",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_16_Apartment",
 					"tasks": [
 						{
-							"taskName": "GamingSession",
-							"humanActivationChance": 60,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 18000,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 1600
+						}
+					]
+				},
+				{
+					"applianceName": "GamingPC",
+					"householdName": "HH_16_Apartment",
+					"tasks": [
+						{
+							"taskName": "Gaming",
+							"humanActivationChance": 60,
+							"period": 1440,
+							"postponable": false,
+							"duration": 240,
 							"energyPerTick": 500.0,
 							"taskId": 1601
 						}
@@ -442,18 +656,33 @@
 			]
 		},
 		{
-			"householdName": "HH_17_Studio",
+			"householdName": "HH_17_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "Microwave",
-					"householdName": "HH_17_Studio",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_17_Apartment",
 					"tasks": [
 						{
-							"taskName": "ReheatFood",
-							"humanActivationChance": 90,
-							"period": 43200,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 300,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 1700
+						}
+					]
+				},
+				{
+					"applianceName": "Microwave",
+					"householdName": "HH_17_Apartment",
+					"tasks": [
+						{
+							"taskName": "MealPrep",
+							"humanActivationChance": 90,
+							"period": 720,
+							"postponable": false,
+							"duration": 5,
 							"energyPerTick": 1200.0,
 							"taskId": 1701
 						}
@@ -462,18 +691,33 @@
 			]
 		},
 		{
-			"householdName": "HH_18_Studio",
+			"householdName": "HH_18_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "AirFryer",
-					"householdName": "HH_18_Studio",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_18_Apartment",
 					"tasks": [
 						{
-							"taskName": "CookDinner",
-							"humanActivationChance": 70,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 1200,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 1800
+						}
+					]
+				},
+				{
+					"applianceName": "AirFryer",
+					"householdName": "HH_18_Apartment",
+					"tasks": [
+						{
+							"taskName": "Cooking",
+							"humanActivationChance": 75,
+							"period": 1440,
+							"postponable": false,
+							"duration": 30,
 							"energyPerTick": 1500.0,
 							"taskId": 1801
 						}
@@ -482,18 +726,33 @@
 			]
 		},
 		{
-			"householdName": "HH_19_Efficiency",
+			"householdName": "HH_19_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "Laptop",
-					"householdName": "HH_19_Efficiency",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_19_Apartment",
 					"tasks": [
 						{
-							"taskName": "WorkBrowsing",
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 1900
+						}
+					]
+				},
+				{
+					"applianceName": "Laptop",
+					"householdName": "HH_19_Apartment",
+					"tasks": [
+						{
+							"taskName": "EveningUse",
 							"humanActivationChance": 90,
-							"period": 86400,
+							"period": 1440,
 							"postponable": true,
-							"duration": 10800,
+							"duration": 180,
 							"energyPerTick": 60.0,
 							"taskId": 1901
 						}
@@ -502,18 +761,33 @@
 			]
 		},
 		{
-			"householdName": "HH_20_Efficiency",
+			"householdName": "HH_20_Apartment",
 			"applianceConfigs": [
 				{
-					"applianceName": "LED_Lights",
-					"householdName": "HH_20_Efficiency",
+					"applianceName": "Baseload_Devices",
+					"householdName": "HH_20_Apartment",
 					"tasks": [
 						{
-							"taskName": "EveningLight",
-							"humanActivationChance": 95,
-							"period": 86400,
+							"taskName": "AlwaysOn",
+							"humanActivationChance": 100,
+							"period": 1440,
 							"postponable": false,
-							"duration": 21600,
+							"duration": 1440,
+							"energyPerTick": 150.0,
+							"taskId": 2000
+						}
+					]
+				},
+				{
+					"applianceName": "Lights",
+					"householdName": "HH_20_Apartment",
+					"tasks": [
+						{
+							"taskName": "Evening",
+							"humanActivationChance": 100,
+							"period": 1440,
+							"postponable": false,
+							"duration": 300,
 							"energyPerTick": 10.0,
 							"taskId": 2001
 						}

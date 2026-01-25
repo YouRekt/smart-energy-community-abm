@@ -95,29 +95,42 @@ const batteryConfigSchemaTransformed = batteryConfigSchema.transform((data) => {
 	};
 });
 
-const energySourcesConfigSchema = z.object({
-	agentName: z
-		.string()
-		.min(3, { message: 'Agent name must be at least 3 characters' }),
-	period: z.coerce
-		.number<number>()
-		.int({ message: 'Period must be an integer' })
-		.positive({ message: 'Period must be positive' }),
-	maxOutputPower: z.coerce
-		.number<number>()
-		.positive({ message: 'Max output power must be positive' }),
-	peakTick: z.coerce
-		.number<number>()
-		.int({ message: 'Peak tick must be an integer' })
-		.positive({ message: 'Peak tick must be positive' }),
-	stdDev: z.coerce
-		.number<number>()
-		.positive({ message: 'Standard deviation must be positive' }),
-	variation: z.coerce
-		.number<number>()
-		.gt(0, { message: 'Variation must be greater than 0 %' })
-		.max(100, { message: 'Variation must be at most 100 %' }),
-});
+const energySourcesConfigSchema = z
+	.object({
+		agentName: z
+			.string()
+			.min(3, { message: 'Agent name must be at least 3 characters' }),
+		period: z.coerce
+			.number<number>()
+			.int({ message: 'Period must be an integer' })
+			.positive({ message: 'Period must be positive' }),
+		maxOutputPower: z.coerce
+			.number<number>()
+			.positive({ message: 'Max output power must be positive' }),
+		peakTick: z.coerce
+			.number<number>()
+			.int({ message: 'Peak tick must be an integer' }),
+		stdDev: z.coerce
+			.number<number>()
+			.min(0, { message: 'Standard deviation must be at least 0' }),
+		variation: z.coerce
+			.number<number>()
+			.min(0, { message: 'Variation must be at least 0 %' })
+			.max(100, { message: 'Variation must be at most 100 %' }),
+	})
+	.superRefine((data, ctx) => {
+		if (data.peakTick > data.period) {
+			ctx.addIssue({
+				code: 'too_big',
+				maximum: data.period,
+				origin: 'number',
+				inclusive: true,
+				input: data.peakTick,
+				message: "Peak tick can't be greater than period",
+				path: ['peakTick'],
+			});
+		}
+	});
 
 const energySourcesConfigSchemaTransformed =
 	energySourcesConfigSchema.transform((data) => {

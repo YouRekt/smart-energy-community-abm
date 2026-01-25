@@ -55,11 +55,12 @@ public final class ProcessAllocationRequestResponseBehaviour extends OneShotBeha
 
                             agent.log("Scheduled task " + task.taskName() + " (ID: " + task.taskId() + ") starting at tick " + req.startTick(), LogSeverity.INFO, this);
 
-                            final ACLMessage acknowledgeReply = householdReply.createReply(ACLMessage.INFORM);
-                            agent.send(acknowledgeReply);
                         } else {
                             agent.log("Received confirmation for unknown taskId: " + req.taskId(), LogSeverity.WARN, this);
                         }
+
+                        final ACLMessage acknowledgeReply = householdReply.createReply(ACLMessage.INFORM);
+                        agent.send(acknowledgeReply);
                     }
                 } catch (JsonProcessingException e) {
                     agent.log("Failed to parse allocation response JSON", LogSeverity.ERROR, this);

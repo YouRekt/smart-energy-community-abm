@@ -17,14 +17,14 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatTickToDate } from '@/lib/format-tick';
+import { formatTick } from '@/lib/format-tick';
 import { getTickMultiplier } from '@/lib/utils';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	production: {
-		label: 'Production (kW)',
-		color: 'hsl(47, 100%, 50%)',
+		label: 'Production',
+		color: 'var(--production-chart)',
 	},
 } satisfies ChartConfig;
 
@@ -90,23 +90,20 @@ export function ProductionChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'
-				>
+					className='aspect-auto h-[250px] w-full'>
 					<AreaChart
 						accessibilityLayer
 						data={data.map((point) => ({
 							...point,
 							value: point.value / tickMultiplier,
-						}))}
-					>
+						}))}>
 						<defs>
 							<linearGradient
 								id='fillProduction'
 								x1='0'
 								y1='0'
 								x2='0'
-								y2='1'
-							>
+								y2='1'>
 								<stop
 									offset='5%'
 									stopColor='var(--color-production)'
@@ -124,22 +121,45 @@ export function ProductionChart({
 							dataKey='tick'
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
+							tickMargin={8}
+							minTickGap={32}
 							tickFormatter={(value) =>
-								formatTickToDate(value, tickConfig)
+								formatTick(value, tickConfig)
 							}
 						/>
 						<YAxis
+							label={{
+								value: 'kW',
+								angle: -90,
+								position: 'insideLeft',
+							}}
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
+							tickMargin={8}
 							tickFormatter={(value) => `${value.toFixed(1)}`}
 						/>
-						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartTooltip
+							cursor={false}
+							content={
+								<ChartTooltipContent
+									className='min-w-56'
+									labelFormatter={(_, payload) =>
+										formatTick(
+											payload[0].payload.tick,
+											tickConfig,
+										)
+									}
+									valueFormatter={(value) =>
+										`${(value as number).toFixed(3)} kW`
+									}
+									indicator='dot'
+								/>
+							}
+						/>
 						<Area
 							dataKey='value'
 							name='production'
-							type='monotone'
+							type='step'
 							fill='url(#fillProduction)'
 							stroke='var(--color-production)'
 							animationDuration={100}

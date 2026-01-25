@@ -2,6 +2,11 @@ import * as React from 'react';
 import * as RechartsPrimitive from 'recharts';
 
 import { cn } from '@/lib/utils';
+import type { TooltipProps } from 'recharts';
+import type {
+	NameType,
+	ValueType,
+} from 'recharts/types/component/DefaultTooltipContent';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
@@ -56,8 +61,7 @@ function ChartContainer({
 					"[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border flex aspect-video justify-center text-xs [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
 					className,
 				)}
-				{...props}
-			>
+				{...props}>
 				<ChartStyle id={chartId} config={config} />
 				<RechartsPrimitive.ResponsiveContainer>
 					{children}
@@ -111,6 +115,7 @@ function ChartTooltipContent({
 	hideIndicator = false,
 	label,
 	labelFormatter,
+	valueFormatter,
 	labelClassName,
 	formatter,
 	color,
@@ -123,6 +128,14 @@ function ChartTooltipContent({
 		indicator?: 'line' | 'dot' | 'dashed';
 		nameKey?: string;
 		labelKey?: string;
+	} & {
+		valueFormatter?: (
+			value: NonNullable<
+				NonNullable<
+					TooltipProps<ValueType, NameType>['payload']
+				>[number]['value']
+			>,
+		) => React.ReactNode;
 	}) {
 	const { config } = useChart();
 
@@ -173,8 +186,7 @@ function ChartTooltipContent({
 			className={cn(
 				'border-border/50 bg-background grid min-w-32 items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl',
 				className,
-			)}
-		>
+			)}>
 			{!nestLabel ? tooltipLabel : null}
 			<div className='grid gap-1.5'>
 				{payload
@@ -195,8 +207,7 @@ function ChartTooltipContent({
 								className={cn(
 									'[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5',
 									indicator === 'dot' && 'items-center',
-								)}
-							>
+								)}>
 								{formatter &&
 								item?.value !== undefined &&
 								item.name ? (
@@ -249,8 +260,7 @@ function ChartTooltipContent({
 												nestLabel
 													? 'items-end'
 													: 'items-center',
-											)}
-										>
+											)}>
 											<div className='grid gap-1.5'>
 												{nestLabel
 													? tooltipLabel
@@ -260,11 +270,14 @@ function ChartTooltipContent({
 														item.name}
 												</span>
 											</div>
-											{item.value && (
-												<span className='text-foreground font-mono font-medium tabular-nums'>
-													{item.value.toLocaleString()}
-												</span>
-											)}
+
+											<span className='text-foreground font-mono font-medium tabular-nums'>
+												{valueFormatter
+													? valueFormatter(
+															item.value!,
+														)
+													: item.value!.toLocaleString()}
+											</span>
 										</div>
 									</>
 								)}
@@ -301,8 +314,7 @@ function ChartLegendContent({
 				'flex items-center justify-center gap-4',
 				verticalAlign === 'top' ? 'pb-3' : 'pt-3',
 				className,
-			)}
-		>
+			)}>
 			{payload
 				.filter((item) => item.type !== 'none')
 				.map((item) => {
@@ -318,8 +330,7 @@ function ChartLegendContent({
 							key={item.value}
 							className={cn(
 								'[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3',
-							)}
-						>
+							)}>
 							{itemConfig?.icon && !hideIcon ? (
 								<itemConfig.icon />
 							) : (

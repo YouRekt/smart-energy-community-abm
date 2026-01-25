@@ -20,15 +20,15 @@ public record GreenEnergySourceConfig(
             throw new IllegalArgumentException("maxOutputPower argument is null or negative");
         }
 
-        if (peakTick == null || peakTick <= 0) {
+        if (peakTick == null || peakTick < 0) {
             throw new IllegalArgumentException("peakTick argument is null or negative");
         }
 
-        if (stdDev == null || stdDev <= 0) {
+        if (stdDev == null || stdDev < 0) {
             throw new IllegalArgumentException("stdDev argument is null or negative");
         }
 
-        if (variation == null || variation <= 0 || variation > 1) {
+        if (variation == null || variation < 0 || variation > 1) {
             throw new IllegalArgumentException("variation argument is null or abs() > 1");
         }
 

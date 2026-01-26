@@ -98,14 +98,14 @@ export function RunAnalysisVisualizer({
 					<p className='text-xs text-muted-foreground'>Full Cycles</p>
 					<div className='mt-4 text-sm text-muted-foreground space-y-1'>
 						<div className='flex justify-between'>
-							<span>Efficiency:</span>
+							<span>Charge/Discharge Ratio:</span>
 							<span className='font-semibold'>
-								{data.batteryEfficiency.toFixed(2)}
+								{data.chargeToDischargeRatio.toFixed(2)}
 								{' %'}
 							</span>
 						</div>
 						<div className='flex justify-between'>
-							<span>Loss Ratio:</span>
+							<span>Energy Loss Ratio:</span>
 							<span className='font-semibold'>
 								{data.energyLossRatio.toFixed(2)}
 								{' %'}
@@ -146,16 +146,34 @@ export function RunAnalysisVisualizer({
 					</p>
 					<div className='mt-4 text-sm text-muted-foreground space-y-1'>
 						<div className='flex justify-between'>
-							<span>Fairness:</span>
+							<span>Fairness Index:</span>
 							<span className='font-semibold'>
 								{data.fairnessIndex.toFixed(4)}
 							</span>
 						</div>
 						<div className='flex justify-between'>
-							<span>Acceptance:</span>
+							<span>Task Acceptance Rate:</span>
 							<span className='font-semibold'>
 								{data.taskAcceptanceRate.toFixed(2)}
 								{' %'}
+							</span>
+						</div>
+						<div className='flex justify-between'>
+							<span>Total Tasks Requested:</span>
+							<span className='font-semibold'>
+								{data.totalRequested.toFixed(0)}
+							</span>
+						</div>
+						<div className='flex justify-between'>
+							<span>Total Tasks Accepted:</span>
+							<span className='font-semibold'>
+								{data.totalAccepted.toFixed(0)}
+							</span>
+						</div>
+						<div className='flex justify-between'>
+							<span>Total Tasks Finished:</span>
+							<span className='font-semibold'>
+								{data.totalFinished.toFixed(0)}
 							</span>
 						</div>
 					</div>

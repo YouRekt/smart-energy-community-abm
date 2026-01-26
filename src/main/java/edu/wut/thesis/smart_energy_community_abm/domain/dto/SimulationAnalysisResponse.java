@@ -10,12 +10,15 @@ public record SimulationAnalysisResponse(
         double gridVolatilityCV,
 
         double equivalentFullCycles,
-        double batteryEfficiency,
+        double chargeToDischargeRatio,
         double energyLossRatio,
         double fullRatio,
         double emptyRatio,
 
         double taskCompletionRate,
         double taskAcceptanceRate,
+        double totalRequested,
+        double totalAccepted,
+        double totalFinished,
         double fairnessIndex
 ) {}

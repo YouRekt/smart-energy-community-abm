@@ -63,7 +63,7 @@ public class AnalysisService {
             double batteryCapacity = config.batteryConfig().capacity();
 
             double equivalentFullCycles = safeDiv(totalDischarged, batteryCapacity);
-            double batteryEfficiency = safePercent(totalDischarged, totalCharged);
+            double chargeToDischargeRatio = safePercent(totalCharged, totalDischarged);
             double energyLossRatio = safePercent(totalCurtailed, totalProduced);
 
             // Battery time metrics
@@ -102,12 +102,15 @@ public class AnalysisService {
                     maxGridPeak != null ? maxGridPeak : 0.0,
                     gridVolatilityCV,
                     equivalentFullCycles,
-                    batteryEfficiency,
+                    chargeToDischargeRatio,
                     energyLossRatio,
                     fullRatio,
                     emptyRatio,
                     taskCompletionRate,
                     taskAcceptanceRate,
+                    totalRequested,
+                    totalAccepted,
+                    totalFinished,
                     fairnessIndex
             );
         } catch (JsonProcessingException e) {

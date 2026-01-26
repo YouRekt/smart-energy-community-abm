@@ -37,12 +37,15 @@ export interface SimulationAnalysisResponse {
 	gridVolatilityCV: number;
 
 	equivalentFullCycles: number;
-	batteryEfficiency: number;
+	chargeToDischargeRatio: number;
 	energyLossRatio: number;
 	fullRatio: number;
 	emptyRatio: number;
 
 	taskCompletionRate: number;
 	taskAcceptanceRate: number;
+	totalRequested: number;
+	totalAccepted: number;
+	totalFinished: number;
 	fairnessIndex: number;
 }

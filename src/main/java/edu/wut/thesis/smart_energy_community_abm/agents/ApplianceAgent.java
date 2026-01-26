@@ -164,4 +164,24 @@ public final class ApplianceAgent extends BaseAgent {
         pushMetric(MetricNameHelper.applianceGreenConsumption(householdName, getLocalName()), greenEnergy);
         pushMetric(MetricNameHelper.applianceGridConsumption(householdName, getLocalName()), gridEnergy);
     }
+
+    public void pushTaskRequested() {
+        pushMetric(MetricNameHelper.applianceTaskRequested(householdName, getLocalName()),1);
+    }
+
+    public void pushTaskRefused() {
+        pushMetric(MetricNameHelper.applianceTaskRefused(householdName, getLocalName()),1);
+    }
+
+    public void pushTaskAccepted() {
+        pushMetric(MetricNameHelper.applianceTaskAccepted(householdName, getLocalName()), 1);
+    }
+
+    public void pushTaskPostponed() {
+        pushMetric(MetricNameHelper.applianceTaskPostponed(householdName, getLocalName()), 1);
+    }
+
+    public void pushTaskFinished() {
+        pushMetric(MetricNameHelper.applianceTaskFinished(householdName, getLocalName()), 1);
+    }
 }

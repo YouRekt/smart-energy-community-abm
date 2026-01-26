@@ -1,7 +1,12 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.simulation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.wut.thesis.smart_energy_community_abm.domain.config.CommunityConfig;
 import edu.wut.thesis.smart_energy_community_abm.persistence.SimulationRunRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,12 +18,22 @@ public class SimulationState {
 
     private SimulationRun currentRun;
 
-    public void startNewRun(long randomSeed) {
-        this.currentRun = SimulationRun.builder()
-                .startTime(LocalDateTime.now())
-                .status(SimulationRun.RunStatus.RUNNING)
-                .randomSeed(randomSeed)
-                .build();
+    @Getter
+    @Setter
+    private CommunityConfig currentConfig;
+
+    public void startNewRun() {
+        final ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            currentRun = SimulationRun.builder()
+                    .startTime(LocalDateTime.now())
+                    .status(SimulationRun.RunStatus.RUNNING)
+                    .configJson(mapper.writeValueAsString(currentConfig))
+                    .build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         runRepository.save(this.currentRun);
     }
@@ -40,6 +55,6 @@ public class SimulationState {
     }
 
     public long getCurrentRunRandomSeed() {
-        return currentRun != null ? currentRun.getRandomSeed() : 0;
+        return currentRun != null ? currentConfig.seed() : 0;
     }
 }

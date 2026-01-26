@@ -22,7 +22,8 @@ public class SimulationRun {
     @Enumerated(EnumType.STRING)
     private RunStatus status;
 
-    private Long randomSeed;
+    @Column(columnDefinition = "TEXT")
+    private String configJson;
 
     public enum RunStatus {
         RUNNING,

@@ -97,6 +97,6 @@ class SimulationControllerTest {
                 List.of(house),
                 "Balanced",
                 predictionConfig,
-                0L);
+                0L, null);
     }
 }

@@ -62,6 +62,7 @@ public final class ProcessAllocationRequestResponseBehaviour extends OneShotBeha
 
                     final ACLMessage acknowledgeReply = householdReply.createReply(ACLMessage.INFORM);
                     agent.send(acknowledgeReply);
+                    agent.pushTaskAccepted();
                 } catch (JsonProcessingException e) {
                     agent.log("Failed to parse allocation response JSON", LogSeverity.ERROR, this);
                     throw new RuntimeException(e);
@@ -69,6 +70,7 @@ public final class ProcessAllocationRequestResponseBehaviour extends OneShotBeha
             }
             case ACLMessage.REFUSE -> {
                 agent.log("Household Coordinator refused allocation requests - no tasks scheduled.", LogSeverity.INFO, this);
+                agent.pushTaskRefused();
             }
         }
     }

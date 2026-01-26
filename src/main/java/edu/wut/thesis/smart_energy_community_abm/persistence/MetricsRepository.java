@@ -109,4 +109,39 @@ public interface MetricsRepository extends JpaRepository<Metric, Metric.MetricID
             @Param("minTick") long minTick,
             @Param("limit") int limit
     );
+
+    @Query(value = """
+            SELECT COALESCE(SUM(value), 0)
+            FROM metrics
+            WHERE name LIKE :pattern
+            AND time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Double sumByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT MAX(value)
+            FROM metrics
+            WHERE name LIKE :pattern
+            AND time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Double maxByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT COALESCE(STDDEV(value), 0)
+            FROM metrics
+            WHERE name LIKE :pattern
+            AND time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Double stdDevByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT MAX(timestamp)
+            FROM metrics
+            WHERE time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Long getSimulationLengthInTicks(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

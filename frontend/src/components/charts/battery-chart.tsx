@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatTick } from '@/lib/format-tick';
-import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	charge: {
@@ -32,6 +31,7 @@ interface BatteryChartProps {
 	description?: string;
 	data?: MetricPoint[];
 	isLoading?: boolean;
+	tickMultiplier?: number;
 }
 
 export function BatteryChart({
@@ -39,9 +39,8 @@ export function BatteryChart({
 	description,
 	data,
 	isLoading,
+	tickMultiplier,
 }: BatteryChartProps) {
-	const tickConfig = useSimulationStore((state) => state.tickConfig);
-
 	if (isLoading) {
 		return (
 			<Card>
@@ -58,7 +57,7 @@ export function BatteryChart({
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data || data.length === 0 || !tickMultiplier) {
 		return (
 			<Card>
 				<CardHeader>
@@ -121,7 +120,7 @@ export function BatteryChart({
 							tickMargin={8}
 							minTickGap={32}
 							tickFormatter={(value) =>
-								formatTick(value, tickConfig)
+								formatTick(value, tickMultiplier)
 							}
 						/>
 						<ChartTooltip
@@ -132,7 +131,7 @@ export function BatteryChart({
 									labelFormatter={(_, payload) =>
 										formatTick(
 											payload[0].payload.tick,
-											tickConfig,
+											tickMultiplier,
 										)
 									}
 									valueFormatter={(value) =>

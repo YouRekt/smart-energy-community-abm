@@ -1,4 +1,4 @@
-import { metricsApi } from '@/api/simulation';
+import { analysisApi, metricsApi } from '@/api/simulation';
 import type {
 	MetricPoint,
 	StackedMetric,
@@ -31,7 +31,7 @@ const transformStackedData = (data: StackedMetricResponse): StackedMetric[] => {
 /**
  * Hook for fetching community consumption metrics with optional polling
  */
-export function useCommunityConsumption(limit: number = 100, runId?: number) {
+export function useCommunityConsumption(limit?: number, runId?: number) {
 	const isRunning = useSimulationStore((s) => s.isRunning);
 	const isLive = !runId;
 
@@ -60,7 +60,7 @@ export function useCommunityConsumption(limit: number = 100, runId?: number) {
  */
 export function useHouseholdConsumption(
 	householdName: string,
-	limit: number = 100,
+	limit?: number,
 	runId?: number,
 ) {
 	const isRunning = useSimulationStore((s) => s.isRunning);
@@ -97,7 +97,7 @@ export function useHouseholdConsumption(
 export function useApplianceConsumption(
 	householdName: string,
 	applianceName: string,
-	limit: number = 100,
+	limit?: number,
 	runId?: number,
 ) {
 	const isRunning = useSimulationStore((s) => s.isRunning);
@@ -133,7 +133,7 @@ export function useApplianceConsumption(
 /**
  * Hook for fetching community production metrics with optional polling
  */
-export function useCommunityProduction(limit: number = 100, runId?: number) {
+export function useCommunityProduction(limit?: number, runId?: number) {
 	const isRunning = useSimulationStore((s) => s.isRunning);
 	const isLive = !runId;
 
@@ -154,7 +154,7 @@ export function useCommunityProduction(limit: number = 100, runId?: number) {
 /**
  * Hook for fetching battery charge metrics with optional polling
  */
-export function useBatteryCharge(limit: number = 100, runId?: number) {
+export function useBatteryCharge(limit?: number, runId?: number) {
 	const isRunning = useSimulationStore((s) => s.isRunning);
 	const isLive = !runId;
 
@@ -173,5 +173,17 @@ export function useSimulationRuns() {
 	return useQuery({
 		queryKey: ['metrics', 'runs'],
 		queryFn: metricsApi.getRuns,
+	});
+}
+
+/**
+ * Hook for fetching run analysis
+ */
+export function useRunAnalysis(runId: number) {
+	return useQuery({
+		queryKey: ['analysis', runId],
+		queryFn: () => analysisApi.getRunAnalysis(runId),
+		enabled: !!runId && !isNaN(runId),
+		retry: false,
 	});
 }

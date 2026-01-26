@@ -18,8 +18,6 @@ import {
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatTick } from '@/lib/format-tick';
-import { getTickMultiplier } from '@/lib/utils';
-import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	production: {
@@ -33,6 +31,7 @@ interface ProductionChartProps {
 	description?: string;
 	data?: MetricPoint[];
 	isLoading?: boolean;
+	tickMultiplier?: number;
 }
 
 export function ProductionChart({
@@ -40,11 +39,8 @@ export function ProductionChart({
 	description,
 	data,
 	isLoading,
+	tickMultiplier,
 }: ProductionChartProps) {
-	const tickConfig = useSimulationStore((state) => state.tickConfig);
-
-	const tickMultiplier = getTickMultiplier(tickConfig);
-
 	if (isLoading) {
 		return (
 			<Card>
@@ -61,7 +57,7 @@ export function ProductionChart({
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data || data.length === 0 || !tickMultiplier) {
 		return (
 			<Card>
 				<CardHeader>
@@ -124,7 +120,7 @@ export function ProductionChart({
 							tickMargin={8}
 							minTickGap={32}
 							tickFormatter={(value) =>
-								formatTick(value, tickConfig)
+								formatTick(value, tickMultiplier)
 							}
 						/>
 						<YAxis
@@ -146,7 +142,7 @@ export function ProductionChart({
 									labelFormatter={(_, payload) =>
 										formatTick(
 											payload[0].payload.tick,
-											tickConfig,
+											tickMultiplier,
 										)
 									}
 									valueFormatter={(value) =>

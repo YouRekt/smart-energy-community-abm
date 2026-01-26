@@ -18,8 +18,6 @@ import {
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatTick } from '@/lib/format-tick';
-import { getTickMultiplier } from '@/lib/utils';
-import { useSimulationStore } from '@/store/useSimulationStore';
 
 const chartConfig = {
 	greenEnergy: {
@@ -36,6 +34,7 @@ interface ConsumptionChartProps {
 	title: string;
 	description?: string;
 	data?: StackedMetric[];
+	tickMultiplier?: number;
 	isLoading?: boolean;
 }
 
@@ -43,12 +42,9 @@ export function ConsumptionChart({
 	title,
 	description,
 	data,
+	tickMultiplier,
 	isLoading,
 }: ConsumptionChartProps) {
-	const tickConfig = useSimulationStore((state) => state.tickConfig);
-
-	const tickMultiplier = getTickMultiplier(tickConfig);
-
 	if (isLoading) {
 		return (
 			<Card>
@@ -65,7 +61,7 @@ export function ConsumptionChart({
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data || data.length === 0 || !tickMultiplier) {
 		return (
 			<Card>
 				<CardHeader>
@@ -146,7 +142,7 @@ export function ConsumptionChart({
 							tickMargin={8}
 							minTickGap={32}
 							tickFormatter={(value) =>
-								formatTick(value, tickConfig)
+								formatTick(value, tickMultiplier)
 							}
 						/>
 						<YAxis
@@ -168,7 +164,7 @@ export function ConsumptionChart({
 									labelFormatter={(_, payload) =>
 										formatTick(
 											payload[0].payload.timestamp,
-											tickConfig,
+											tickMultiplier,
 										)
 									}
 									valueFormatter={(value) =>

@@ -21,12 +21,9 @@ public final class SimulationController {
     private final SimulationService jadeService;
     private final SimulationState simulationState;
 
-    private final AtomicBoolean isConfigured = new AtomicBoolean(false);
-    private final AtomicLong randomSeed = new AtomicLong(0L);
-
     @PostMapping("/start")
     public ResponseEntity<ApiResponse> startSimulation() {
-        if (!isConfigured.get()) {
+        if (simulationState.getCurrentConfig() == null) {
             return ResponseEntity.badRequest()
                     .body(new ApiResponse("Error: Configuration missing. Please upload a config before starting."));
         }
@@ -34,7 +31,7 @@ public final class SimulationController {
         // Finish a run if one is already in progress
         simulationState.finishRun();
 
-        simulationState.startNewRun(randomSeed.get());
+        simulationState.startNewRun();
 
         jadeService.startSimulation();
         return ResponseEntity.ok(new ApiResponse("Simulation started", simulationState.getCurrentRunId()));
@@ -58,12 +55,11 @@ public final class SimulationController {
         try {
             jadeService.configureSimulation(communityConfig);
 
-            isConfigured.set(true);
-            randomSeed.set(communityConfig.seed());
+            simulationState.setCurrentConfig(communityConfig);
 
             return ResponseEntity.ok(new ApiResponse("Simulation configured"));
         } catch (Exception e) {
-            isConfigured.set(false);
+            simulationState.setCurrentConfig(null);
             return ResponseEntity.internalServerError().body(new ApiResponse("Configuration failed: " + e.getMessage()));
         }
     }

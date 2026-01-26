@@ -1,5 +1,7 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Central interface for agent configuration in the Smart Energy Community ABM system.
  * <p>
@@ -18,5 +20,6 @@ public interface AgentConfig {
      *
      * @return an {@code AgentParams} instance with the agent's configuration parameters
      */
+    @JsonIgnore
     AgentParams getAgentParams();
 }

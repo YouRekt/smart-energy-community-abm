@@ -12,8 +12,8 @@ public record CommunityConfig(
         List<HouseholdConfig> householdConfigs,
         String strategyName,
         PredictionModelConfig predictionModelConfig,
-        Long seed
-) implements AgentConfig {
+        Long seed,
+        TickConfig tickConfig) implements AgentConfig {
 
     public CommunityConfig {
         if (energySourcesConfigs == null || energySourcesConfigs.isEmpty())

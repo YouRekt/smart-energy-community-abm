@@ -30,6 +30,7 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
             agent.pushConsumedEnergy(usedGreenEnergy, usedGridEnergy);
             if (instance.endTick() == agent.tick) {
                 agent.log("Task " + instance.task().taskName() + " (ID: " + instance.task().taskId() + ") finished at tick " + agent.tick, LogSeverity.INFO, this);
+                agent.pushTaskFinished();
             }
         }
 

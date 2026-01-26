@@ -27,6 +27,9 @@ public final class DoWorkBehaviour extends OneShotBehaviour {
         ApplianceTaskInstance instance = agent.timetable.get(agent.tick);
         if (instance != null) {
             agent.taskSchedule.put(agent.timetable.get(agent.tick).task(), agent.tick);
+
+            agent.resetFrustration();
+
             agent.pushConsumedEnergy(usedGreenEnergy, usedGridEnergy);
             if (instance.endTick() == agent.tick) {
                 agent.log("Task " + instance.task().taskName() + " (ID: " + instance.task().taskId() + ") finished at tick " + agent.tick, LogSeverity.INFO, this);

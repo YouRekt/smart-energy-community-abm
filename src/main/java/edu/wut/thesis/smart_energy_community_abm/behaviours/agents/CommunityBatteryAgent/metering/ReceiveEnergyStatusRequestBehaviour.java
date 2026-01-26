@@ -24,7 +24,7 @@ public final class ReceiveEnergyStatusRequestBehaviour extends BaseMessageHandle
         final ACLMessage reply = msg.createReply(ACLMessage.INFORM);
         reply.setContent(agent.currentCharge.toString());
         agent.pushCurrentCharge();
-        if(agent.currentCharge.equals(agent.maxCapacity)){
+        if (agent.currentCharge.equals(agent.maxCapacity)) {
             agent.pushFull();
         } else if (agent.currentCharge.equals(0.0)) {
             agent.pushEmpty();

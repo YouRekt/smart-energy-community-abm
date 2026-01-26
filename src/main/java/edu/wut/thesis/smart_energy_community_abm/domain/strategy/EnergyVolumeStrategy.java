@@ -1,5 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
+// TODO: Remove this
 public final class EnergyVolumeStrategy implements NegotiationStrategy {
     private static final double GREENSCORE_WEIGHT = 0.50;
     private static final double COOPERATION_WEIGHT = 0.50;
@@ -31,6 +32,16 @@ public final class EnergyVolumeStrategy implements NegotiationStrategy {
     @Override
     public double computeGenericPriority(double greenScore, double cooperationScore) {
         return (greenScore * GREENSCORE_WEIGHT) + (cooperationScore * COOPERATION_WEIGHT);
+    }
+
+    @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
     }
 
     @Override

@@ -190,4 +190,11 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
     public Map<Long, Double> calculateAverageProduction(long startTick, long endTick, LongFunction<Double> loadPerTickProvider) {
         return predictionModel.simulateEnergyBalances(startTick, endTick, loadPerTickProvider);
     }
+
+    public double getAverageProduction() {
+        if (predictionModel instanceof MovingAveragePredictionModel) {
+            return ((MovingAveragePredictionModel) predictionModel).calculateAverageProduction();
+        }
+        return 0.0;
+    }
 }

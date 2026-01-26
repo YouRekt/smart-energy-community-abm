@@ -19,6 +19,13 @@ public final class AdvancePlanningFirstStrategy implements NegotiationStrategy {
     private static final double BATTERY_CRITICAL_THRESHOLD = 0.10;
     private static final double BATTERY_CRITICAL_BUFFER = 30.0;
 
+    private static final double BASE_ALLOWANCE_PERCENT = 0.05; // 5% Base
+    private static final double AGGRESSIVE_SCALAR = 20.0;      // Max 2000% at Score 1.0
+    private static final double EXPONENT = 3.0;
+
+    private static final double PANIC_ALLOWANCE_SCALAR = 2.0; // Max 200%
+    private static final double PANIC_ALLOWANCE_EXPONENT = 2.0;
+
     @Override
     public String getName() {
         return "AdvancePlanningFirst";
@@ -47,6 +54,20 @@ public final class AdvancePlanningFirstStrategy implements NegotiationStrategy {
         return (greenScore * POST_GREENSCORE_WEIGHT)
                 + (cooperationScore * POST_COOPERATION_WEIGHT)
                 + (energyFactor * POST_ENERGY_WEIGHT);
+    }
+
+    @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        double dynamicPercentage = BASE_ALLOWANCE_PERCENT + (AGGRESSIVE_SCALAR * Math.pow(cooperationScore, EXPONENT));
+
+        return averageProduction * dynamicPercentage;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        double dynamicPercentage = PANIC_ALLOWANCE_SCALAR * Math.pow(cooperationScore, PANIC_ALLOWANCE_EXPONENT);
+
+        return averageProduction * dynamicPercentage;
     }
 
     @Override

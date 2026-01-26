@@ -30,6 +30,7 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
         double shortfall = (shortfallRaw != null) ? shortfallRaw : 0.0;
 
         double freedEnergy = 0.0;
+        double currentShortfall = shortfall;
 
         ACLMessage acceptedProposals = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
         ACLMessage rejectedProposals = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
@@ -44,28 +45,39 @@ public final class ProcessPostponeResponsesBehaviour extends OneShotBehaviour {
             ));
 
             for (Map.Entry<AID, Double> entry : candidates) {
-                if (freedEnergy < shortfall) {
-                    freedEnergy += entry.getValue();
-                    acceptedProposals.addReceiver(entry.getKey());
-                    acceptedProposalsCount++;
-                    
-                    agent.rewardPostponement(entry.getKey());
+                AID household = entry.getKey();
+                Double energyFromProposal = entry.getValue();
 
-                    agent.log("Postponing agent " + entry.getKey().getLocalName() +
-                            " (Energy: " + entry.getValue() + ") to address shortfall.", LogSeverity.DEBUG, this);
+                double greenScore = agent.greenScores.getOrDefault(household, 0.0);
+                double coopScore = agent.cooperationScores.getOrDefault(household, 0.5);
+                double avgProduction = agent.runningAvgProduction;
+
+                double gridAllowance = agent.strategy.getPanicGridAllowance(greenScore, coopScore, avgProduction);
+
+                if (currentShortfall > gridAllowance) {
+                    freedEnergy += energyFromProposal;
+                    currentShortfall -= energyFromProposal;
+                    acceptedProposals.addReceiver(household);
+                    acceptedProposalsCount++;
+
+                    agent.rewardPostponement(household);
+
+                    agent.log("Postponing agent " + household.getLocalName() +
+                            " (Energy: " + energyFromProposal + ", Allowance: " + String.format("%.2f", gridAllowance) +
+                            ") to address shortfall.", LogSeverity.DEBUG, this);
                 } else {
-                    rejectedProposals.addReceiver(entry.getKey());
+                    rejectedProposals.addReceiver(household);
                 }
             }
         }
 
-        double remainingShortfall = Math.max(0, shortfall - freedEnergy);
+        double finalRemainingShortfall = Math.max(0, shortfall - freedEnergy);
 
-        if (remainingShortfall > 0) {
-            agent.log("Remaining shortfall after postponements: " + remainingShortfall +
+        if (finalRemainingShortfall > 0) {
+            agent.log("Remaining shortfall after postponements: " + finalRemainingShortfall +
                     " (will drain battery, excess will be pulled from external grid)", LogSeverity.INFO, this);
         } else {
-            agent.log("Panic will be resolved after postponements for tick " + agent.tick +
+            agent.log("Panic resolved (or mitigated) after postponements for tick " + agent.tick +
                     ", sending confirmations to HouseholdCoordinators", LogSeverity.INFO, this);
         }
 

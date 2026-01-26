@@ -12,7 +12,7 @@ public record BatteryConfig(
             throw new IllegalArgumentException("capacity argument cannot be null or less than zero");
         }
 
-        if (startingCharge == null || startingCharge <= 0 || startingCharge > 1.0) {
+        if (startingCharge == null || startingCharge < 0 || startingCharge > 1.0) {
             throw new IllegalArgumentException("minChargeThreshold argument cannot be null or less than zero");
         }
 

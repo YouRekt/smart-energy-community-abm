@@ -17,6 +17,16 @@ public final class NaiveStrategy implements NegotiationStrategy {
     }
 
     @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        return Double.MAX_VALUE;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        return Double.MAX_VALUE;
+    }
+
+    @Override
     public double computeGenericPriority(double greenScore, double cooperationScore) {
         return 0.0;
     }

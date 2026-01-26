@@ -11,9 +11,13 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class BaseAgent extends Agent {
     private final static Logger logger = LoggerFactory.getLogger(BaseAgent.class);
+
+    private final ExecutorService dbExecutor = Executors.newSingleThreadExecutor();
 
     public long tick = 0;
 
@@ -31,13 +35,27 @@ public abstract class BaseAgent extends Agent {
         rand = new Random(simulationState.getCurrentRunRandomSeed());
     }
 
+    @Override
+    protected void takeDown() {
+        if (dbExecutor != null && !dbExecutor.isShutdown()) {
+            dbExecutor.shutdown();
+        }
+        super.takeDown();
+    }
+
     protected void pushMetric(String name, double value) {
-        metricsRepository.save(Metric.builder()
-                .name(name)
-                .value(value)
-                .timestamp(tick)
-                .time(LocalDateTime.now())
-                .build());
+        dbExecutor.submit(() -> {
+            try {
+                metricsRepository.save(Metric.builder()
+                        .name(name)
+                        .value(value)
+                        .timestamp(tick)
+                        .time(LocalDateTime.now())
+                        .build());
+            } catch (Exception e) {
+                log("Failed to push metric: " + e.getMessage(), LogSeverity.ERROR, this);
+            }
+        });
     }
 
     public void log(String message, LogSeverity severity, Object reference) {

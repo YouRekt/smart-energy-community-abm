@@ -27,6 +27,16 @@ public final class GreenScoreFirstStrategy implements NegotiationStrategy {
     }
 
     @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
+    }
+
+    @Override
     public double computeNegotiationPriority(double greenScore, double cooperationScore, long leadTime, long taskDuration) {
         // Timing intentionally ignored - pure fairness focus
         return computeGenericPriority(greenScore, cooperationScore);

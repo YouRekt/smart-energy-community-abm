@@ -23,6 +23,13 @@ public final class BalancedStrategy implements NegotiationStrategy {
     private static final double BATTERY_LOW_BUFFER_MULTIPLIER = 1.5;
     private static final double BATTERY_HIGH_BUFFER_MULTIPLIER = 0.5;
 
+    private static final double BASE_ALLOWANCE_PERCENT = 0.05; // 5% Base
+    private static final double AGGRESSIVE_SCALAR = 20.0;      // Max 2000% at Score 1.0
+    private static final double EXPONENT = 3.0;                // Cubic curve for aggressive ramp-up
+
+    private static final double PANIC_ALLOWANCE_SCALAR = 2.0; // Max 200%
+    private static final double PANIC_ALLOWANCE_EXPONENT = 2.0; // Quadratic
+
     @Override
     public String getName() {
         return "Balanced";
@@ -56,6 +63,20 @@ public final class BalancedStrategy implements NegotiationStrategy {
         return (greenScore * POST_GREENSCORE_WEIGHT)
                 + (cooperationScore * POST_COOPERATION_WEIGHT)
                 + (energyFactor * POST_ENERGY_WEIGHT);
+    }
+
+    @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        double dynamicPercentage = BASE_ALLOWANCE_PERCENT + (AGGRESSIVE_SCALAR * Math.pow(greenScore, EXPONENT));
+
+        return averageProduction * dynamicPercentage;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        double dynamicPercentage = PANIC_ALLOWANCE_SCALAR * Math.pow(greenScore, PANIC_ALLOWANCE_EXPONENT);
+
+        return averageProduction * dynamicPercentage;
     }
 
     @Override

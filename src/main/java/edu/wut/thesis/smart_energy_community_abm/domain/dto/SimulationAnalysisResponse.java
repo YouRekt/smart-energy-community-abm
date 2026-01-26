@@ -7,7 +7,7 @@ public record SimulationAnalysisResponse(
         double selfConsumptionRatio,
 
         double maxGridPeak,
-        double gridVolatility,
+        double gridVolatilityCV,
 
         double equivalentFullCycles,
         double batteryEfficiency,

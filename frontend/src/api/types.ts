@@ -34,7 +34,7 @@ export interface SimulationAnalysisResponse {
 	selfConsumptionRatio: number;
 
 	maxGridPeak: number;
-	gridVolatility: number;
+	gridVolatilityCV: number;
 
 	equivalentFullCycles: number;
 	batteryEfficiency: number;

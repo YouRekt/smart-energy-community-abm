@@ -51,8 +51,10 @@ public class AnalysisService {
             double selfConsumptionRatio = safePercent(greenConsumed, totalProduced);
 
             // Grid metrics
-            Double maxGridPeak = metricsRepository.maxByPattern(COMMUNITY_GRID_CONSUMPTION, start, end);
-            Double gridVolatility = metricsRepository.stdDevByPattern(COMMUNITY_GRID_CONSUMPTION, start, end);
+            Double maxGridPeak = metricsRepository.maxAggregatedByPattern(COMMUNITY_GRID_CONSUMPTION, start, end);
+            Double mean = metricsRepository.avgAggregatedByPattern(COMMUNITY_GRID_CONSUMPTION, start, end);
+            Double stdDev = metricsRepository.stdDevAggregatedByPattern(COMMUNITY_GRID_CONSUMPTION, start, end);
+            double gridVolatilityCV = safeDiv(stdDev != null ? stdDev : 0, mean != null ? mean : 1) * 100;
 
             // Battery metrics
             double totalDischarged = sum(BATTERY_DISCHARGE_AMOUNT, start, end);
@@ -98,7 +100,7 @@ public class AnalysisService {
                     selfSufficiencyRatio,
                     selfConsumptionRatio,
                     maxGridPeak != null ? maxGridPeak : 0.0,
-                    gridVolatility != null ? gridVolatility : 0.0,
+                    gridVolatilityCV,
                     equivalentFullCycles,
                     batteryEfficiency,
                     energyLossRatio,

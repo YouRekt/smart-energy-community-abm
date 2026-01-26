@@ -120,22 +120,37 @@ public interface MetricsRepository extends JpaRepository<Metric, Metric.MetricID
     Double sumByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query(value = """
-            SELECT MAX(value)
-            FROM metrics
-            WHERE name LIKE :pattern
-            AND time >= :start
-            AND time <= :end
+            SELECT MAX(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
             """, nativeQuery = true)
-    Double maxByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    Double maxAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query(value = """
-            SELECT COALESCE(STDDEV(value), 0)
-            FROM metrics
-            WHERE name LIKE :pattern
-            AND time >= :start
-            AND time <= :end
+            SELECT STDDEV(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
             """, nativeQuery = true)
-    Double stdDevByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    Double stdDevAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT AVG(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
+            """, nativeQuery = true)
+    Double avgAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query(value = """
             SELECT MAX(timestamp)

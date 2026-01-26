@@ -74,9 +74,9 @@ export function RunAnalysisVisualizer({
 					</p>
 					<div className='mt-4 text-sm text-muted-foreground'>
 						<div className='flex justify-between'>
-							<span>Volatility:</span>
+							<span>Volatility Variation Coefficient:</span>
 							<span className='font-semibold'>
-								{data.gridVolatility.toFixed(2)}
+								{data.gridVolatilityCV.toFixed(2)}
 								{' %'}
 							</span>
 						</div>
@@ -100,14 +100,28 @@ export function RunAnalysisVisualizer({
 						<div className='flex justify-between'>
 							<span>Efficiency:</span>
 							<span className='font-semibold'>
-								{data.batteryEfficiency}
+								{data.batteryEfficiency.toFixed(2)}
 								{' %'}
 							</span>
 						</div>
 						<div className='flex justify-between'>
 							<span>Loss Ratio:</span>
 							<span className='font-semibold'>
-								{data.energyLossRatio}
+								{data.energyLossRatio.toFixed(2)}
+								{' %'}
+							</span>
+						</div>
+						<div className='flex justify-between'>
+							<span>Battery Full Ratio:</span>
+							<span className='font-semibold'>
+								{data.fullRatio.toFixed(2)}
+								{' %'}
+							</span>
+						</div>
+						<div className='flex justify-between'>
+							<span>Battery Empty Ratio:</span>
+							<span className='font-semibold'>
+								{data.emptyRatio.toFixed(2)}
 								{' %'}
 							</span>
 						</div>

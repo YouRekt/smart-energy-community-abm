@@ -43,7 +43,7 @@ public abstract class BaseAgent extends Agent {
         super.takeDown();
     }
 
-    protected void pushMetric(String name, double value) {
+    protected synchronized void pushMetric(String name, double value) {
         final String n = name;
         final double val = value;
         final long t = tick;

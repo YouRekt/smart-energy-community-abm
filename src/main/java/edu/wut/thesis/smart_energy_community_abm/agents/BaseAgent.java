@@ -44,13 +44,17 @@ public abstract class BaseAgent extends Agent {
     }
 
     protected void pushMetric(String name, double value) {
+        final String n = name;
+        final double val = value;
+        final long t = tick;
+        final LocalDateTime now = LocalDateTime.now();
         dbExecutor.submit(() -> {
             try {
                 metricsRepository.save(Metric.builder()
-                        .name(name)
-                        .value(value)
-                        .timestamp(tick)
-                        .time(LocalDateTime.now())
+                        .name(n)
+                        .value(val)
+                        .timestamp(t)
+                        .time(now)
                         .build());
             } catch (Exception e) {
                 log("Failed to push metric: " + e.getMessage(), LogSeverity.ERROR, this);

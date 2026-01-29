@@ -37,25 +37,23 @@ public abstract class BaseAgent extends Agent {
 
     @Override
     protected void takeDown() {
-        if (dbExecutor != null && !dbExecutor.isShutdown()) {
+        if (!dbExecutor.isShutdown()) {
             dbExecutor.shutdown();
         }
         super.takeDown();
     }
 
     protected synchronized void pushMetric(String name, double value) {
-        final String n = name;
-        final double val = value;
-        final long t = tick;
-        final LocalDateTime now = LocalDateTime.now();
+        final Metric metric = Metric.builder()
+                .name(name)
+                .value(value)
+                .timestamp(tick)
+                .time(LocalDateTime.now())
+                .build();
+
         dbExecutor.submit(() -> {
             try {
-                metricsRepository.save(Metric.builder()
-                        .name(n)
-                        .value(val)
-                        .timestamp(t)
-                        .time(now)
-                        .build());
+                metricsRepository.save(metric);
             } catch (Exception e) {
                 log("Failed to push metric: " + e.getMessage(), LogSeverity.ERROR, this);
             }

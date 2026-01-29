@@ -48,7 +48,7 @@ public final class ProcessEnergyUsageBehaviour extends TimeoutMessageHandlerBeha
                 greenEnergyUsed += green;
                 externalEnergyUsed += external;
 
-                agent.updateGreenEnergyScore(msg.getSender(), green, external);
+                agent.updateGreenScore(msg.getSender(), green);
 
                 incrementReceivedCount();
             } catch (RuntimeException e) {

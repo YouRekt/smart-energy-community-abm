@@ -19,6 +19,8 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
 
     // Scores are normalized 0.0 to 1.0
     public final Map<AID, Double> greenScores = new HashMap<>();
+    private final Map<AID, Double> cumulativeGreenUsage = new HashMap<>();
+    private double maxCommunityUsage = 1.0;
     public final Map<AID, Double> cooperationScores = new HashMap<>();
 
     public final TreeMap<Long, Map<AID, Double>> allocations = new TreeMap<>();
@@ -78,6 +80,8 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         double greenScore = greenScores.getOrDefault(aid, 0.0);
         double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
 
+        double greenPriority = 1.0 - greenScore;
+
         long firstTaskTick = Long.MAX_VALUE;
         long lastTaskTick = Long.MIN_VALUE;
 
@@ -89,21 +93,25 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
         long leadTime = Math.max(0, firstTaskTick - tick);
         long requestDuration = (lastTaskTick - firstTaskTick) + 1;
 
-        return strategy.computeNegotiationPriority(greenScore, cooperationScore, leadTime, requestDuration);
+        return strategy.computeNegotiationPriority(greenPriority, cooperationScore, leadTime, requestDuration);
     }
 
     public Double computePostponementPriority(AID aid, double energyToFree) {
         double greenScore = greenScores.getOrDefault(aid, 0.0);
         double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
 
-        return strategy.computePostponementPriority(greenScore, cooperationScore, energyToFree);
+        double greenPriority = 1.0 - greenScore;
+
+        return strategy.computePostponementPriority(greenPriority, cooperationScore, energyToFree);
     }
 
     public Double computeGenericPriority(AID aid) {
         double greenScore = greenScores.getOrDefault(aid, 0.0);
         double cooperationScore = cooperationScores.getOrDefault(aid, 0.5);
 
-        return strategy.computeGenericPriority(greenScore, cooperationScore);
+        double greenPriority = 1.0 - greenScore;
+
+        return strategy.computeGenericPriority(greenPriority, cooperationScore);
     }
 
     public boolean shouldTriggerPanic(double shortfall, double batteryCharge) {
@@ -142,16 +150,22 @@ public final class CommunityCoordinatorAgent extends BaseAgent {
             allocations.remove(tick);
     }
 
-    public void updateGreenEnergyScore(AID householdId, double greenUsed, double gridUsed) {
-        double total = greenUsed + gridUsed;
-        double ratio = (total > 0) ? (greenUsed / total) : 0.0;
+    public void updateGreenScore(AID householdId, double greenUsed) {
+        double currentUsage = cumulativeGreenUsage.getOrDefault(householdId, 0.0);
+        double newUsage = currentUsage + greenUsed;
+        cumulativeGreenUsage.put(householdId, newUsage);
 
-        double currentScore = greenScores.getOrDefault(householdId, 0.0);
+        if (newUsage > maxCommunityUsage) {
+            maxCommunityUsage = newUsage;
 
-        double alpha = 0.2;
-        double newScore = (1.0 - alpha) * currentScore + (alpha * ratio);
-
-        greenScores.put(householdId, newScore);
+            for (var entry : cumulativeGreenUsage.entrySet()) {
+                double score = entry.getValue() / maxCommunityUsage;
+                greenScores.put(entry.getKey(), score);
+            }
+        } else {
+            double newScore = newUsage / maxCommunityUsage;
+            greenScores.put(householdId, newScore);
+        }
     }
 
     public void updateCooperationScore(AID householdId, boolean accepted) {

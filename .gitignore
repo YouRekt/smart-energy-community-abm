@@ -34,3 +34,12 @@ build/
 
 ### PostgreSQL ###
 pgdata/
+
+### Jade ###
+jade/
+APDescription.txt
+MTPs-Main-Container.txt
+/logs/
+/log_parser.py
+/log_analyzer.py
+/scratches/

@@ -1,4 +1,4 @@
-package edu.wut.thesis.smart_energy_community_abm.domain;
+package edu.wut.thesis.smart_energy_community_abm.domain.timeseries;
 
 import edu.wut.thesis.smart_energy_community_abm.config.TimescaleTable;
 import lombok.*;
@@ -20,13 +20,16 @@ public final class Metric {
     public static final String TIME_COLUMN_NAME = "time";
 
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MetricID implements Serializable {
         private Integer id;
         private LocalDateTime time;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "metrics_seq_gen")
+    @SequenceGenerator(name = "metrics_seq_gen", sequenceName = "metrics_id_seq", allocationSize = 50)
     private Integer id;
 
     @Id

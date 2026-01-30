@@ -10,7 +10,6 @@ public final class EnergyPredictionModelFactory {
         }
 
         return switch (name) {
-            case "Disabled" -> new DisabledPredictionModel();
             default -> createMovingAverageModel(args);
         };
     }

@@ -14,7 +14,7 @@ class AllocationEntryTest {
         long allocationStart = 200;
         long duration = 20;
         // Other fields (energy, requestTimestamp) don't affect this calculation
-        AllocationEntry entry = new AllocationEntry(500.0, 150, allocationStart, duration);
+        AllocationEntry entry = new AllocationEntry(500.0, allocationStart, duration);
 
         // When
         long endTick = entry.allocationEnd();
@@ -30,7 +30,7 @@ class AllocationEntryTest {
         // Given
         long start = 100;
         long duration = 1;
-        AllocationEntry entry = new AllocationEntry(10.0, 90, start, duration);
+        AllocationEntry entry = new AllocationEntry(10.0, start, duration);
 
         // When
         long end = entry.allocationEnd();

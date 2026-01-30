@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 const predictionModelConfigSchema = z.object({
 	name: z
-		.enum(['MovingAverage', 'Disabled'], {
+		.enum(['MovingAverage'], {
 			message: 'Please select a valid prediction model',
 		})
 		.default('MovingAverage'),

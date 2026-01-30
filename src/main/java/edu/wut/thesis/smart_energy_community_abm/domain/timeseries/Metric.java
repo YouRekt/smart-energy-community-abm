@@ -29,7 +29,7 @@ public final class Metric {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "metrics_seq_gen")
-    @SequenceGenerator(name = "metrics_seq_gen", sequenceName = "metrics_id_seq", allocationSize = 50)
+    @SequenceGenerator(name = "metrics_seq_gen", sequenceName = "metrics_id_seq", allocationSize = 1000)
     private Integer id;
 
     @Id

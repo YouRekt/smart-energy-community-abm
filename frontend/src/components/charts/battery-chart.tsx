@@ -17,11 +17,12 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatTick } from '@/lib/format-tick';
 
 const chartConfig = {
 	charge: {
-		label: 'Battery Charge (kWh)',
-		color: 'hsl(210, 100%, 50%)',
+		label: 'Battery Charge',
+		color: 'var(--battery-chart)',
 	},
 } satisfies ChartConfig;
 
@@ -30,6 +31,7 @@ interface BatteryChartProps {
 	description?: string;
 	data?: MetricPoint[];
 	isLoading?: boolean;
+	tickMultiplier?: number;
 }
 
 export function BatteryChart({
@@ -37,6 +39,7 @@ export function BatteryChart({
 	description,
 	data,
 	isLoading,
+	tickMultiplier,
 }: BatteryChartProps) {
 	if (isLoading) {
 		return (
@@ -54,7 +57,7 @@ export function BatteryChart({
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data || data.length === 0 || !tickMultiplier) {
 		return (
 			<Card>
 				<CardHeader>
@@ -72,6 +75,11 @@ export function BatteryChart({
 		);
 	}
 
+	const transformedData = data.map((point) => ({
+		charge: point.value / 3600,
+		tick: point.tick,
+	}));
+
 	return (
 		<Card>
 			<CardHeader>
@@ -83,8 +91,8 @@ export function BatteryChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'>
-					<AreaChart accessibilityLayer data={data}>
+					className='aspect-auto h-[250px] w-full'>
+					<AreaChart accessibilityLayer data={transformedData}>
 						<defs>
 							<linearGradient
 								id='fillCharge'
@@ -109,20 +117,45 @@ export function BatteryChart({
 							dataKey='tick'
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
-							tickFormatter={(value) => `${value}`}
+							tickMargin={8}
+							minTickGap={32}
+							tickFormatter={(value) =>
+								formatTick(value, tickMultiplier)
+							}
+						/>
+						<ChartTooltip
+							cursor={false}
+							content={
+								<ChartTooltipContent
+									className='min-w-56'
+									labelFormatter={(_, payload) =>
+										formatTick(
+											payload[0].payload.tick,
+											tickMultiplier,
+										)
+									}
+									valueFormatter={(value) =>
+										`${(value as number).toFixed(3)} kWh`
+									}
+									indicator='dot'
+								/>
+							}
 						/>
 						<YAxis
+							label={{
+								value: 'kWh',
+								angle: -90,
+								position: 'insideLeft',
+							}}
+							dataKey='charge'
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
+							tickMargin={8}
 							tickFormatter={(value) => `${value.toFixed(1)}`}
 						/>
-						<ChartTooltip content={<ChartTooltipContent />} />
 						<Area
-							dataKey='value'
-							name='charge'
-							type='monotone'
+							dataKey='charge'
+							type='step'
 							fill='url(#fillCharge)'
 							stroke='var(--color-charge)'
 							animationDuration={100}

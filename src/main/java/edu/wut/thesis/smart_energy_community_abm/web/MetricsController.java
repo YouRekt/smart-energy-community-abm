@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper.*;
+
 @RestController
 @RequestMapping("/api/metrics")
 @RequiredArgsConstructor
@@ -40,8 +42,8 @@ public final class MetricsController {
             @RequestParam(required = false, defaultValue = "0") Integer limit
     ) {
         return ResponseEntity.ok(getStackedMetrics(
-                MetricNameHelper.communityGreenConsumption(),
-                MetricNameHelper.communityGridConsumption(),
+                COMMUNITY_GREEN_CONSUMPTION,
+                COMMUNITY_GRID_CONSUMPTION,
                 lastTick, runId, limit, true
         ));
     }
@@ -82,7 +84,7 @@ public final class MetricsController {
             @RequestParam(required = false, defaultValue = "0") Integer limit
     ) {
         return ResponseEntity.ok(getMetrics(
-                MetricNameHelper.communityTotalProduction(),
+                COMMUNITY_PRODUCTION,
                 lastTick, runId, limit, true
         ));
     }

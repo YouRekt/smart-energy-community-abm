@@ -8,7 +8,6 @@ import jade.lang.acl.ACLMessage;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.ALLOCATION_REQUEST;
 import static edu.wut.thesis.smart_energy_community_abm.domain.constants.DataStoreKey.Negotiation.APPLIANCE_CONFIRM_MESSAGES;
 
-// TODO: Remove any logic besides receiving and saving data from messages - applies on all messagehandlers
 public final class CollectApplianceAllocationConfirmationBehaviour extends TimeoutMessageHandlerBehaviour {
     public CollectApplianceAllocationConfirmationBehaviour(BaseAgent agent, String deadlineDataStoreKey) {
         super(agent, deadlineDataStoreKey);

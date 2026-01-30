@@ -15,9 +15,12 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
 
     private double lastKnownBatteryCharge = 0.0;
 
+    private static final double MAX_BATTERY_DISCHARGE_PERCENT = 0.05; // 5%
+
     /**
      * @param batteryCapacity the total capacity of the battery
      * @param minChargeThreshold the percentage (0.0 - 1.0) of battery to keep as emergency reserve
+     * @param productionSafetyFactor the safety factor (0.0 - 1.0) to multiply production by
      * @param windowSize the number of past ticks to consider for the average
      */
     public MovingAveragePredictionModel(double batteryCapacity, double minChargeThreshold, double productionSafetyFactor, int windowSize) {
@@ -45,9 +48,15 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
     @Override
     public double predictAvailableEnergy(long tick) {
         double avgProduction = calculateAverageProduction();
-        double usableBattery = Math.max(0, lastKnownBatteryCharge - (batteryCapacity * minChargeThreshold));
+        double safeProduction = avgProduction * productionSafetyFactor;
 
-        return Math.max(0.0, (avgProduction * productionSafetyFactor) + usableBattery);
+        double reserveLimit = batteryCapacity * minChargeThreshold;
+        double rawAvailableBattery = Math.max(0, lastKnownBatteryCharge - reserveLimit);
+
+        double maxDischarge = batteryCapacity * MAX_BATTERY_DISCHARGE_PERCENT;
+        double usableBattery = Math.min(rawAvailableBattery, maxDischarge);
+
+        return Math.max(0.0, safeProduction + usableBattery);
     }
 
     @Override
@@ -58,6 +67,7 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
         double avgProduction = calculateAverageProduction();
         double safeProduction = avgProduction * productionSafetyFactor;
         double reserveLimit = batteryCapacity * minChargeThreshold;
+        double maxDischarge = batteryCapacity * MAX_BATTERY_DISCHARGE_PERCENT;
 
         // 2. Initialize Simulated Battery with current real state
         double simulatedBattery = this.lastKnownBatteryCharge;
@@ -68,7 +78,10 @@ public final class MovingAveragePredictionModel implements EnergyPredictionModel
             double load = loadPerTickProvider.apply(t);
 
             // B. Calculate Available Energy (Production + Usable Battery)
-            double usableBattery = Math.max(0, simulatedBattery - reserveLimit);
+            // Apply both the reserve limit AND the 5% discharge cap
+            double rawAvailableBattery = Math.max(0, simulatedBattery - reserveLimit);
+            double usableBattery = Math.min(rawAvailableBattery, maxDischarge);
+
             double totalAvailable = safeProduction + usableBattery;
 
             // C. Calculate Balance (The metric for the Coordinator)

@@ -4,6 +4,7 @@ import { client } from './client';
 import type {
 	ApiResponse,
 	MetricPoint,
+	SimulationAnalysisResponse,
 	SimulationRun,
 	StackedMetricResponse,
 } from './types';
@@ -80,4 +81,10 @@ export const metricsApi = {
 		client<MetricPoint[]>(
 			`/metrics/battery/charge${buildSearchParams(params)}`,
 		),
+};
+
+// --- Analysis API ---
+export const analysisApi = {
+	getRunAnalysis: (runId: number) =>
+		client<SimulationAnalysisResponse>(`/runs/${runId}/analysis`),
 };

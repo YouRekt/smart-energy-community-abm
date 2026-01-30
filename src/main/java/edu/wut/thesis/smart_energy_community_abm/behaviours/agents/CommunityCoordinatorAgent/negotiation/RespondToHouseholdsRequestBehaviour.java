@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.wut.thesis.smart_energy_community_abm.agents.CommunityCoordinatorAgent;
+import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -72,8 +73,16 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
             final Map<Long, Double> overloadedTicks = agent.calculateAverageProduction(startTick, endTick, energyPerTick);
             reply.addReceiver(currentHousehold);
 
+            double greenScore = agent.greenScores.getOrDefault(currentHousehold, 0.0);
+            double coopScore = agent.cooperationScores.getOrDefault(currentHousehold, 0.5);
+            double avgProduction = agent.getAverageProduction();
+
+            final double allowedDeficit = agent.strategy.getAllowedGridUsage(greenScore, coopScore, avgProduction);
+
+            agent.log("Allowed deficit: " + allowedDeficit, LogSeverity.DEBUG, this);
+
             if (overloadedTicks.entrySet().stream()
-                    .filter(e -> e.getValue() > 0)
+                    .filter(e -> e.getValue() > allowedDeficit)
                     .filter(e -> request.containsKey(e.getKey()))
                     .toList()
                     .isEmpty()) {
@@ -86,7 +95,7 @@ public final class RespondToHouseholdsRequestBehaviour extends OneShotBehaviour 
 
             final Map<Long, Double> response = new HashMap<>();
             overloadedTicks.entrySet().stream()
-                    .filter(e -> e.getValue() > 0)
+                    .filter(e -> e.getValue() > allowedDeficit)
                     .filter(e -> request.containsKey(e.getKey()))
                     .forEach(e -> response.put(e.getKey(), e.getValue()));
 

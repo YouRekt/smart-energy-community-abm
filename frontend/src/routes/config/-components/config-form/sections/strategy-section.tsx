@@ -29,6 +29,12 @@ const StrategySection = withConfigForm({
 							return <field.SeedInput />;
 						}}
 					/>
+					<form.AppField
+						name='tickConfig'
+						children={(field) => {
+							return <field.TickInput />;
+						}}
+					/>
 				</FieldGroup>
 			</FieldSet>
 		);

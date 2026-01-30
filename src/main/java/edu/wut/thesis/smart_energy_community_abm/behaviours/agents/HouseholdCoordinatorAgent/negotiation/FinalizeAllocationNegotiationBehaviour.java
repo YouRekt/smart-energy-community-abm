@@ -35,7 +35,6 @@ public final class FinalizeAllocationNegotiationBehaviour extends OneShotBehavio
                 for (long t = e.startTick(); t <= e.endTick(); t++) {
                     agent.timetable.computeIfAbsent(t, _ -> new HashMap<>()).put(aid, new AllocationEntry(
                             e.energyPerTick(),
-                            agent.tick,
                             e.startTick(),
                             e.duration()
                     ));

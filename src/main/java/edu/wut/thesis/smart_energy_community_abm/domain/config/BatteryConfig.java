@@ -12,7 +12,7 @@ public record BatteryConfig(
             throw new IllegalArgumentException("capacity argument cannot be null or less than zero");
         }
 
-        if (startingCharge == null || startingCharge <= 0 || startingCharge > 1.0) {
+        if (startingCharge == null || startingCharge < 0 || startingCharge > 1.0) {
             throw new IllegalArgumentException("minChargeThreshold argument cannot be null or less than zero");
         }
 
@@ -25,7 +25,7 @@ public record BatteryConfig(
     public AgentParams getAgentParams() {
         return new AgentParams(CommunityBatteryAgent.class.getSimpleName(), CommunityBatteryAgent.class, new Object[]{
                 capacity,
-                isPercentage ? startingCharge : startingCharge * capacity,
+                isPercentage ? startingCharge * capacity : startingCharge,
         });
     }
 }

@@ -24,6 +24,19 @@ const predictionModelConfigSchema = z.object({
 		.positive({ message: 'Window size must be positive' }),
 });
 
+const tickConfigSchema = z.object({
+	tickUnit: z
+		.enum(['second', 'minute', 'hour', 'day'], {
+			message: 'Please select a valid time unit',
+		})
+		.default('second'),
+	tickAmount: z.coerce
+		.number<number>()
+		.int({ message: 'Tick amount must be an integer' })
+		.positive({ message: 'Tick amount must be positive' })
+		.default(1),
+});
+
 const predictionModelConfigSchemaTransformed =
 	predictionModelConfigSchema.transform((data) => {
 		return {
@@ -73,43 +86,57 @@ const batteryConfigSchema = z
 	});
 
 const batteryConfigSchemaTransformed = batteryConfigSchema.transform((data) => {
-	if (data.isPercentage) {
-		return {
-			...data,
-			startingCharge: data.startingCharge / 100,
-		};
-	}
-	return data;
+	return {
+		...data,
+		capacity: data.capacity * 3600,
+		startingCharge: data.isPercentage
+			? data.startingCharge / 100
+			: data.startingCharge * 3600,
+	};
 });
 
-const energySourcesConfigSchema = z.object({
-	agentName: z
-		.string()
-		.min(3, { message: 'Agent name must be at least 3 characters' }),
-	period: z.coerce
-		.number<number>()
-		.int({ message: 'Period must be an integer' })
-		.positive({ message: 'Period must be positive' }),
-	maxOutputPower: z.coerce
-		.number<number>()
-		.positive({ message: 'Max output power must be positive' }),
-	peakTick: z.coerce
-		.number<number>()
-		.int({ message: 'Peak tick must be an integer' })
-		.positive({ message: 'Peak tick must be positive' }),
-	stdDev: z.coerce
-		.number<number>()
-		.positive({ message: 'Standard deviation must be positive' }),
-	variation: z.coerce
-		.number<number>()
-		.gt(0, { message: 'Variation must be greater than 0 %' })
-		.max(100, { message: 'Variation must be at most 100 %' }),
-});
+const energySourcesConfigSchema = z
+	.object({
+		agentName: z
+			.string()
+			.min(3, { message: 'Agent name must be at least 3 characters' }),
+		period: z.coerce
+			.number<number>()
+			.int({ message: 'Period must be an integer' })
+			.positive({ message: 'Period must be positive' }),
+		maxOutputPower: z.coerce
+			.number<number>()
+			.positive({ message: 'Max output power must be positive' }),
+		peakTick: z.coerce
+			.number<number>()
+			.int({ message: 'Peak tick must be an integer' }),
+		stdDev: z.coerce
+			.number<number>()
+			.min(0, { message: 'Standard deviation must be at least 0' }),
+		variation: z.coerce
+			.number<number>()
+			.min(0, { message: 'Variation must be at least 0 %' })
+			.max(100, { message: 'Variation must be at most 100 %' }),
+	})
+	.superRefine((data, ctx) => {
+		if (data.peakTick > data.period) {
+			ctx.addIssue({
+				code: 'too_big',
+				maximum: data.period,
+				origin: 'number',
+				inclusive: true,
+				input: data.peakTick,
+				message: "Peak tick can't be greater than period",
+				path: ['peakTick'],
+			});
+		}
+	});
 
 const energySourcesConfigSchemaTransformed =
 	energySourcesConfigSchema.transform((data) => {
 		return {
 			...data,
+			maxOutputPower: data.maxOutputPower / 1000,
 			variation: data.variation / 100,
 		};
 	});
@@ -151,6 +178,7 @@ const applianceConfigSchemaTransformed = applianceConfigSchema.transform(
 				return {
 					...task,
 					humanActivationChance: task.humanActivationChance / 100,
+					energyPerTick: task.energyPerTick / 1000,
 				};
 			}),
 		};
@@ -197,12 +225,14 @@ const formSchema = z
 					'EnergyVolume',
 					'GreenScoreFirst',
 					'AdvancePlanningFirst',
+					'Naive',
 				],
 				{
 					message: 'Please select a valid strategy',
 				},
 			)
 			.default('Balanced'),
+		tickConfig: tickConfigSchema,
 		predictionModelConfig: predictionModelConfigSchema,
 		batteryConfig: batteryConfigSchema,
 		energySourcesConfigs: z.array(energySourcesConfigSchema).min(1, {
@@ -261,12 +291,14 @@ const formSchemaTransformed = z
 					'EnergyVolume',
 					'GreenScoreFirst',
 					'AdvancePlanningFirst',
+					'Naive',
 				],
 				{
 					message: 'Please select a valid strategy',
 				},
 			)
 			.default('Balanced'),
+		tickConfig: tickConfigSchema,
 		predictionModelConfig: predictionModelConfigSchemaTransformed,
 		batteryConfig: batteryConfigSchemaTransformed,
 		energySourcesConfigs: z
@@ -315,6 +347,60 @@ const formSchemaTransformed = z
 				});
 			});
 		});
+	})
+	.transform((data) => {
+		let tickMultiplier = 1;
+
+		switch (data.tickConfig.tickUnit) {
+			default:
+			case 'second':
+				tickMultiplier = 1;
+				break;
+			case 'minute':
+				tickMultiplier = 60;
+				break;
+			case 'hour':
+				tickMultiplier = 60 * 60;
+				break;
+			case 'day':
+				tickMultiplier = 60 * 60 * 24;
+				break;
+		}
+
+		const secondsPerTick = data.tickConfig.tickAmount * tickMultiplier;
+
+		return {
+			...data,
+			energySourcesConfigs: data.energySourcesConfigs.map(
+				(energySource) => {
+					return {
+						...energySource,
+						maxOutputPower: Math.round(
+							energySource.maxOutputPower * secondsPerTick,
+						),
+					};
+				},
+			),
+			householdConfigs: data.householdConfigs.map((household) => {
+				return {
+					...household,
+					applianceConfigs: household.applianceConfigs.map(
+						(appliance) => {
+							return {
+								...appliance,
+								tasks: appliance.tasks.map((task) => {
+									return {
+										...task,
+										energyPerTick:
+											task.energyPerTick * secondsPerTick,
+									};
+								}),
+							};
+						},
+					),
+				};
+			}),
+		};
 	});
 
 const defaultValues: z.input<typeof formSchemaTransformed> = {
@@ -326,6 +412,10 @@ const defaultValues: z.input<typeof formSchemaTransformed> = {
 		productionSafetyFactor: 0,
 		windowSize: 0,
 	},
+	tickConfig: {
+		tickUnit: 'second',
+		tickAmount: 1,
+	},
 	batteryConfig: {
 		capacity: 0,
 		startingCharge: 0,
@@ -335,9 +425,8 @@ const defaultValues: z.input<typeof formSchemaTransformed> = {
 	householdConfigs: [],
 };
 
-const strategyDefaultValues: z.input<
-	typeof formSchemaTransformed.shape.strategyName
-> = 'Balanced';
+const strategyDefaultValues: z.input<typeof formSchema.shape.strategyName> =
+	'Balanced';
 
 const predictionModelDefaultValues: z.input<
 	typeof predictionModelConfigSchema
@@ -401,4 +490,5 @@ export {
 	predictionModelConfigSchema,
 	predictionModelDefaultValues,
 	strategyDefaultValues,
+	tickConfigSchema,
 };

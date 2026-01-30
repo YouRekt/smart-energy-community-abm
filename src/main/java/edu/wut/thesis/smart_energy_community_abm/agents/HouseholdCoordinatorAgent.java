@@ -45,7 +45,7 @@ public final class HouseholdCoordinatorAgent extends BaseAgent {
     public double getAllocatedEnergyFor(long tick, AID appliance) {
         return timetable
                 .getOrDefault(tick, Map.of())
-                .getOrDefault(appliance, new AllocationEntry(0.0, 0, 0, 0))
+                .getOrDefault(appliance, new AllocationEntry(0.0, 0, 0))
                 .requestedEnergy();
     }
 

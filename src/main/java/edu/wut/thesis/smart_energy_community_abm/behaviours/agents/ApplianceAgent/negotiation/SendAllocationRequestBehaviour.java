@@ -69,6 +69,7 @@ public final class SendAllocationRequestBehaviour extends OneShotBehaviour {
                 agent.send(reply);
                 agent.log("Sent INFORM with " + requests.size() + " allocation requests", LogSeverity.INFO, this);
                 hasMadeRequest = true;
+                agent.pushTaskRequested();
             } catch (JsonProcessingException e) {
                 agent.log("Failed to serialize EnergyRequests", LogSeverity.ERROR, this);
             }

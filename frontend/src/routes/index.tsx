@@ -11,6 +11,7 @@ import {
 	useCommunityConsumption,
 	useCommunityProduction,
 } from '@/hooks/useMetrics';
+import { getTickMultiplier } from '@/lib/utils';
 import { useSimulationStore } from '@/store/useSimulationStore';
 import { createFileRoute } from '@tanstack/react-router';
 
@@ -25,7 +26,8 @@ const WINDOW_SIZES = [50, 100, 500, 1000] as const;
 
 function Dashboard() {
 	const [windowSize, setWindowSize] = useState<number>(100);
-	const { isRunning, isConfigured, currentRunId } = useSimulationStore();
+	const { isRunning, isConfigured, currentRunId, tickConfig } =
+		useSimulationStore();
 
 	const { data: consumptionData, isLoading: isConsLoading } =
 		useCommunityConsumption(windowSize);
@@ -79,12 +81,14 @@ function Dashboard() {
 					description='Green energy vs grid energy consumption'
 					data={consumptionData}
 					isLoading={isConsLoading}
+					tickMultiplier={getTickMultiplier(tickConfig)}
 				/>
 				<ProductionChart
 					title='Community Production'
 					description='Total energy production from renewable sources'
 					data={productionData}
 					isLoading={isProdLoading}
+					tickMultiplier={getTickMultiplier(tickConfig)}
 				/>
 			</div>
 
@@ -93,6 +97,7 @@ function Dashboard() {
 				description='Community battery storage state'
 				data={batteryData}
 				isLoading={isBattLoading}
+				tickMultiplier={getTickMultiplier(tickConfig)}
 			/>
 		</div>
 	);

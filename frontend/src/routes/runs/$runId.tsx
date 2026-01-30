@@ -5,12 +5,15 @@ import {
 	ConsumptionChart,
 	ProductionChart,
 } from '@/components/charts';
+import { RunAnalysisVisualizer } from '@/components/run-analysis-visualizer';
 import { Button } from '@/components/ui/button';
 import {
 	useBatteryCharge,
 	useCommunityConsumption,
 	useCommunityProduction,
+	useRunAnalysis,
 } from '@/hooks/useMetrics';
+
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 
@@ -21,22 +24,25 @@ export const Route = createFileRoute('/runs/$runId')({
 	component: RunDetailPage,
 });
 
-const WINDOW_SIZES = [50, 100, 500, 1000, 0] as const; // 0 = all data
+const WINDOW_SIZES = [50, 100, 500, 1000, undefined] as const;
 
 function RunDetailPage() {
 	const { runId } = Route.useParams();
 	const numericRunId = parseInt(runId, 10);
-	const [windowSize, setWindowSize] = useState<number>(100);
+	const [windowSize, setWindowSize] = useState<number | undefined>(100);
 
 	// Pass runId to hooks to fetch historical data (no polling)
 	const { data: consumptionData, isLoading: isConsLoading } =
-		useCommunityConsumption(windowSize || 10000, numericRunId);
+		useCommunityConsumption(windowSize, numericRunId);
 	const { data: productionData, isLoading: isProdLoading } =
-		useCommunityProduction(windowSize || 10000, numericRunId);
+		useCommunityProduction(windowSize, numericRunId);
 	const { data: batteryData, isLoading: isBattLoading } = useBatteryCharge(
-		windowSize || 10000,
+		windowSize,
 		numericRunId,
 	);
+	const { data: analysisData, isLoading: isAnalysisLoading } =
+		useRunAnalysis(numericRunId);
+	const tickMultiplier = analysisData?.tickMultiplier;
 
 	return (
 		<div className='space-y-6'>
@@ -68,11 +74,17 @@ function RunDetailPage() {
 							}
 							size='sm'
 							onClick={() => setWindowSize(size)}>
-							{size === 0 ? 'All' : `Last ${size}`}
+							{size === undefined ? 'All' : `Last ${size}`}
 						</Button>
 					))}
 				</div>
 			</div>
+
+			<RunAnalysisVisualizer
+				data={analysisData}
+				isLoading={isAnalysisLoading}
+				tickMultiplier={tickMultiplier}
+			/>
 
 			{/* Charts Grid */}
 			<div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
@@ -81,12 +93,14 @@ function RunDetailPage() {
 					description='Green energy vs grid energy consumption'
 					data={consumptionData}
 					isLoading={isConsLoading}
+					tickMultiplier={tickMultiplier}
 				/>
 				<ProductionChart
 					title='Community Production'
 					description='Total energy production from renewable sources'
 					data={productionData}
 					isLoading={isProdLoading}
+					tickMultiplier={tickMultiplier}
 				/>
 			</div>
 
@@ -96,6 +110,7 @@ function RunDetailPage() {
 				description='Community battery storage state'
 				data={batteryData}
 				isLoading={isBattLoading}
+				tickMultiplier={tickMultiplier}
 			/>
 		</div>
 	);

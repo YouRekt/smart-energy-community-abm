@@ -131,14 +131,21 @@ public final class JadeService implements SimulationService {
         if (mainContainer != null) {
             try {
                 mainContainer.kill();
-                mainContainer = null;
-                logger.info("Agent container successfully killed.");
             } catch (final Exception e) {
-                logger.error("Error stopping the agent container", e);
-                throw new RuntimeException("Error stopping agent the container", e);
+                logger.warn("Error processing container kill (might already be dead): " + e.getMessage());
+            } finally {
+                mainContainer = null;
             }
-        } else {
-            logger.warn("Agent container not found. Nothing to stop.");
         }
+
+        try {
+            Runtime.instance().shutDown();
+        } catch (Exception e) {
+            logger.warn("Error shutting down JADE Runtime: " + e.getMessage());
+        }
+
+        agentCounts.clear();
+
+        logger.info("Simulation stopped, JADE Runtime shutdown, and internal state cleared.");
     }
 }

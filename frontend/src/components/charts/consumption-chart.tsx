@@ -17,15 +17,16 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatTick } from '@/lib/format-tick';
 
 const chartConfig = {
 	greenEnergy: {
-		label: 'Green Energy (kW)',
-		color: 'hsl(142, 76%, 36%)',
+		label: 'Green Energy',
+		color: 'var(--green-energy-chart)',
 	},
 	gridEnergy: {
-		label: 'Grid Energy (kW)',
-		color: 'hsl(0, 84%, 60%)',
+		label: 'Grid Energy',
+		color: 'var(--grid-energy-chart)',
 	},
 } satisfies ChartConfig;
 
@@ -33,6 +34,7 @@ interface ConsumptionChartProps {
 	title: string;
 	description?: string;
 	data?: StackedMetric[];
+	tickMultiplier?: number;
 	isLoading?: boolean;
 }
 
@@ -40,6 +42,7 @@ export function ConsumptionChart({
 	title,
 	description,
 	data,
+	tickMultiplier,
 	isLoading,
 }: ConsumptionChartProps) {
 	if (isLoading) {
@@ -58,7 +61,7 @@ export function ConsumptionChart({
 		);
 	}
 
-	if (!data || data.length === 0) {
+	if (!data || data.length === 0 || !tickMultiplier) {
 		return (
 			<Card>
 				<CardHeader>
@@ -87,8 +90,14 @@ export function ConsumptionChart({
 			<CardContent>
 				<ChartContainer
 					config={chartConfig}
-					className='h-[250px] w-full'>
-					<AreaChart accessibilityLayer data={data}>
+					className='aspect-auto h-[250px] w-full'>
+					<AreaChart
+						accessibilityLayer
+						data={data.map((point) => ({
+							...point,
+							greenEnergy: point.greenEnergy / tickMultiplier,
+							gridEnergy: point.gridEnergy / tickMultiplier,
+						}))}>
 						<defs>
 							<linearGradient
 								id='fillGreen'
@@ -130,19 +139,44 @@ export function ConsumptionChart({
 							dataKey='timestamp'
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
-							tickFormatter={(value) => `${value}`}
+							tickMargin={8}
+							minTickGap={32}
+							tickFormatter={(value) =>
+								formatTick(value, tickMultiplier)
+							}
 						/>
 						<YAxis
+							label={{
+								value: 'kW',
+								angle: -90,
+								position: 'insideLeft',
+							}}
 							tickLine={false}
 							axisLine={false}
-							tickMargin={10}
+							tickMargin={8}
 							tickFormatter={(value) => `${value.toFixed(1)}`}
 						/>
-						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartTooltip
+							cursor={false}
+							content={
+								<ChartTooltipContent
+									className='min-w-56'
+									labelFormatter={(_, payload) =>
+										formatTick(
+											payload[0].payload.timestamp,
+											tickMultiplier,
+										)
+									}
+									valueFormatter={(value) =>
+										`${(value as number).toFixed(3)} kW`
+									}
+									indicator='dot'
+								/>
+							}
+						/>
 						<Area
 							dataKey='gridEnergy'
-							type='monotone'
+							type='step'
 							fill='url(#fillGrid)'
 							stroke='var(--color-gridEnergy)'
 							stackId='a'
@@ -150,7 +184,7 @@ export function ConsumptionChart({
 						/>
 						<Area
 							dataKey='greenEnergy'
-							type='monotone'
+							type='step'
 							fill='url(#fillGreen)'
 							stroke='var(--color-greenEnergy)'
 							stackId='a'

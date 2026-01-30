@@ -34,6 +34,16 @@ public final class EnergyVolumeStrategy implements NegotiationStrategy {
     }
 
     @Override
+    public double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
+    }
+
+    @Override
+    public double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction) {
+        return 0.0;
+    }
+
+    @Override
     public double computeNegotiationPriority(double greenScore, double cooperationScore, long leadTime, long taskDuration) {
         // Boost urgent tasks (low leadTime = high urgency)
         double urgencyBonus = Math.exp(-leadTime / LEAD_TIME_SCALE);

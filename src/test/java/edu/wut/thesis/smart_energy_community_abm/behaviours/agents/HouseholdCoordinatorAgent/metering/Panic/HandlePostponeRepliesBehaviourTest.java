@@ -62,7 +62,7 @@ class HandlePostponeRepliesBehaviourTest {
         // Setup Timetable: Appliance1 has 50.0 energy allocated
         Map<AID, AllocationEntry> tickAllocations = new HashMap<>();
         // AllocationEntry(requestedEnergy, requestTimestamp, allocationStart, duration)
-        AllocationEntry entry1 = new AllocationEntry(50.0, 0L, tick, 1);
+        AllocationEntry entry1 = new AllocationEntry(50.0, tick, 1);
         tickAllocations.put(appliance1, entry1);
 
         spyAgent.timetable.put(tick, tickAllocations);
@@ -92,8 +92,8 @@ class HandlePostponeRepliesBehaviourTest {
 
         // Setup Timetable: App1=10.0, App2=20.0
         Map<AID, AllocationEntry> tickAllocations = new HashMap<>();
-        tickAllocations.put(appliance1, new AllocationEntry(10.0, 0L, tick, 1));
-        tickAllocations.put(appliance2, new AllocationEntry(20.0, 0L, tick, 1));
+        tickAllocations.put(appliance1, new AllocationEntry(10.0, tick, 1));
+        tickAllocations.put(appliance2, new AllocationEntry(20.0, tick, 1));
 
         spyAgent.timetable.put(tick, tickAllocations);
 

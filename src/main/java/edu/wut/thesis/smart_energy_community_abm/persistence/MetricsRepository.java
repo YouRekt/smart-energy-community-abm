@@ -109,4 +109,54 @@ public interface MetricsRepository extends JpaRepository<Metric, Metric.MetricID
             @Param("minTick") long minTick,
             @Param("limit") int limit
     );
+
+    @Query(value = """
+            SELECT COALESCE(SUM(value), 0)
+            FROM metrics
+            WHERE name LIKE :pattern
+            AND time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Double sumByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT MAX(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
+            """, nativeQuery = true)
+    Double maxAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT STDDEV(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
+            """, nativeQuery = true)
+    Double stdDevAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT AVG(total) FROM (
+                SELECT SUM(value) as total
+                FROM metrics
+                WHERE name LIKE :pattern
+                AND time >= :start AND time <= :end
+                GROUP BY timestamp
+            ) as aggregated
+            """, nativeQuery = true)
+    Double avgAggregatedByPattern(@Param("pattern") String pattern, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query(value = """
+            SELECT MAX(timestamp)
+            FROM metrics
+            WHERE time >= :start
+            AND time <= :end
+            """, nativeQuery = true)
+    Long getSimulationLengthInTicks(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

@@ -47,8 +47,8 @@ function WindowSizeInput() {
 				min={0}
 			/>
 			<FieldDescription>
-				Number of past simulation ticks used to calculate the moving
-				average for energy production prediction.
+				Number of past time units used to calculate the moving average
+				for energy production prediction.
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>

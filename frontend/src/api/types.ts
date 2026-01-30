@@ -26,3 +26,26 @@ export interface ApiResponse {
 	message: string;
 	runId?: number | null;
 }
+
+export interface SimulationAnalysisResponse {
+	tickMultiplier: number;
+
+	selfSufficiencyRatio: number;
+	selfConsumptionRatio: number;
+
+	maxGridPeak: number;
+	gridVolatilityCV: number;
+
+	equivalentFullCycles: number;
+	chargeToDischargeRatio: number;
+	energyLossRatio: number;
+	fullRatio: number;
+	emptyRatio: number;
+
+	taskCompletionRate: number;
+	taskAcceptanceRate: number;
+	totalRequested: number;
+	totalAccepted: number;
+	totalFinished: number;
+	fairnessIndex: number;
+}

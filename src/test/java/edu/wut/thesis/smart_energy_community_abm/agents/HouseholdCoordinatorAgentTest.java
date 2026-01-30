@@ -34,7 +34,7 @@ class HouseholdCoordinatorAgentTest {
         // Entry details: Energy 50.0, RequestTime 0, Start 10, Duration 1
         // Note: The code uses `t <= allocationStart()`.
         // If start is 10 and tick is 10, loop runs once (10 <= 10).
-        AllocationEntry entry = new AllocationEntry(50.0, 0L, tick, 1);
+        AllocationEntry entry = new AllocationEntry(50.0, tick, 1);
 
         agent.timetable.get(tick).put(applianceAID, entry);
 
@@ -58,7 +58,7 @@ class HouseholdCoordinatorAgentTest {
         agent.tick = tick;
 
         // If allocationStart is 10, loop runs for t=10.
-        AllocationEntry entry = new AllocationEntry(50.0, 0L, 10L, 1);
+        AllocationEntry entry = new AllocationEntry(50.0, 10L, 1);
         agent.timetable.get(tick).put(applianceAID, entry);
 
         agent.clearCurrentAllocation(applianceAID);

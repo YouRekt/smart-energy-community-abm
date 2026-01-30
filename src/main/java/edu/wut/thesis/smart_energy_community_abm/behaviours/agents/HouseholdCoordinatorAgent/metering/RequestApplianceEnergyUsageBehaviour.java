@@ -24,13 +24,13 @@ public final class RequestApplianceEnergyUsageBehaviour extends OneShotBehaviour
         double availableGreenEnergy = Double.parseDouble(((ACLMessage) getDataStore().get(ENERGY_USAGE_REQUEST_MSG)).getContent());
 
         for (var applianceAgent : agent.healthyAppliances) {
-            // TODO: Sort Appliances based on their priorities - strategies implementation
             double applianceAllocated = agent.getAllocatedEnergyFor(agent.tick, applianceAgent);
             double greenEnergyAllowed = Math.min(availableGreenEnergy, applianceAllocated);
             ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
             msg.setReplyByDate(replyBy);
             msg.addReceiver(applianceAgent);
             msg.setContent(Double.toString(greenEnergyAllowed));
+            availableGreenEnergy -= greenEnergyAllowed;
             agent.send(msg);
         }
         getDataStore().put(REQUEST_REPLY_BY, replyBy);

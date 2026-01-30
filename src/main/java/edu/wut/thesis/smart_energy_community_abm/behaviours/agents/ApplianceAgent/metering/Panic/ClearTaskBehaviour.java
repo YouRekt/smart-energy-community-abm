@@ -21,6 +21,7 @@ public final class ClearTaskBehaviour extends OneShotBehaviour {
         final ACLMessage msg = (ACLMessage) getDataStore().get(ACCEPTED_PROPOSAL);
         ApplianceTaskInstance instance = agent.timetable.get(agent.tick);
         agent.log("Task " + instance.task().taskName() + " (ID: " + instance.task().taskId() + ") interrupted at tick " + agent.tick, LogSeverity.INFO, this);
+        agent.pushTaskPostponed();
         agent.clearCurrentTask();
     }
 }

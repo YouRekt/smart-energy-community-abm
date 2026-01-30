@@ -22,12 +22,25 @@ public final class ProcessEnergyUsageBehaviour extends BaseMessageHandlerBehavio
     @Override
     protected void handleInform(ACLMessage msg) {
         receivedUsage = true;
-        agent.currentCharge -= Double.parseDouble(msg.getContent());
+        final double chargeDelta = Double.parseDouble(msg.getContent());
+
+        if(chargeDelta > 0) {
+            agent.pushDischargeAmount(chargeDelta);
+        } else {
+            agent.pushChargeAmount(-chargeDelta);
+        }
+
+        agent.currentCharge -= chargeDelta;
         Double deficit = 0.0;
         if (agent.currentCharge <= 0) {
             agent.log("Something went wrong, power went below 0 - responding to coordinator that we need to pull from external grid", LogSeverity.ERROR, this);
             deficit = agent.currentCharge;
         }
+
+        if(agent.currentCharge > agent.maxCapacity) {
+            agent.pushCurtailed(agent.currentCharge - agent.maxCapacity);
+        }
+
         agent.currentCharge = Math.clamp(agent.currentCharge, 0, agent.maxCapacity);
         final ACLMessage reply =  msg.createReply(ACLMessage.INFORM);
         reply.setContent(String.valueOf(Math.abs(deficit)));

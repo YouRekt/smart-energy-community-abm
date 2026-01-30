@@ -139,7 +139,9 @@ export function TaskDurationInput() {
 					)
 				}
 			/>
-			<FieldDescription>The duration of the task.</FieldDescription>
+			<FieldDescription>
+				The duration of the task (relative to the configured tick unit).
+			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);
@@ -169,7 +171,7 @@ export function TaskPeriodInput() {
 				}
 			/>
 			<FieldDescription>
-				The period of the task (in ticks).
+				The period of the task (relative to the configured tick unit).
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
@@ -186,7 +188,7 @@ export function TaskEnergyPerTickInput() {
 
 	return (
 		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name}>Energy Per Tick</FieldLabel>
+			<FieldLabel htmlFor={field.name}>Power Draw</FieldLabel>
 			<NumberInput
 				id={field.name}
 				value={field.state.value}
@@ -194,7 +196,7 @@ export function TaskEnergyPerTickInput() {
 				min={0}
 				addon={{
 					align: 'end',
-					content: 'kW',
+					content: 'W',
 				}}
 				onChange={(e) =>
 					field.handleChange(
@@ -204,9 +206,7 @@ export function TaskEnergyPerTickInput() {
 					)
 				}
 			/>
-			<FieldDescription>
-				The energy per tick of the task.
-			</FieldDescription>
+			<FieldDescription>The power draw of the task.</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
 	);

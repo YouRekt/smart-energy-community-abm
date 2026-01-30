@@ -7,16 +7,21 @@ import edu.wut.thesis.smart_energy_community_abm.domain.constants.LogSeverity;
 import edu.wut.thesis.smart_energy_community_abm.domain.messages.TopicHelper;
 import edu.wut.thesis.smart_energy_community_abm.domain.util.MetricNameHelper;
 import jade.core.ServiceException;
+import lombok.Getter;
 
 import java.util.*;
 
 public final class ApplianceAgent extends BaseAgent {
     public final static int MAX_FUTURE_TICKS = 200;
+    public final static int FRUSTRATION_THRESHOLD = 5;
 
     public final Map<ApplianceTask, Long> taskSchedule = new HashMap<>();  // task → lastRunTick
     public final TreeMap<Long, ApplianceTaskInstance> timetable = new TreeMap<>();  // startTick → instance
     private final List<ApplianceTask> tasks = new ArrayList<>();  // from config
+
     private String householdName;
+    @Getter
+    private int frustration = 0;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -54,6 +59,14 @@ public final class ApplianceAgent extends BaseAgent {
         }
 
         addBehaviour(new SimulationTickBehaviour(this));
+    }
+
+    public void incrementFrustration() {
+        this.frustration++;
+    }
+
+    public void resetFrustration() {
+        this.frustration = 0;
     }
 
     public boolean shouldTaskRun(ApplianceTask task, long currentTick) {
@@ -163,5 +176,25 @@ public final class ApplianceAgent extends BaseAgent {
     public void pushConsumedEnergy(double greenEnergy, double gridEnergy) {
         pushMetric(MetricNameHelper.applianceGreenConsumption(householdName, getLocalName()), greenEnergy);
         pushMetric(MetricNameHelper.applianceGridConsumption(householdName, getLocalName()), gridEnergy);
+    }
+
+    public void pushTaskRequested() {
+        pushMetric(MetricNameHelper.applianceTaskRequested(householdName, getLocalName()),1);
+    }
+
+    public void pushTaskRefused() {
+        pushMetric(MetricNameHelper.applianceTaskRefused(householdName, getLocalName()),1);
+    }
+
+    public void pushTaskAccepted() {
+        pushMetric(MetricNameHelper.applianceTaskAccepted(householdName, getLocalName()), 1);
+    }
+
+    public void pushTaskPostponed() {
+        pushMetric(MetricNameHelper.applianceTaskPostponed(householdName, getLocalName()), 1);
+    }
+
+    public void pushTaskFinished() {
+        pushMetric(MetricNameHelper.applianceTaskFinished(householdName, getLocalName()), 1);
     }
 }

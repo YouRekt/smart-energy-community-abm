@@ -6,6 +6,7 @@ import {
 	FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+
 import { useConfigFieldContext } from '@/routes/config/-components/config-form/form-context';
 import { energySourcesConfigSchema } from '@/routes/config/-components/config-form/schema';
 import { z } from 'zod';
@@ -55,7 +56,8 @@ export function EnergySourcePeriodInput() {
 				}
 			/>
 			<FieldDescription>
-				The period of the energy source in ticks.
+				The period of the energy source (relative to the configured tick
+				unit).
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>
@@ -80,7 +82,7 @@ export function EnergySourceMaxOutputPowerInput() {
 				min={0}
 				addon={{
 					align: 'end',
-					content: 'kW',
+					content: 'W',
 				}}
 				onChange={(e) =>
 					field.handleChange(
@@ -121,7 +123,8 @@ export function EnergySourcePeakTickInput() {
 				}
 			/>
 			<FieldDescription>
-				The peak tick of the energy source.
+				The peak time of the energy source in the defined period
+				(relative to the configured tick unit).
 			</FieldDescription>
 			{isInvalid && <FieldError errors={field.state.meta.errors} />}
 		</Field>

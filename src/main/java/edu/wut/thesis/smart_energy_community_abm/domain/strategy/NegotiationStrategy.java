@@ -9,5 +9,9 @@ public interface NegotiationStrategy {
 
     double computeGenericPriority(double greenScore, double cooperationScore);
 
+    double getAllowedGridUsage(double greenScore, double cooperationScore, double averageProduction);
+
+    double getPanicGridAllowance(double greenScore, double cooperationScore, double averageProduction);
+
     boolean shouldTriggerPanic(double shortfall, double batteryCharge, double batteryCapacity);
 }

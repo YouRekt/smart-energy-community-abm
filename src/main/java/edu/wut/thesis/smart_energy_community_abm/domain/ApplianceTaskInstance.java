@@ -10,6 +10,6 @@ public record ApplianceTaskInstance(
     }
 
     public boolean isActiveAt(long tick) {
-        return tick >= startTick && tick < endTick();
+        return tick >= startTick && tick <= endTick();
     }
 }

@@ -49,14 +49,14 @@ class CommunityConfigTest {
                 validHouseholds,
                 "GreenScoreFirst",
                 validPredictionConfig,
-                0L));
+                0L, null));
     }
 
     @Test
     @DisplayName("Should throw if BatteryConfig is null")
     void testBatteryNull() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
-                new CommunityConfig(null, validGreenSources, validHouseholds, "Balanced", validPredictionConfig, 0L)
+                new CommunityConfig(null, validGreenSources, validHouseholds, "Balanced", validPredictionConfig, 0L, null)
         );
         assertTrue(ex.getMessage().contains("batteryConfig"), "Exception should mention batteryConfig");
     }
@@ -66,7 +66,7 @@ class CommunityConfigTest {
     @DisplayName("Should throw if EnergySources list is null or empty")
     void testEnergySourcesInvalid(List<GreenEnergySourceConfig> invalidSources) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
-                new CommunityConfig(validBattery, invalidSources, validHouseholds, "Balanced", validPredictionConfig, 0L)
+                new CommunityConfig(validBattery, invalidSources, validHouseholds, "Balanced", validPredictionConfig, 0L, null)
         );
         assertTrue(ex.getMessage().contains("energySourcesConfigs"), "Exception should mention energySourcesConfigs");
     }
@@ -76,7 +76,7 @@ class CommunityConfigTest {
     @DisplayName("Should throw if HouseholdConfigs list is null or empty")
     void testHouseholdsInvalid(List<HouseholdConfig> invalidHouseholds) {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
-                new CommunityConfig(validBattery, validGreenSources, invalidHouseholds, "Balanced", validPredictionConfig, 0L)
+                new CommunityConfig(validBattery, validGreenSources, invalidHouseholds, "Balanced", validPredictionConfig, 0L, null)
         );
         assertTrue(ex.getMessage().contains("householdConfigs"), "Exception should mention householdConfigs");
     }
@@ -87,7 +87,7 @@ class CommunityConfigTest {
     @DisplayName("Should default Strategy Name to 'Balanced' if missing")
     void testStrategyDefaulting(String missingStrategy) {
         // When
-        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, missingStrategy, validPredictionConfig, 0L);
+        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, missingStrategy, validPredictionConfig, 0L, null);
 
         // Then
         assertEquals("Balanced", config.strategyName(), "Should default to Balanced strategy");
@@ -97,7 +97,7 @@ class CommunityConfigTest {
     @DisplayName("Should handle null PredictionModelConfig by using defaults")
     void testPredictionConfigDefaulting() {
         // When
-        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, "Balanced", null, 0L);
+        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, "Balanced", null, 0L, null);
 
         // Then
         assertNotNull(config.predictionModelConfig(), "Should have created a default prediction config");
@@ -109,7 +109,7 @@ class CommunityConfigTest {
     void testGetAgentParams() {
         // Given
         String strategyName = "AdvancePlanningFirst";
-        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, strategyName, validPredictionConfig, 0L);
+        CommunityConfig config = new CommunityConfig(validBattery, validGreenSources, validHouseholds, strategyName, validPredictionConfig, 0L, null);
 
         // When
         AgentParams params = config.getAgentParams();

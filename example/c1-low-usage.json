@@ -1,0 +1,262 @@
+{
+  "seed": 12345,
+  "tickConfig": {
+    "tickUnit": "minute",
+    "tickAmount": 1
+  },
+  "strategyName": "Balanced",
+  "predictionModelConfig": {
+    "name": "MovingAverage",
+    "minBatteryChargeThreshold": 20,
+    "productionSafetyFactor": 90,
+    "windowSize": 60
+  },
+  "batteryConfig": {
+    "capacity": 20000.0,
+    "startingCharge": 50,
+    "isPercentage": true
+  },
+  "energySourcesConfigs": [
+    {
+      "agentName": "Solar_Farm_South",
+      "period": 1440,
+      "maxOutputPower": 10000.0,
+      "peakTick": 720,
+      "stdDev": 90.0,
+      "variation": 10
+    },
+    {
+      "agentName": "Wind_Turbines_Hill",
+      "period": 1440,
+      "maxOutputPower": 8000.0,
+      "peakTick": 917,
+      "stdDev": 200.0,
+      "variation": 60
+    },
+    {
+      "agentName": "Hydro_Plant_Baseload",
+      "period": 1440,
+      "maxOutputPower": 3000.0,
+      "peakTick": 0,
+      "stdDev": 16666.0,
+      "variation": 2
+    }
+  ],
+  "householdConfigs": [
+    {
+      "householdName": "HH_01_Family",
+      "applianceConfigs": [
+        {
+          "applianceName": "WashingMachine",
+          "householdName": "HH_01_Family",
+          "tasks": [
+            {
+              "taskName": "DailyWash",
+              "humanActivationChance": 0.05,
+              "period": 1440,
+              "postponable": true,
+              "duration": 75,
+              "energyPerTick": 2500.0,
+              "taskId": 101
+            }
+          ]
+        },
+        {
+          "applianceName": "Dishwasher",
+          "householdName": "HH_01_Family",
+          "tasks": [
+            {
+              "taskName": "HeavyCycle",
+              "humanActivationChance": 0.0,
+              "period": 1440,
+              "postponable": true,
+              "duration": 120,
+              "energyPerTick": 1800.0,
+              "taskId": 102
+            }
+          ]
+        },
+        {
+          "applianceName": "HeatPump",
+          "householdName": "HH_01_Family",
+          "tasks": [
+            {
+              "taskName": "Heating",
+              "humanActivationChance": 0.1,
+              "period": 180,
+              "postponable": false,
+              "duration": 45,
+              "energyPerTick": 3800.0,
+              "taskId": 103
+            }
+          ]
+        },
+        {
+          "applianceName": "ElectricShower",
+          "householdName": "HH_01_Family",
+          "tasks": [
+            {
+              "taskName": "HotShower",
+              "humanActivationChance": 0.05,
+              "period": 1440,
+              "postponable": false,
+              "duration": 15,
+              "energyPerTick": 8500.0,
+              "taskId": 104
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_02_Tech_Enthusiast",
+      "applianceConfigs": [
+        {
+          "applianceName": "GamingPC",
+          "householdName": "HH_02_Tech_Enthusiast",
+          "tasks": [
+            {
+              "taskName": "GamingSession",
+              "humanActivationChance": 0.2,
+              "period": 1440,
+              "postponable": true,
+              "duration": 240,
+              "energyPerTick": 850.0,
+              "taskId": 201
+            }
+          ]
+        },
+        {
+          "applianceName": "HomeServer",
+          "householdName": "HH_02_Tech_Enthusiast",
+          "tasks": [
+            {
+              "taskName": "HeavyCompute",
+              "humanActivationChance": 0.0,
+              "period": 720,
+              "postponable": true,
+              "duration": 180,
+              "energyPerTick": 500.0,
+              "taskId": 202
+            }
+          ]
+        },
+        {
+          "applianceName": "EV_Charger",
+          "householdName": "HH_02_Tech_Enthusiast",
+          "tasks": [
+            {
+              "taskName": "Charge_Level2",
+              "humanActivationChance": 0.05,
+              "period": 2880,
+              "postponable": true,
+              "duration": 300,
+              "energyPerTick": 8000.0,
+              "taskId": 203
+            }
+          ]
+        },
+        {
+          "applianceName": "SmartLights",
+          "householdName": "HH_02_Tech_Enthusiast",
+          "tasks": [
+            {
+              "taskName": "EveningAmbience",
+              "humanActivationChance": 0.0,
+              "period": 1440,
+              "postponable": false,
+              "duration": 360,
+              "energyPerTick": 200.0,
+              "taskId": 204
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_03_Retired_Couple",
+      "applianceConfigs": [
+        {
+          "applianceName": "ElectricOven",
+          "householdName": "HH_03_Retired_Couple",
+          "tasks": [
+            {
+              "taskName": "RoastDinner",
+              "humanActivationChance": 0.1,
+              "period": 1440,
+              "postponable": false,
+              "duration": 120,
+              "energyPerTick": 3200.0,
+              "taskId": 301
+            }
+          ]
+        },
+        {
+          "applianceName": "TV_System",
+          "householdName": "HH_03_Retired_Couple",
+          "tasks": [
+            {
+              "taskName": "AllDayTV",
+              "humanActivationChance": 0.2,
+              "period": 1440,
+              "postponable": true,
+              "duration": 240,
+              "energyPerTick": 250.0,
+              "taskId": 302
+            }
+          ]
+        },
+        {
+          "applianceName": "OldSpaceHeater",
+          "householdName": "HH_03_Retired_Couple",
+          "tasks": [
+            {
+              "taskName": "WarmRoom",
+              "humanActivationChance": 0.1,
+              "period": 720,
+              "postponable": true,
+              "duration": 60,
+              "energyPerTick": 2000.0,
+              "taskId": 303
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_04_Minimalist",
+      "applianceConfigs": [
+        {
+          "applianceName": "Laptop_Workstation",
+          "householdName": "HH_04_Minimalist",
+          "tasks": [
+            {
+              "taskName": "Rendering",
+              "humanActivationChance": 0.5,
+              "period": 1440,
+              "postponable": true,
+              "duration": 360,
+              "energyPerTick": 150.0,
+              "taskId": 401
+            }
+          ]
+        },
+        {
+          "applianceName": "Kettle",
+          "householdName": "HH_04_Minimalist",
+          "tasks": [
+            {
+              "taskName": "BoilWater",
+              "humanActivationChance": 1.0,
+              "period": 240,
+              "postponable": false,
+              "duration": 5,
+              "energyPerTick": 2500.0,
+              "taskId": 402
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

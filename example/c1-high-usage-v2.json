@@ -1,0 +1,232 @@
+{
+  "seed": 999,
+  "tickConfig": {
+    "tickUnit": "minute",
+    "tickAmount": 1
+  },
+  "strategyName": "Balanced",
+  "predictionModelConfig": {
+    "name": "MovingAverage",
+    "minBatteryChargeThreshold": 10,
+    "productionSafetyFactor": 80,
+    "windowSize": 30
+  },
+  "batteryConfig": {
+    "capacity": 600.0,
+    "startingCharge": 30,
+    "isPercentage": true
+  },
+  "energySourcesConfigs": [
+    {
+      "agentName": "Solar_Array",
+      "period": 1440,
+      "maxOutputPower": 7500.0,
+      "peakTick": 720,
+      "stdDev": 100.0,
+      "variation": 10
+    },
+    {
+      "agentName": "Wind_Turbine",
+      "period": 1440,
+      "maxOutputPower": 4500.0,
+      "peakTick": 1000,
+      "stdDev": 220.0,
+      "variation": 40
+    },
+    {
+      "agentName": "Hydro_Stream",
+      "period": 1440,
+      "maxOutputPower": 800.0,
+      "peakTick": 0,
+      "stdDev": 20000.0,
+      "variation": 5
+    }
+  ],
+  "householdConfigs": [
+    {
+      "householdName": "HH_01_High_Consumer",
+      "applianceConfigs": [
+        {
+          "applianceName": "Baseload",
+          "householdName": "HH_01_High_Consumer",
+          "tasks": [
+            {
+              "taskName": "AlwaysOn",
+              "humanActivationChance": 100,
+              "period": 1440,
+              "postponable": false,
+              "duration": 1440,
+              "energyPerTick": 400.0,
+              "taskId": 100
+            }
+          ]
+        },
+        {
+          "applianceName": "PowerShower",
+          "householdName": "HH_01_High_Consumer",
+          "tasks": [
+            {
+              "taskName": "HotShower",
+              "humanActivationChance": 80,
+              "period": 1440,
+              "postponable": false,
+              "duration": 20,
+              "energyPerTick": 9500.0,
+              "taskId": 101
+            }
+          ]
+        },
+        {
+          "applianceName": "HeatPump_Large",
+          "householdName": "HH_01_High_Consumer",
+          "tasks": [
+            {
+              "taskName": "HeavyHeating",
+              "humanActivationChance": 90,
+              "period": 180,
+              "postponable": false,
+              "duration": 60,
+              "energyPerTick": 4500.0,
+              "taskId": 102
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_02_EV_Owner",
+      "applianceConfigs": [
+        {
+          "applianceName": "Baseload",
+          "householdName": "HH_02_EV_Owner",
+          "tasks": [
+            {
+              "taskName": "AlwaysOn",
+              "humanActivationChance": 100,
+              "period": 1440,
+              "postponable": false,
+              "duration": 1440,
+              "energyPerTick": 300.0,
+              "taskId": 200
+            }
+          ]
+        },
+        {
+          "applianceName": "Fast_EV_Charger",
+          "householdName": "HH_02_EV_Owner",
+          "tasks": [
+            {
+              "taskName": "Charge_11kW",
+              "humanActivationChance": 95,
+              "period": 1440,
+              "postponable": true,
+              "duration": 240,
+              "energyPerTick": 11000.0,
+              "taskId": 201
+            }
+          ]
+        },
+        {
+          "applianceName": "GamingRig",
+          "householdName": "HH_02_EV_Owner",
+          "tasks": [
+            {
+              "taskName": "GamingSession",
+              "humanActivationChance": 70,
+              "period": 1440,
+              "postponable": true,
+              "duration": 300,
+              "energyPerTick": 800.0,
+              "taskId": 202
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_03_Retired",
+      "applianceConfigs": [
+        {
+          "applianceName": "Baseload",
+          "householdName": "HH_03_Retired",
+          "tasks": [
+            {
+              "taskName": "AlwaysOn",
+              "humanActivationChance": 100,
+              "period": 1440,
+              "postponable": false,
+              "duration": 1440,
+              "energyPerTick": 300.0,
+              "taskId": 300
+            }
+          ]
+        },
+        {
+          "applianceName": "Old_Heater",
+          "householdName": "HH_03_Retired",
+          "tasks": [
+            {
+              "taskName": "WarmHouse",
+              "humanActivationChance": 85,
+              "period": 360,
+              "postponable": true,
+              "duration": 90,
+              "energyPerTick": 2500.0,
+              "taskId": 301
+            }
+          ]
+        },
+        {
+          "applianceName": "Oven",
+          "householdName": "HH_03_Retired",
+          "tasks": [
+            {
+              "taskName": "Roast",
+              "humanActivationChance": 60,
+              "period": 1440,
+              "postponable": false,
+              "duration": 120,
+              "energyPerTick": 3000.0,
+              "taskId": 302
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "householdName": "HH_04_Efficient",
+      "applianceConfigs": [
+        {
+          "applianceName": "Baseload",
+          "householdName": "HH_04_Efficient",
+          "tasks": [
+            {
+              "taskName": "AlwaysOn",
+              "humanActivationChance": 100,
+              "period": 1440,
+              "postponable": false,
+              "duration": 1440,
+              "energyPerTick": 150.0,
+              "taskId": 400
+            }
+          ]
+        },
+        {
+          "applianceName": "Laptop",
+          "householdName": "HH_04_Efficient",
+          "tasks": [
+            {
+              "taskName": "RemoteWork",
+              "humanActivationChance": 90,
+              "period": 1440,
+              "postponable": true,
+              "duration": 480,
+              "energyPerTick": 100.0,
+              "taskId": 401
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

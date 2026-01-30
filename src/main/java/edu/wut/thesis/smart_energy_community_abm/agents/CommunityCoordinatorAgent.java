@@ -10,7 +10,6 @@ import jade.core.AID;
 import java.util.*;
 import java.util.function.LongFunction;
 
-// TODO: Perhaps add more robust logging, that will show when agents are postponing their tasks, negotiating etc.? Just for more data
 public final class CommunityCoordinatorAgent extends BaseAgent {
     public static final int REPLY_BY_DELAY = 200;
     public static final int MAX_NEGOTIATION_RETRIES = 5;

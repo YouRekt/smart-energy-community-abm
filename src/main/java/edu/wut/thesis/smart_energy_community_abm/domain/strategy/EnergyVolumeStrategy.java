@@ -1,6 +1,5 @@
 package edu.wut.thesis.smart_energy_community_abm.domain.strategy;
 
-// TODO: Remove this
 public final class EnergyVolumeStrategy implements NegotiationStrategy {
     private static final double GREENSCORE_WEIGHT = 0.50;
     private static final double COOPERATION_WEIGHT = 0.50;

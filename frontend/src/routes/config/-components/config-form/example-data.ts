@@ -14,34 +14,50 @@ const exampleConfig: typeof defaultValues = {
 		"windowSize": 30
 	},
 	"batteryConfig": {
-		"capacity": 1000.0,
-		"startingCharge": 0,
+		"capacity": 500.0,
+		"startingCharge": 5.0,
 		"isPercentage": true
 	},
 	"energySourcesConfigs": [
 		{
-			"agentName": "Solar_Array",
+			"agentName": "Solar_Main_Array",
 			"period": 1440,
-			"maxOutputPower": 3000.0,
+			"maxOutputPower": 60000.0,
 			"peakTick": 720,
-			"stdDev": 100.0,
+			"stdDev": 200.0,
 			"variation": 10
 		},
 		{
-			"agentName": "Wind_Turbine",
+			"agentName": "Wind_Coastal_Gusts",
 			"period": 1440,
-			"maxOutputPower": 8000.0,
-			"peakTick": 1000,
-			"stdDev": 220.0,
-			"variation": 40
+			"maxOutputPower": 5000.0,
+			"peakTick": 200,
+			"stdDev": 350.0,
+			"variation": 65
 		},
 		{
-			"agentName": "Hydro_Plant",
+			"agentName": "Wind_Hilltop_Breeze",
 			"period": 1440,
-			"maxOutputPower": 12000.0,
+			"maxOutputPower": 4000.0,
+			"peakTick": 1100,
+			"stdDev": 500.0,
+			"variation": 55
+		},
+		{
+			"agentName": "Small_Hydro_Stream",
+			"period": 1440,
+			"maxOutputPower": 3000.0,
 			"peakTick": 0,
-			"stdDev": 20000.0,
+			"stdDev": 500.0,
 			"variation": 5
+		},
+		{
+			"agentName": "Biomass_Burner",
+			"period": 1440,
+			"maxOutputPower": 1200.0,
+			"peakTick": 0,
+			"stdDev": 200.0,
+			"variation": 25
 		}
 	],
 	"householdConfigs": [
@@ -49,90 +65,18 @@ const exampleConfig: typeof defaultValues = {
 			"householdName": "HH_01_Chaos_Family",
 			"applianceConfigs": [
 				{
-					"applianceName": "Kitchen_Gadgets",
+					"applianceName": "Kitchen_Main",
 					"householdName": "HH_01_Chaos_Family",
 					"tasks": [
-						{
-							"taskName": "BoilKettle",
-							"humanActivationChance": 0.25,
-							"period": 60,
-							"postponable": true,
-							"duration": 15,
-							"energyPerTick": 2400.0,
-							"taskId": 101
-						},
-						{
-							"taskName": "MicrowaveSnack",
-							"humanActivationChance": 0.15,
-							"period": 120,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 1400.0,
-							"taskId": 102
-						},
-						{
-							"taskName": "CoffeeBreak",
-							"humanActivationChance": 0.2,
-							"period": 180,
-							"postponable": true,
-							"duration": 15,
-							"energyPerTick": 1000.0,
-							"taskId": 103
-						}
+						{ "taskName": "BoilKettle", "humanActivationChance": 0.3, "period": 60, "postponable": true, "duration": 10, "energyPerTick": 2400.0, "taskId": 101 },
+						{ "taskName": "OvenRoast", "humanActivationChance": 0.05, "period": 1440, "postponable": true, "duration": 120, "energyPerTick": 3000.0, "taskId": 102 }
 					]
 				},
 				{
-					"applianceName": "Cleaning_Appliances",
+					"applianceName": "Washing",
 					"householdName": "HH_01_Chaos_Family",
 					"tasks": [
-						{
-							"taskName": "VacuumHouse",
-							"humanActivationChance": 0.05,
-							"period": 360,
-							"postponable": true,
-							"duration": 30,
-							"energyPerTick": 1600.0,
-							"taskId": 104
-						},
-						{
-							"taskName": "Ironing",
-							"humanActivationChance": 0.05,
-							"period": 720,
-							"postponable": true,
-							"duration": 45,
-							"energyPerTick": 2000.0,
-							"taskId": 105
-						}
-					]
-				},
-				{
-					"applianceName": "PowerShower",
-					"householdName": "HH_01_Chaos_Family",
-					"tasks": [
-						{
-							"taskName": "HotShower",
-							"humanActivationChance": 0.8,
-							"period": 1440,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 9500.0,
-							"taskId": 106
-						}
-					]
-				},
-				{
-					"applianceName": "HeatPump",
-					"householdName": "HH_01_Chaos_Family",
-					"tasks": [
-						{
-							"taskName": "HeavyHeating",
-							"humanActivationChance": 0.9,
-							"period": 180,
-							"postponable": false,
-							"duration": 60,
-							"energyPerTick": 4500.0,
-							"taskId": 107
-						}
+						{ "taskName": "HeavyWash", "humanActivationChance": 0.4, "period": 1440, "postponable": true, "duration": 90, "energyPerTick": 2100.0, "taskId": 103 }
 					]
 				}
 			]
@@ -141,178 +85,301 @@ const exampleConfig: typeof defaultValues = {
 			"householdName": "HH_02_Tech_Users",
 			"applianceConfigs": [
 				{
-					"applianceName": "Entertainment_Center",
+					"applianceName": "EV_Station",
 					"householdName": "HH_02_Tech_Users",
 					"tasks": [
-						{
-							"taskName": "QuickGaming",
-							"humanActivationChance": 0.3,
-							"period": 180,
-							"postponable": true,
-							"duration": 45,
-							"energyPerTick": 600.0,
-							"taskId": 201
-						},
-						{
-							"taskName": "SoundSystem",
-							"humanActivationChance": 0.4,
-							"period": 120,
-							"postponable": false,
-							"duration": 60,
-							"energyPerTick": 300.0,
-							"taskId": 202
-						}
+						{ "taskName": "CarCharge", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 180, "energyPerTick": 7200.0, "taskId": 201 }
 					]
 				},
 				{
-					"applianceName": "Bathroom_Gadgets",
+					"applianceName": "Server_Rack",
 					"householdName": "HH_02_Tech_Users",
 					"tasks": [
-						{
-							"taskName": "HairDryer",
-							"humanActivationChance": 0.1,
-							"period": 720,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 1800.0,
-							"taskId": 203
-						}
-					]
-				},
-				{
-					"applianceName": "Fast_EV_Charger",
-					"householdName": "HH_02_Tech_Users",
-					"tasks": [
-						{
-							"taskName": "Charge_11kW",
-							"humanActivationChance": 0.95,
-							"period": 1440,
-							"postponable": true,
-							"duration": 240,
-							"energyPerTick": 11000.0,
-							"taskId": 204
-						}
+						{ "taskName": "DataProcessing", "humanActivationChance": 0.1, "period": 240, "postponable": false, "duration": 240, "energyPerTick": 800.0, "taskId": 202 }
 					]
 				}
 			]
 		},
 		{
-			"householdName": "HH_03_Active_Retired",
+			"householdName": "HH_03_Retired_Couple",
 			"applianceConfigs": [
 				{
-					"applianceName": "Kitchen_Small",
-					"householdName": "HH_03_Active_Retired",
+					"applianceName": "Heating_Old",
+					"householdName": "HH_03_Retired_Couple",
 					"tasks": [
-						{
-							"taskName": "ToasterBreakfast",
-							"humanActivationChance": 0.8,
-							"period": 720,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 1200.0,
-							"taskId": 301
-						},
-						{
-							"taskName": "TeaTime",
-							"humanActivationChance": 0.4,
-							"period": 240,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 2400.0,
-							"taskId": 302
-						}
+						{ "taskName": "KeepWarm", "humanActivationChance": 0.8, "period": 180, "postponable": false, "duration": 60, "energyPerTick": 2500.0, "taskId": 301 }
 					]
 				},
 				{
-					"applianceName": "Laundry",
-					"householdName": "HH_03_Active_Retired",
+					"applianceName": "TV_Set",
+					"householdName": "HH_03_Retired_Couple",
 					"tasks": [
-						{
-							"taskName": "QuickWash",
-							"humanActivationChance": 0.2,
-							"period": 1440,
-							"postponable": true,
-							"duration": 45,
-							"energyPerTick": 2200.0,
-							"taskId": 303
-						},
-						{
-							"taskName": "TumbleDry",
-							"humanActivationChance": 0.2,
-							"period": 1440,
-							"postponable": true,
-							"duration": 60,
-							"energyPerTick": 2800.0,
-							"taskId": 304
-						}
-					]
-				},
-				{
-					"applianceName": "Old_Heater",
-					"householdName": "HH_03_Active_Retired",
-					"tasks": [
-						{
-							"taskName": "WarmHouse",
-							"humanActivationChance": 0.85,
-							"period": 360,
-							"postponable": true,
-							"duration": 90,
-							"energyPerTick": 2500.0,
-							"taskId": 305
-						}
+						{ "taskName": "EveningNews", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 120, "energyPerTick": 200.0, "taskId": 302 }
 					]
 				}
 			]
 		},
 		{
-			"householdName": "HH_04_Busy_Professional",
+			"householdName": "HH_04_Remote_Worker",
 			"applianceConfigs": [
 				{
 					"applianceName": "Home_Office",
-					"householdName": "HH_04_Busy_Professional",
+					"householdName": "HH_04_Remote_Worker",
 					"tasks": [
-						{
-							"taskName": "Printer",
-							"humanActivationChance": 0.1,
-							"period": 60,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 600.0,
-							"taskId": 401
-						},
-						{
-							"taskName": "WorkLaptop",
-							"humanActivationChance": 0.9,
-							"period": 1440,
-							"postponable": true,
-							"duration": 120,
-							"energyPerTick": 100.0,
-							"taskId": 402
-						}
+						{ "taskName": "Workstation", "humanActivationChance": 0.95, "period": 1440, "postponable": false, "duration": 480, "energyPerTick": 350.0, "taskId": 401 },
+						{ "taskName": "CoffeeMaker", "humanActivationChance": 0.5, "period": 120, "postponable": false, "duration": 15, "energyPerTick": 1200.0, "taskId": 402 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_05_Large_Family",
+			"applianceConfigs": [
+				{
+					"applianceName": "Dishwasher",
+					"householdName": "HH_05_Large_Family",
+					"tasks": [
+						{ "taskName": "DailyClean", "humanActivationChance": 0.8, "period": 1440, "postponable": true, "duration": 120, "energyPerTick": 1800.0, "taskId": 501 }
 					]
 				},
 				{
-					"applianceName": "Kitchen_Express",
-					"householdName": "HH_04_Busy_Professional",
+					"applianceName": "Laundry_Room",
+					"householdName": "HH_05_Large_Family",
 					"tasks": [
-						{
-							"taskName": "BlenderSmoothie",
-							"humanActivationChance": 0.5,
-							"period": 1440,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 800.0,
-							"taskId": 403
-						},
-						{
-							"taskName": "CoffeeToGo",
-							"humanActivationChance": 0.8,
-							"period": 720,
-							"postponable": false,
-							"duration": 15,
-							"energyPerTick": 1200.0,
-							"taskId": 404
-						}
+						{ "taskName": "WashCycle", "humanActivationChance": 0.7, "period": 1440, "postponable": true, "duration": 60, "energyPerTick": 2000.0, "taskId": 502 },
+						{ "taskName": "DryerCycle", "humanActivationChance": 0.7, "period": 1440, "postponable": true, "duration": 60, "energyPerTick": 3000.0, "taskId": 503 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_06_Gamer_Den",
+			"applianceConfigs": [
+				{
+					"applianceName": "Gaming_Rig",
+					"householdName": "HH_06_Gamer_Den",
+					"tasks": [
+						{ "taskName": "HardcoreGaming", "humanActivationChance": 0.6, "period": 1440, "postponable": true, "duration": 300, "energyPerTick": 850.0, "taskId": 601 }
+					]
+				},
+				{
+					"applianceName": "MiniFridge",
+					"householdName": "HH_06_Gamer_Den",
+					"tasks": [
+						{ "taskName": "Cooling", "humanActivationChance": 0.2, "period": 60, "postponable": false, "duration": 30, "energyPerTick": 150.0, "taskId": 602 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_07_Eco_Conscious",
+			"applianceConfigs": [
+				{
+					"applianceName": "Efficient_Washer",
+					"householdName": "HH_07_Eco_Conscious",
+					"tasks": [
+						{ "taskName": "EcoWash", "humanActivationChance": 0.3, "period": 2880, "postponable": true, "duration": 180, "energyPerTick": 800.0, "taskId": 701 }
+					]
+				},
+				{
+					"applianceName": "Induction_Stove",
+					"householdName": "HH_07_Eco_Conscious",
+					"tasks": [
+						{ "taskName": "QuickMeal", "humanActivationChance": 0.6, "period": 720, "postponable": false, "duration": 20, "energyPerTick": 2000.0, "taskId": 702 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_08_Baker",
+			"applianceConfigs": [
+				{
+					"applianceName": "Pro_Oven",
+					"householdName": "HH_08_Baker",
+					"tasks": [
+						{ "taskName": "BreadBaking", "humanActivationChance": 0.4, "period": 1440, "postponable": true, "duration": 180, "energyPerTick": 3500.0, "taskId": 801 },
+						{ "taskName": "CakeBaking", "humanActivationChance": 0.2, "period": 2880, "postponable": true, "duration": 60, "energyPerTick": 3200.0, "taskId": 802 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_09_Night_Owl",
+			"applianceConfigs": [
+				{
+					"applianceName": "Night_Entertainment",
+					"householdName": "HH_09_Night_Owl",
+					"tasks": [
+						{ "taskName": "LateTV", "humanActivationChance": 0.9, "period": 1440, "postponable": false, "duration": 240, "energyPerTick": 300.0, "taskId": 901 }
+					]
+				},
+				{
+					"applianceName": "Microwave",
+					"householdName": "HH_09_Night_Owl",
+					"tasks": [
+						{ "taskName": "MidnightSnack", "humanActivationChance": 0.5, "period": 1440, "postponable": false, "duration": 5, "energyPerTick": 1400.0, "taskId": 902 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_10_EV_Commuter",
+			"applianceConfigs": [
+				{
+					"applianceName": "Wallbox",
+					"householdName": "HH_10_EV_Commuter",
+					"tasks": [
+						{ "taskName": "FastCharge", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 240, "energyPerTick": 11000.0, "taskId": 1001 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_11_Student_Flat",
+			"applianceConfigs": [
+				{
+					"applianceName": "Shared_Kitchen",
+					"householdName": "HH_11_Student_Flat",
+					"tasks": [
+						{ "taskName": "Toaster", "humanActivationChance": 0.6, "period": 360, "postponable": false, "duration": 5, "energyPerTick": 900.0, "taskId": 1101 },
+						{ "taskName": "Kettle", "humanActivationChance": 0.7, "period": 180, "postponable": false, "duration": 5, "energyPerTick": 2000.0, "taskId": 1102 }
+					]
+				},
+				{
+					"applianceName": "Laptops",
+					"householdName": "HH_11_Student_Flat",
+					"tasks": [
+						{ "taskName": "StudyGroup", "humanActivationChance": 0.5, "period": 1440, "postponable": true, "duration": 300, "energyPerTick": 400.0, "taskId": 1103 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_12_Crypto_Miner",
+			"applianceConfigs": [
+				{
+					"applianceName": "Mining_Rig",
+					"householdName": "HH_12_Crypto_Miner",
+					"tasks": [
+						{ "taskName": "Hashing", "humanActivationChance": 1.0, "period": 1440, "postponable": true, "duration": 1430, "energyPerTick": 1500.0, "taskId": 1201 }
+					]
+				},
+				{
+					"applianceName": "AC_Unit",
+					"householdName": "HH_12_Crypto_Miner",
+					"tasks": [
+						{ "taskName": "Cooling", "humanActivationChance": 0.8, "period": 60, "postponable": false, "duration": 30, "energyPerTick": 2000.0, "taskId": 1202 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_13_Gardener",
+			"applianceConfigs": [
+				{
+					"applianceName": "Greenhouse",
+					"householdName": "HH_13_Gardener",
+					"tasks": [
+						{ "taskName": "GrowLights", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 720, "energyPerTick": 600.0, "taskId": 1301 },
+						{ "taskName": "WaterPump", "humanActivationChance": 0.5, "period": 360, "postponable": false, "duration": 15, "energyPerTick": 800.0, "taskId": 1302 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_14_Minimalist",
+			"applianceConfigs": [
+				{
+					"applianceName": "Basic_Needs",
+					"householdName": "HH_14_Minimalist",
+					"tasks": [
+						{ "taskName": "PhoneCharge", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 120, "energyPerTick": 20.0, "taskId": 1401 },
+						{ "taskName": "LED_Lights", "humanActivationChance": 0.8, "period": 1440, "postponable": false, "duration": 300, "energyPerTick": 50.0, "taskId": 1402 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_15_Workshop",
+			"applianceConfigs": [
+				{
+					"applianceName": "Power_Tools",
+					"householdName": "HH_15_Workshop",
+					"tasks": [
+						{ "taskName": "TableSaw", "humanActivationChance": 0.1, "period": 1440, "postponable": true, "duration": 30, "energyPerTick": 2500.0, "taskId": 1501 },
+						{ "taskName": "DustCollector", "humanActivationChance": 0.1, "period": 1440, "postponable": true, "duration": 30, "energyPerTick": 1000.0, "taskId": 1502 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_16_Sauna_Fan",
+			"applianceConfigs": [
+				{
+					"applianceName": "Home_Sauna",
+					"householdName": "HH_16_Sauna_Fan",
+					"tasks": [
+						{ "taskName": "HeatUp", "humanActivationChance": 0.2, "period": 2880, "postponable": true, "duration": 60, "energyPerTick": 6000.0, "taskId": 1601 },
+						{ "taskName": "MaintainHeat", "humanActivationChance": 0.2, "period": 2880, "postponable": false, "duration": 30, "energyPerTick": 3000.0, "taskId": 1602 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_17_Aquarium",
+			"applianceConfigs": [
+				{
+					"applianceName": "Fish_Tank",
+					"householdName": "HH_17_Aquarium",
+					"tasks": [
+						{ "taskName": "FilterPump", "humanActivationChance": 1.0, "period": 60, "postponable": false, "duration": 60, "energyPerTick": 100.0, "taskId": 1701 },
+						{ "taskName": "Heater", "humanActivationChance": 0.5, "period": 60, "postponable": false, "duration": 20, "energyPerTick": 500.0, "taskId": 1702 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_18_Musician",
+			"applianceConfigs": [
+				{
+					"applianceName": "Studio_Gear",
+					"householdName": "HH_18_Musician",
+					"tasks": [
+						{ "taskName": "AmpsAndPedals", "humanActivationChance": 0.3, "period": 1440, "postponable": true, "duration": 120, "energyPerTick": 600.0, "taskId": 1801 },
+						{ "taskName": "RecordingPC", "humanActivationChance": 0.3, "period": 1440, "postponable": true, "duration": 180, "energyPerTick": 400.0, "taskId": 1802 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_19_Pool_Owner",
+			"applianceConfigs": [
+				{
+					"applianceName": "Pool_Pump",
+					"householdName": "HH_19_Pool_Owner",
+					"tasks": [
+						{ "taskName": "Filtration", "humanActivationChance": 0.9, "period": 1440, "postponable": true, "duration": 480, "energyPerTick": 1500.0, "taskId": 1901 }
+					]
+				},
+				{
+					"applianceName": "Heat_Pump",
+					"householdName": "HH_19_Pool_Owner",
+					"tasks": [
+						{ "taskName": "PoolHeating", "humanActivationChance": 0.1, "period": 1440, "postponable": true, "duration": 240, "energyPerTick": 4000.0, "taskId": 1902 }
+					]
+				}
+			]
+		},
+		{
+			"householdName": "HH_20_Average_Joe",
+			"applianceConfigs": [
+				{
+					"applianceName": "General_Appliances",
+					"householdName": "HH_20_Average_Joe",
+					"tasks": [
+						{ "taskName": "Vacuum", "humanActivationChance": 0.1, "period": 10080, "postponable": true, "duration": 30, "energyPerTick": 1400.0, "taskId": 2001 },
+						{ "taskName": "Ironing", "humanActivationChance": 0.1, "period": 10080, "postponable": true, "duration": 45, "energyPerTick": 1800.0, "taskId": 2002 },
+						{ "taskName": "TV", "humanActivationChance": 0.7, "period": 1440, "postponable": true, "duration": 180, "energyPerTick": 150.0, "taskId": 2003 }
 					]
 				}
 			]

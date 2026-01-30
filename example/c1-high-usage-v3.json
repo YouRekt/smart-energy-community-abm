@@ -12,8 +12,8 @@
     "windowSize": 30
   },
   "batteryConfig": {
-    "capacity": 1000.0,
-    "startingCharge": 0,
+    "capacity": 100.0,
+    "startingCharge": 5,
     "isPercentage": true
   },
   "energySourcesConfigs": [

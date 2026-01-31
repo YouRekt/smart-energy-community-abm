@@ -11,7 +11,7 @@ const exampleConfig: typeof defaultValues = {
 		"name": "MovingAverage",
 		"minBatteryChargeThreshold": 10,
 		"productionSafetyFactor": 80,
-		"windowSize": 30
+		"windowSize": 2000
 	},
 	"batteryConfig": {
 		"capacity": 500.0,

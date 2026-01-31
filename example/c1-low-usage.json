@@ -9,7 +9,7 @@
     "name": "MovingAverage",
     "minBatteryChargeThreshold": 20,
     "productionSafetyFactor": 90,
-    "windowSize": 60
+    "windowSize": 2000
   },
   "batteryConfig": {
     "capacity": 20000.0,

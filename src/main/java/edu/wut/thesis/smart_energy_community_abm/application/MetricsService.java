@@ -1,7 +1,6 @@
 package edu.wut.thesis.smart_energy_community_abm.application;
 
 import edu.wut.thesis.smart_energy_community_abm.domain.timeseries.Metric;
-import edu.wut.thesis.smart_energy_community_abm.persistence.MetricsRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.NonNull;
@@ -9,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -22,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MetricsService {
     private static final Logger log = LoggerFactory.getLogger(MetricsService.class);
 
-    private final MetricsRepository metricsRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     private final BlockingQueue<Metric> queue = new LinkedBlockingQueue<>();
 
@@ -31,6 +33,9 @@ public class MetricsService {
 
     @Value("${abm.database.batch-size:1000}")
     private int batchSize;
+
+    @Value("${abm.database.flush-latency:1000}")
+    private int maxLatencyMillis;
 
     @PostConstruct
     public void startWorker() {
@@ -49,23 +54,34 @@ public class MetricsService {
     }
 
     public void enqueue(@NonNull Metric metric) {
-        if(!queue.offer(metric))
+        if (!queue.offer(metric))
             log.error("Queue is full");
     }
 
     private void processQueue() {
         List<Metric> batch = new ArrayList<>(batchSize);
+
+        long lastFlushTime = System.currentTimeMillis();
+
         while (running.get() && !Thread.currentThread().isInterrupted()) {
             try {
-                Metric m = queue.take();
+                Metric m = queue.poll(maxLatencyMillis, TimeUnit.MILLISECONDS);
 
-                batch.add(m);
+                if (m != null) {
+                    batch.add(m);
+                    queue.drainTo(batch, batchSize - batch.size());
+                }
 
-                queue.drainTo(batch, batchSize - 1);
+                long currentTime = System.currentTimeMillis();
+                boolean isFull = batch.size() >= batchSize;
+                boolean isTimeUp = (currentTime - lastFlushTime) >= maxLatencyMillis;
 
-                saveBatch(batch);
+                if (!batch.isEmpty() && (isFull || isTimeUp)) {
+                    saveBatch(batch);
+                    batch.clear();
+                    lastFlushTime = currentTime;
+                }
 
-                batch.clear();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
@@ -78,10 +94,21 @@ public class MetricsService {
 
     private void saveBatch(List<Metric> batch) {
         if (batch.isEmpty()) return;
+
+        String sql = """
+                INSERT INTO metrics (id, time, name, value, timestamp)
+                VALUES (nextval('metrics_id_seq'), ?, ?, ?, ?)
+                """;
+
         try {
-            metricsRepository.saveAll(batch);
+            jdbcTemplate.batchUpdate(sql, batch, batch.size(), (ps, metric) -> {
+                ps.setTimestamp(1, Timestamp.valueOf(metric.getTime()));
+                ps.setString(2, metric.getName());
+                ps.setDouble(3, metric.getValue());
+                ps.setLong(4, metric.getTimestamp());
+            });
         } catch (Exception e) {
-            log.error("Failed to save global metrics batch of size {}", batch.size(), e);
+            log.error("Failed to save JDBC batch", e);
         }
     }
 

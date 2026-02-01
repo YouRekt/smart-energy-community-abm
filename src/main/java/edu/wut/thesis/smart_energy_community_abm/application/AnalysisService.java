@@ -42,10 +42,15 @@ public class AnalysisService {
             LocalDateTime start = run.getStartTime();
             LocalDateTime end = run.getEndTime();
 
+            double startingCharge = config.batteryConfig().startingCharge();
+
+            if(config.batteryConfig().isPercentage())
+                startingCharge *= config.batteryConfig().capacity();
+
             // Energy metrics
             double greenConsumed = sum(COMMUNITY_GREEN_CONSUMPTION, start, end);
             double totalConsumed = sum(COMMUNITY_TOTAL_CONSUMPTION, start, end);
-            double totalProduced = sum(COMMUNITY_PRODUCTION, start, end);
+            double totalProduced = sum(COMMUNITY_PRODUCTION, start, end) + startingCharge;
 
             double selfSufficiencyRatio = safePercent(greenConsumed, totalConsumed);
             double selfConsumptionRatio = safePercent(greenConsumed, totalProduced);
@@ -58,7 +63,7 @@ public class AnalysisService {
 
             // Battery metrics
             double totalDischarged = sum(BATTERY_DISCHARGE_AMOUNT, start, end);
-            double totalCharged = sum(BATTERY_CHARGE_AMOUNT, start, end);
+            double totalCharged = sum(BATTERY_CHARGE_AMOUNT, start, end) + startingCharge;
             double totalCurtailed = sum(BATTERY_CURTAILED, start, end);
             double batteryCapacity = config.batteryConfig().capacity();
 

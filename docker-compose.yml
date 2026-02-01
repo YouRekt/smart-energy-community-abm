@@ -50,6 +50,14 @@ services:
             - POSTGRES_PASSWORD=password
             - POSTGRES_USER=user
             - POSTGRES_DB=timescaledb
+        command: >
+            postgres
+            -c synchronous_commit=off
+            -c fsync=off
+            -c full_page_writes=off
+            -c shared_buffers=1GB
+            -c work_mem=32MB
+            -c max_wal_size=2GB
         healthcheck:
             test: ['CMD-SHELL', 'pg_isready -U user -d timescaledb']
             interval: 5s
